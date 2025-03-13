@@ -1,26 +1,28 @@
 ## 【MySQL】
 
-| Problems                                   | Hints                                                        | Solution                                                     |
-| ------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 事务隔离级别有哪些？                       | 四种隔离级别：读未提交、读已提交、可重复读、串行化           | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/aliyun.html#%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E6%9C%89%E5%93%AA%E4%BA%9B) |
-| 脏读和幻读的区别？                         | **脏读**：一个事务读到了「未提交事务修改过的数据」**幻读**：在一个事务内多次查询某个符合查询条件的「记录数量」，如果前后两次查询到的记录数量不一样。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/aliyun.html#%E5%B9%BB%E8%AF%BB%E5%92%8C%E8%84%8F%E8%AF%BB%E7%9A%84%E5%8C%BA%E5%88%AB) |
-| 如何防止幻读？                             | **针对快照读**（普通 select 语句），是通过 MVCC 方式解决了幻读；  **针对当前读**（select ... for update等语句），是通过 `next-key lock`（记录锁+间隙锁） | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/aliyun.html#%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2%E5%B9%BB%E8%AF%BB) |
-| 事务的mvcc机制原理是什么？                 | MVCC（Multi-Version Concurrency Control，多版本并发控制）是一种**无锁并发控制机制**，用于解决数据库事务的**可见性**问题，避免 **脏读、不可重复读、幻读**，同时提高数据库的**并发性能**。 主要依赖机制： （1）隐藏列（事务 ID & 回滚指针） 、 （2）Undo Log（回滚日志） | [Editorial](./MySQL/事务的MVCC机制原理是什么？.md)           |
-| mysql的什么命令会加上间隙锁？              | 在可重复读隔离级别下。 使用非唯一索引进行带`where`语句的查询、删除、更新 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/aliyun.html#mysql%E7%9A%84%E4%BB%80%E4%B9%88%E5%91%BD%E4%BB%A4%E4%BC%9A%E5%8A%A0%E4%B8%8A%E9%97%B4%E9%9A%99%E9%94%81) |
-| MySQL 的存储引擎有哪些？为什么常用InnoDB？ | InnoDB【支持事务、最小锁的粒度是行锁】、MyISAM、Memory       | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#mysql-%E7%9A%84%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E6%9C%89%E5%93%AA%E4%BA%9B-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%B8%B8%E7%94%A8innodb) |
-| B+ 树和 B 树的比较                         | 叶子节点存储数据不同、B+树支持范围查询（叶子节点通过双向链表连接）、B+树修改树的效率更高（矮胖） | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#b-%E6%A0%91%E5%92%8C-b-%E6%A0%91%E7%9A%84%E6%AF%94%E8%BE%83) |
-| 索引失效的情况                             | 使用左或者左右模糊匹配 、 对索引列使用函数 、 对索引列进行表达式计算 、 联合索引没有正确使用需要遵循最左匹配原则 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#%E7%B4%A2%E5%BC%95%E5%A4%B1%E6%95%88%E7%9A%84%E6%83%85%E5%86%B5) |
-| 二级索引存放的有哪些数据？                 | 主键索引（聚簇索引）叶子节点存放**完整数据**，二级索引存放**主键**。 |                                                              |
-| 事务的特性是什么？如何实现的？             | 原子性（   undo log（回滚日志） ）、隔离性（  MVCC（多版本并发控制） 或锁机制 ）、持久性（ redo log （重做日志） ）、一致性（ 持久性+原子性+隔离性 ）； | [Editorial](https://www.xiaolincoding.com/interview/mysql.html#%E4%BA%8B%E5%8A%A1%E7%9A%84%E7%89%B9%E6%80%A7%E6%98%AF%E4%BB%80%E4%B9%88-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84) |
-| 间隙锁的原理                               | 只存在于可重复读隔离级别，目的是为了解决可重复读隔离级别下幻读的现象。 | [Editorial](./MySQL/间隙锁的原理.md)                         |
-|                                            |                                                              |                                                              |
-|                                            |                                                              |                                                              |
-|                                            |                                                              |                                                              |
-|                                            |                                                              |                                                              |
-|                                            |                                                              |                                                              |
-|                                            |                                                              |                                                              |
-|                                            |                                                              |                                                              |
-|                                            |                                                              |                                                              |
+| Problems                                                     | Hints                                                        | Solution                                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 事务隔离级别有哪些？                                         | 四种隔离级别：读未提交、读已提交、可重复读、串行化           | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/aliyun.html#%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E6%9C%89%E5%93%AA%E4%BA%9B) |
+| 脏读和幻读的区别？                                           | **脏读**：一个事务读到了「未提交事务修改过的数据」**幻读**：在一个事务内多次查询某个符合查询条件的「记录数量」，如果前后两次查询到的记录数量不一样。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/aliyun.html#%E5%B9%BB%E8%AF%BB%E5%92%8C%E8%84%8F%E8%AF%BB%E7%9A%84%E5%8C%BA%E5%88%AB) |
+| 如何防止幻读？                                               | **针对快照读**（普通 select 语句），是通过 MVCC 方式解决了幻读；  **针对当前读**（select ... for update等语句），是通过 `next-key lock`（记录锁+间隙锁） | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/aliyun.html#%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2%E5%B9%BB%E8%AF%BB) |
+| 事务的mvcc机制原理是什么？                                   | MVCC（Multi-Version Concurrency Control，多版本并发控制）是一种**无锁并发控制机制**，用于解决数据库事务的**可见性**问题，避免 **脏读、不可重复读、幻读**，同时提高数据库的**并发性能**。 主要依赖机制： （1）隐藏列（事务 ID & 回滚指针） 、 （2）Undo Log（回滚日志） | [Editorial](./MySQL/事务的MVCC机制原理是什么？.md)           |
+| mysql的什么命令会加上间隙锁？                                | 在可重复读隔离级别下。 使用非唯一索引进行带`where`语句的查询、删除、更新 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/aliyun.html#mysql%E7%9A%84%E4%BB%80%E4%B9%88%E5%91%BD%E4%BB%A4%E4%BC%9A%E5%8A%A0%E4%B8%8A%E9%97%B4%E9%9A%99%E9%94%81) |
+| MySQL 的存储引擎有哪些？为什么常用InnoDB？                   | InnoDB【支持事务、最小锁的粒度是行锁】、MyISAM、Memory       | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#mysql-%E7%9A%84%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E6%9C%89%E5%93%AA%E4%BA%9B-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%B8%B8%E7%94%A8innodb) |
+| B+ 树和 B 树的比较                                           | 叶子节点存储数据不同、B+树支持范围查询（叶子节点通过双向链表连接）、B+树修改树的效率更高（矮胖） | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#b-%E6%A0%91%E5%92%8C-b-%E6%A0%91%E7%9A%84%E6%AF%94%E8%BE%83) |
+| 索引失效的情况                                               | 使用左或者左右模糊匹配 、 对索引列使用函数 、 对索引列进行表达式计算 、 联合索引没有正确使用需要遵循最左匹配原则 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#%E7%B4%A2%E5%BC%95%E5%A4%B1%E6%95%88%E7%9A%84%E6%83%85%E5%86%B5) |
+| 二级索引存放的有哪些数据？                                   | 主键索引（聚簇索引）叶子节点存放**完整数据**，二级索引存放**主键**。 |                                                              |
+| 事务的特性是什么？如何实现的？                               | 原子性（   undo log（回滚日志） ）、隔离性（  MVCC（多版本并发控制） 或锁机制 ）、持久性（ redo log （重做日志） ）、一致性（ 持久性+原子性+隔离性 ）； | [Editorial](https://www.xiaolincoding.com/interview/mysql.html#%E4%BA%8B%E5%8A%A1%E7%9A%84%E7%89%B9%E6%80%A7%E6%98%AF%E4%BB%80%E4%B9%88-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84) |
+| 间隙锁的原理                                                 | 只存在于可重复读隔离级别，目的是为了解决可重复读隔离级别下幻读的现象。 | [Editorial](./MySQL/间隙锁的原理.md)                         |
+| 滥用事务，或者一个事务里有特别多sql的弊端？                  | 容易造成死锁和锁超时、数据回滚时间边长、容易造成主从延迟     | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#%E6%BB%A5%E7%94%A8%E4%BA%8B%E5%8A%A1-%E6%88%96%E8%80%85%E4%B8%80%E4%B8%AA%E4%BA%8B%E5%8A%A1%E9%87%8C%E6%9C%89%E7%89%B9%E5%88%AB%E5%A4%9Asql%E7%9A%84%E5%BC%8A%E7%AB%AF) |
+| 两条update语句处理一张表的不同的主键范围的记录，一个<10，一个>15，会不会遇到阻塞？底层是为什么的？ | **不会**，因为锁住的范围不一样，不会形成冲突。 第一条 update sql 的话（ id<10），锁住的范围是（-♾️，10） 第二条 update sql 的话（id >15），锁住的范围是（15，+♾️） |                                                              |
+| 如果上面2个范围不是主键或索引？还会阻塞吗？                  | 触发全表扫描，会**阻塞**                                     | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#%E5%A6%82%E6%9E%9C2%E4%B8%AA%E8%8C%83%E5%9B%B4%E4%B8%8D%E6%98%AF%E4%B8%BB%E9%94%AE%E6%88%96%E7%B4%A2%E5%BC%95-%E8%BF%98%E4%BC%9A%E9%98%BB%E5%A1%9E%E5%90%97) |
+| 表中十个字段，你主键用自增ID还是UUID，为什么？               | **自增ID**。使用 InnoDB 应该尽可能的按主键的自增顺序插入，并且尽可能使用单调的增加的聚簇键的值来插入新行 。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mayi.html#%E8%A1%A8%E4%B8%AD%E5%8D%81%E4%B8%AA%E5%AD%97%E6%AE%B5-%E4%BD%A0%E4%B8%BB%E9%94%AE%E7%94%A8%E8%87%AA%E5%A2%9Eid%E8%BF%98%E6%98%AFuuid-%E4%B8%BA%E4%BB%80%E4%B9%88-%E6%88%91%E5%9B%9E%E7%AD%94%E4%BA%86%E8%87%AA%E5%A2%9E%E5%92%8Cuuid%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9) |
+| MySQL的锁讲一下                                              | 全局锁、表级锁、行级锁                                       | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mayi.html#mysql%E7%9A%84%E9%94%81%E8%AE%B2%E4%B8%80%E4%B8%8B-%E6%8C%89%E9%94%81%E7%9A%84%E7%B2%92%E5%BA%A6%E8%AE%B2%E4%BA%86%E4%B8%80%E9%81%8D) |
+| 设计一个行级锁的死锁，举一个实际的例子                       | **死锁发生条件**：两个事务**交叉加锁**，形成**循环等待**。  **解决方案**：  1、 **统一加锁顺序**（最有效）。 2、 **使用 `NOWAIT` 或 `SKIP LOCKED`** 避免长时间等待。 3、 **使用短事务**，避免锁占用过长。 | [Editorial](./MySQL/行级锁死锁例子.md)                       |
+| mysql 如何避免全表扫描？                                     | 建立索引                                                     | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#mysql-%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E5%85%A8%E8%A1%A8%E6%89%AB%E6%8F%8F) |
+| mysql如何实现如果不存在就插入如果存在就更新？                | 可以使用 `INSERT ... ON DUPLICATE KEY UPDATE` 语句来实现“如果不存在就插入，如果存在就更新”的功能。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#mysql%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A6%82%E6%9E%9C%E4%B8%8D%E5%AD%98%E5%9C%A8%E5%B0%B1%E6%8F%92%E5%85%A5%E5%A6%82%E6%9E%9C%E5%AD%98%E5%9C%A8%E5%B0%B1%E6%9B%B4%E6%96%B0) |
+| 数据库访问量过大怎么办？                                     | **创建或优化索引** 、 **查询优化** 、 **避免索引失效** 、 **读写分离**、 **优化数据库表**、 **使用缓存技术** | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BF%E9%97%AE%E9%87%8F%E8%BF%87%E5%A4%A7%E6%80%8E%E4%B9%88%E5%8A%9E) |
+| MySQL的三大日志说一下，分别应用场景是什么？                  | **redolog**、**binlog**和**undolog**                         | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/kuaishou.html#mysql%E7%9A%84%E4%B8%89%E5%A4%A7%E6%97%A5%E5%BF%97%E8%AF%B4%E4%B8%80%E4%B8%8B-%E5%88%86%E5%88%AB%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E6%98%AF%E4%BB%80%E4%B9%88) |
 
 ## 【Redis】
 
@@ -30,6 +32,9 @@
 | 热 key 是什么？怎么解决？                                 | Redis热key是指被频繁访问的key 。开启内存淘汰机制， 设置key的过期时间，  对热点key进行分片 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#%E7%83%AD-key-%E6%98%AF%E4%BB%80%E4%B9%88-%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3) |
 | String 是使用什么存储的?为什么不用 c 语言中的字符串?      | Redis 的 String 字符串是用 SDS 数据结构存储的。  **len，记录了字符串长度**。  **alloc，分配给字符数组的空间长度**。  **flags，用来表示不同类型的 SDS**。  **buf[]，字符数组，用来保存实际数据**。  增加了三个元数据：len、alloc、flags，用来解决 C 语言字符串的缺陷。  O（1）复杂度获取字符串长度 ； 二进制安全 ； 不会发生缓冲区溢出 。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#string-%E6%98%AF%E4%BD%BF%E7%94%A8%E4%BB%80%E4%B9%88%E5%AD%98%E5%82%A8%E7%9A%84-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%94%A8-c-%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2) |
 | Redis有什么持久化策略？                                   | **AOF 日志** 、 **RDB 快照** 、 **混合持久化方式**           | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#redis%E6%9C%89%E4%BB%80%E4%B9%88%E6%8C%81%E4%B9%85%E5%8C%96%E7%AD%96%E7%95%A5) |
+| RDB是怎样做的？                                           | Redis 提供了两个命令来生成 RDB 文件，分别是 **save** 和 **bgsave**，他们的区别就在于是否在「主线程」里执行 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mayi.html#rdb%E6%98%AF%E6%80%8E%E6%A0%B7%E5%81%9A%E7%9A%84-%E7%AD%94%E5%87%BA%E6%9D%A5%E4%BA%86) |
+| aof的写入策略，按时间写入和每次都写入的区别，优缺点       | Redis 提供了 3 种写回硬盘的策略， 在 Redis.conf 配置文件中的 appendfsync 配置项可以有以下 3 种参数可填： Always、 Everysec 、No | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mayi.html#aof%E7%9A%84%E5%86%99%E5%85%A5%E7%AD%96%E7%95%A5-%E6%8C%89%E6%97%B6%E9%97%B4%E5%86%99%E5%85%A5%E5%92%8C%E6%AF%8F%E6%AC%A1%E9%83%BD%E5%86%99%E5%85%A5%E7%9A%84%E5%8C%BA%E5%88%AB-%E4%BC%98%E7%BC%BA%E7%82%B9-%E7%AD%94%E5%87%BA%E6%9D%A5%E4%BA%86) |
+| 你平常是怎么使用RDB和AOF的？                              | 数据安全性（AOF）、数据恢复速度（RDB）、数据备份和迁移（RDB）、数据可读性（AOF） | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mayi.html#%E4%BD%A0%E5%B9%B3%E5%B8%B8%E6%98%AF%E6%80%8E%E4%B9%88%E4%BD%BF%E7%94%A8rdb%E5%92%8Caof%E7%9A%84) |
 | MySQL两个线程的update语句同时处理一条数据，会不会有阻塞？ | 会，因为InnoDB的行锁。                                       | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#mysql%E4%B8%A4%E4%B8%AA%E7%BA%BF%E7%A8%8B%E7%9A%84update%E8%AF%AD%E5%8F%A5%E5%90%8C%E6%97%B6%E5%A4%84%E7%90%86%E4%B8%80%E6%9D%A1%E6%95%B0%E6%8D%AE-%E4%BC%9A%E4%B8%8D%E4%BC%9A%E6%9C%89%E9%98%BB%E5%A1%9E) |
 | Zset 使用了什么数据结构？                                 | Zset 类型的底层数据结构是由**压缩列表或跳表**实现的          | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/byte_dance.html#redis-%E6%9C%89%E5%93%AA%E4%BA%9B%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84) |
 | 介绍一下redis中的跳表                                     | 跳表（Skip List）是一种 **基于链表的有序数据结构**，通过**多级索引**来加速查询。 | [Editorial](./Redis/跳表.md)                                 |
@@ -39,18 +44,21 @@
 | Redis 和 MySQL 如何保证一致性                             | **「先更新数据库 + 再删除缓存」的方案，是可以保证数据一致性的**。 |                                                              |
 | 调用 interrupt 是如何让线程抛出异常的?                    | 每个线程都有一个初始值为 `false` 的中断状态，`interrupt()` 会更新该状态。  若线程在 `sleep()`、`join()`、`wait()` 等可中断方法中，会抛出 `InterruptedException` 并解除阻塞；否则，仅设置中断状态，线程可轮询决定是否停止。 |                                                              |
 | 如果是靠变量来停止线程，缺点是什么?                       | 缺点是中断可能不够及时，循环判断时会到下一个循环才能判断出来。 |                                                              |
-| volatile 保证原子性吗？                                   | volatile关键字并没有保证我们的变量的原子性，volatile是Java虚拟机提供的一种轻量级的同步机制，主要有这三个特性：**保证可见性** 、**不保证原子性**、**禁止指令重排**          使用 `synchronized`来保证原子性 |                                                              |
-| synchronized 支持重入吗？如何实现的?                      | ✔ **synchronized 支持重入**，同一线程可多次获取同一把锁。  ✔ **通过对象头的“锁计数器”实现**，锁被同一线程持有时计数递增，释放时递减。  ✔ **避免死锁**，允许父子类方法或递归调用顺利执行。 🚀 | [Editorial](./Java基础/synchronized 支持重入吗，如何实现的.md) |
-|                                                           |                                                              |                                                              |
-|                                                           |                                                              |                                                              |
-|                                                           |                                                              |                                                              |
-|                                                           |                                                              |                                                              |
+| 什么情况使用MySQL，什么情况使用Redis？                    | **MySQL**： 当需要存储结构化数据，并且需要支持复杂的查询操作时，和需要支持事务处理时。  **Redis**：当需要快速访问和处理数据的缓存时，可以选择Redis，能够提供快速的数据读取和写入。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%BD%BF%E7%94%A8mysql-%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%BD%BF%E7%94%A8redis) |
+| 本地缓存和Redis缓存的区别                                 | **本地缓存** 适合 **单机、低并发场景**，速度极快，但**数据不共享**。**Redis 缓存** 适合 **分布式、高并发场景**，支持**持久化**，但**访问速度比本地缓存稍慢**。**最佳实践**：**本地缓存 + Redis 结合使用**，**热点数据走本地缓存**，大规模数据放 Redis 共享。 | [Editorial](./Redis/本地缓存与Redis缓存.md)                  |
+| Redis的Key过期了是立马删除吗                              | 不会，Redis 的过期删除策略是选择「**惰性删除+定期删除**」这两种策略配和使用。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mayi.html#redis%E7%9A%84key%E8%BF%87%E6%9C%9F%E4%BA%86%E6%98%AF%E7%AB%8B%E9%A9%AC%E5%88%A0%E9%99%A4%E5%90%97-%E5%9B%9E%E7%AD%94%E4%BA%86%E5%AE%9A%E6%9C%9F%E5%88%A0%E9%99%A4%E5%92%8C%E6%83%B0%E6%80%A7%E5%88%A0%E9%99%A4%E4%B8%A4%E7%A7%8D%E7%AD%96%E7%95%A5) |
+| Redis的大Key问题是什么？                                  | 某个key对应的value值所占的内存空间比较大，导致Redis的性能下降、内存不足、数据不均衡以及主从同步延迟等问题。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mayi.html#redis%E7%9A%84%E5%A4%A7key%E9%97%AE%E9%A2%98%E6%98%AF%E4%BB%80%E4%B9%88-%E7%AD%94%E5%87%BA%E6%9D%A5%E4%BA%86) |
+| 大Key问题的缺点？                                         | 内存占用过高 、 性能下降 、 阻塞其他操作 、 网络拥塞 、 主从同步延迟 、 数据倾斜 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mayi.html#%E5%A4%A7key%E9%97%AE%E9%A2%98%E7%9A%84%E7%BC%BA%E7%82%B9-%E7%AD%94%E5%87%BA%E6%9D%A5%E4%BA%86) |
+| redis hotkey用什么查，怎么解决hotkey？                    | 使用 Monitor 命令可以实时监控 Redis 数据库的所有命令操作，包括对 Hotkey 的读取和写入操作，通过对返回的执行命令进行统计来分析 Hotkey 的分布。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#redis-hotkey%E7%94%A8%E4%BB%80%E4%B9%88%E6%9F%A5-%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3hotkey) |
+
+
 
 ## 【Java基础】
 
 | Problems                                      | Hints                                                        | Solution                                                     |
 | --------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | 双亲委派机制是什么？                          | 是Java类加载器（ClassLoader）中的一种工作原理。  主要用于**解决类加载过程中的安全和避免重复加载的问题**。 | [Editorial](./Java基础/双亲委派机制.md)                      |
+| 介绍一下类加载器                              | 加载、验证、准备、解析、初始化                               | [Editorial](./Java基础/类加载器.md)                          |
 | 编译型语言和解释型语言的区别？                | **编译型语言**：在程序执行**之前**，整个源代码会被编译成机器码或者字节码，生成可执行文件。执行时直接运行编译后的代码，速度快，但跨平台性较差。  **解释型语言**：在程序执行时，逐行解释执行源代码，不生成独立的可执行文件。通常由解释器动态解释并执行代码，跨平台性好，但执行速度相对较慢。   典型的编译型语言如C、C++，典型的解释型语言如Python、JavaScript。 |                                                              |
 | 动态数组的实现有哪些？                        | ArrayList和Vector都支持动态扩容，都属于动态数组。    **线程安全性**：Vector是线程安全的，ArrayList不是线程安全的。  **扩容策略**：ArrayList在底层数组不够用时在原来的基础上扩展0.5倍，Vector是扩展1倍。 |                                                              |
 | HashMap 的扩容条件是什么？                    | Java7扩容需要满足两个条件：   1、当前数据存储的数量（即size()）大小必须大于等于阈值 ；2、当前加入的数据是否发生了hash冲突。    Java8只需要满足**条件1**。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#hashmap-%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9D%A1%E4%BB%B6%E6%98%AF%E4%BB%80%E4%B9%88) |
@@ -59,24 +67,60 @@
 | notify 和 notifyAll 的区别?                   | **notify 只唤醒一个线程，其他线程仍在等待，若该线程未调用 notify，其余线程可能永远无法唤醒。**  **notifyAll 唤醒所有等待线程，它们竞争锁，最终只有一个线程执行，剩余线程继续等待锁释放。** |                                                              |
 | notify 选择哪个线程?                          | notify在源码的注释中说到notify选择唤醒的线程是**任意的**，但是依赖于具体实现的jvm。     JVM有很多实现，比较流行的就是hotspot，hotspot对notofy()的实现并不是我们以为的随机唤醒,，而是**“先进先出”**的顺序唤醒。 |                                                              |
 | 如何停止一个线程的运行?                       | 1、使用标志位；2、使用`interrupt()`；3、结合`interrupt()`和标志位；4、使用 `FutureTask.cancel(true)` | [Editorial](./Java基础/如何停止一个线程的运行.md)            |
+| 介绍NIO BIO AIO？                             | BIO（同步阻塞）：传统 I/O 模式，适用于 小规模连接。 NIO（同步非阻塞）：通过 Selector 实现 多路复用，适用于 高并发。 AIO（异步非阻塞）：基于 回调机制，适用于 超高并发、长连接。 | [Editorial](./Java基础/介绍NIOBIOAIO.md)                     |
+| volatile 保证原子性吗？                       | volatile关键字并没有保证我们的变量的原子性，volatile是Java虚拟机提供的一种轻量级的同步机制，主要有这三个特性：**保证可见性** 、**不保证原子性**、**禁止指令重排**          使用 `synchronized`来保证原子性 |                                                              |
+| synchronized 支持重入吗？如何实现的?          | ✔ **synchronized 支持重入**，同一线程可多次获取同一把锁。  ✔ **通过对象头的“锁计数器”实现**，锁被同一线程持有时计数递增，释放时递减。  ✔ **避免死锁**，允许父子类方法或递归调用顺利执行。 🚀 | [Editorial](./Java基础/synchronized支持重入吗.md)            |
+| Java创建线程有几种方式                        | 继承Thread类，重写`run()`方法； 实现Runnable接口并实现`run()`方法，然后将实现了Runnable接口的类传递给Thread类； 使用Callable和Future接口通过Executor框架创建线程；通过线程池方式创建。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#java%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E6%9C%89%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F) |
+| 线程池有哪些优势？                            | **减少线程创建和销毁的开销**：频繁地创建和销毁线程会消耗大量系统资源，线程池通过重用已存在的线程来减少这种开销。  **提高响应速度**：当任务到达时，无需等待线程的创建即可立即执行，因为线程池中已经有等待的线程。 |                                                              |
+| 说一下面向对象3大特性理解？                   | 封装、继承、多态                                             | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#%E8%AF%B4%E4%B8%80%E4%B8%8B%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A13%E5%A4%A7%E7%89%B9%E6%80%A7%E7%90%86%E8%A7%A3) |
+| Java有什么常用的集合类？                      | List、Set、Map、Queue。                                      | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#java%E6%9C%89%E4%BB%80%E4%B9%88%E5%B8%B8%E7%94%A8%E7%9A%84%E9%9B%86%E5%90%88%E7%B1%BB) |
+| 有哪些集合类是线程安全的，哪些是不安全的？    | **Vector、HashTable、Properties是线程安全的；**  **ArrayList、LinkedList、HashSet、TreeSet、HashMap、TreeMap等都是线程不安全的。** |                                                              |
+| ArrayList和LinkedList区别？                   | 都实现了**List**接口 ，底层数据结构、插入删除元素效率、随机访问效率、空间占用、使用场景、线程安全 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#arraylist%E5%92%8Clinkedlist%E5%8C%BA%E5%88%AB) |
+| 讲下HashMap？                                 | 从JDK1.7【数组+链表】与JDK1.8【小于8使用链表，超过8使用红黑树】回答 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#%E8%AE%B2%E4%B8%8Bhashmap) |
+| 讲下ConcurrentHashMap？                       | JDK1.7【数组+链表】JDK1.8【 数组 + 链表/红黑树 】            | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#%E8%AE%B2%E4%B8%8Bconcurrenthashmap) |
+| 讲下阻塞队列？                                | 阻塞队列（BlockingQueue）是一种支持**阻塞插入和阻塞获取**的队列，它可以在 **生产者-消费者模型** 中高效地实现**线程安全的数据交换**。 | [Editorial](./Java基础/阻塞队列.md)                          |
+| 讲下线程安全的List？                          | 常见的线程安全的List实现包括 `Collections.synchronizedList` 和 `CopyOnWriteArrayList` 【适合频繁读写】。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#%E8%AE%B2%E4%B8%8B%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84list) |
+|                                               |                                                              |                                                              |
+|                                               |                                                              |                                                              |
+|                                               |                                                              |                                                              |
+|                                               |                                                              |                                                              |
+|                                               |                                                              |                                                              |
+|                                               |                                                              |                                                              |
+|                                               |                                                              |                                                              |
 
 ## 【JVM】
 
-| Problems                       | Hints                                                        | Solution                                           |
-| ------------------------------ | ------------------------------------------------------------ | -------------------------------------------------- |
-| 垃圾回收 cms和g1的区别是什么？ | 回收策略、垃圾收集目标、内存划分、STW停顿时间、回收过程、吞吐量、适用场景、废弃情况 | [Editorial](./JVM/垃圾回收 cms和g1的区别是什么.md) |
-|                                |                                                              |                                                    |
-|                                |                                                              |                                                    |
+| Problems                       | Hints                                                        | Solution                                                     |
+| ------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 垃圾回收 cms和g1的区别是什么？ | 回收策略、垃圾收集目标、内存划分、STW停顿时间、回收过程、吞吐量、适用场景、废弃情况 | [Editorial](./JVM/垃圾回收 cms和g1的区别是什么.md)           |
+| 讲下JVM内存区域？              | **方法区**：存储类元数据，JDK 8 之后使用 **元空间（Metaspace）**。  **堆**：存储对象，GC 主要管理区域，分 **新生代 & 老年代**。  **虚拟机栈**：存储局部变量表、方法调用信息，递归深会导致 **StackOverflowError**。  **本地方法栈**：服务于 JNI 调用，溢出也会抛出 **StackOverflowError**。  **程序计数器**：记录当前线程执行的 **字节码指令地址**。 | [Editorial](./JVM/JVM内存区域.md)                            |
+| 你知道哪些 JVM 的 GC 机制？    | Serial收集器（复制算法) 、 ParNew收集器 (复制算法) 、 Parallel Scavenge收集器 (复制算法) 、 Serial Old收集器 (标记-整理算法) 、 Parallel Old收集器 (标记-整理算法) 、 CMS(Concurrent Mark Sweep)收集器（标记-清除算法） 、 G1(Garbage First)收集器 (标记-整理算法) | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/meituan.html#%E4%BD%A0%E7%9F%A5%E9%81%93%E5%93%AA%E4%BA%9B-jvm-%E7%9A%84-gc-%E6%9C%BA%E5%88%B6) |
 
 
 
 ## 【Spring】
 
-| Problems | Hints | Solution |
-| -------- | ----- | -------- |
-|          |       |          |
-|          |       |          |
-|          |       |          |
+| Problems                                                     | Hints                                                        | Solution                                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| spring三级缓存解决循环依赖问题？                             | **Spring 三级缓存机制通过提前暴露 Bean 的引用，使得循环依赖得以解决，同时保证 AOP 代理不丢失**。 | [Editorial](./Spring/spring三级缓存解决循环依赖问题.md)      |
+| 如何使用spring实现事务？【深问：事务传播模型有哪些】         | 编程式事务（`TransactionTemplate`）、声明式事务（`@Transactional`） | [Editorial](./Spring/如何使用spring实现事务 )                |
+| springboot常用注解                                           | Bean相关的、依赖注入、读取配置、Web相关、其他注解            | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/aliyun.html#springboot%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3%E6%9C%89%E5%93%AA%E4%BA%9B) |
+| MyBatis，#和$有什么区别                                      | **主要是SQL注入的问题**                                      | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mayi.html#%E6%88%91%E7%9C%8B%E4%BD%A0%E5%86%99%E5%88%B0%E4%BA%86mybatis-%E5%92%8C-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB-%E4%B8%BB%E8%A6%81%E6%98%AFsql%E6%B3%A8%E5%85%A5%E7%9A%84%E9%97%AE%E9%A2%98) |
+| 你说到了SQL注入，那你给我设计出一个SQL注入，具体说表中的字段，然后SQL语句是怎样的 | SQL 注入主要是由于 **拼接 SQL 语句** 造成的，攻击者可以利用它来 **绕过身份验证、窃取数据，甚至破坏数据库**。最有效的防范方法是 **使用参数化查询**，避免直接拼接用户输入到 SQL 语句中。 | [Editorial](./MySQL/SQL注入例子.md)                          |
+| Bean 的生命周期                                              | 8大步                                                        | [Editorial](./Spring/Bean的生命周期.md)                      |
+| Bean是否单例？                                               | Spring 中的 Bean 默认都是单例的。                            | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mayi.html#bean%E6%98%AF%E5%90%A6%E5%8D%95%E4%BE%8B) |
+| Bean的单例和非单例，生命周期是否一样                         | 不一样的，Spring Bean 的生命周期完全由 IoC 容器控制。Spring 只帮我们管理单例模式 Bean 的完整生命周期，对于 `prototype` 的 Bean，Spring 在创建好交给使用者之后，则不会再管理后续的生命周期。 |                                                              |
+| Spring容器里存的是什么？                                     | 在Spring容器中，存储的**主要是Bean对象**。 Bean是Spring框架中的基本组件，用于表示应用程序中的各种对象。当应用程序启动时，Spring容器会根据配置文件或注解的方式创建和管理这些Bean对象。Spring容器会负责创建、初始化、注入依赖以及销毁Bean对象。 |                                                              |
+| Bean注入和xml注入最终得到了相同的效果，它们在底层是怎样做的  | **最终实现效果相同**：无论 XML 还是注解，最终都生成 **BeanDefinition**，通过 **反射实例化 Bean 并注入依赖**。  **区别在于解析方式**：   **XML** 方式**使用 `BeanFactory` + `setter` 方法**进行注入。  **`@Autowired` 注解使用 `AutowiredAnnotationBeanPostProcessor`，直接通过反射赋值**，不会调用 setter。  **推荐使用注解方式**：代码更加简洁，支持 **Spring Boot 自动装配**，XML 适用于 **复杂 XML 配置管理**（如 Spring Cloud 配置中心）。 | [Editorial](./Spring/Bean注入与xml注入.md)                   |
+| spring 里@Autowired 和 @Resource 注解有什么区别？            | 来源不同、注入方式、属性、依赖性、使用场景                   | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#spring-%E9%87%8C-autowired-%E5%92%8C-resource-%E6%B3%A8%E8%A7%A3%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB) |
+| Spring的IOC介绍一下                                          | **IOC（控制反转）** 是一种**设计思想**，用于管理对象的依赖关系。Spring 通过 **IOC 容器** 负责创建、管理和注入对象，而不是由代码手动创建对象。 | [Editorial](./Spring/Spring的IOC介绍一下.md)                 |
+| 为什么依赖注入不适合使用字段注入？                           | 字段注入可能引起的三个问题：**对象的外部可见性**;  **可能导致循环依赖**;  **无法设置注入的对象为final，也无法注入静态变量** | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/kuaishou.html#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E4%B8%8D%E9%80%82%E5%90%88%E4%BD%BF%E7%94%A8%E5%AD%97%E6%AE%B5%E6%B3%A8%E5%85%A5) |
+| Spring的aop介绍一下                                          | 切面编程、动态代理实现                                       | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/kuaishou.html#spring%E7%9A%84aop%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8B) |
+| Spring的事务，使用this调用是否生效？                         | 不能生效。因为Spring事务是通过代理对象来控制的，只有通过代理对象的方法调用才会应用事务管理的相关规则。当使用`this`直接调用时，是绕过了Spring的代理机制，因此不会应用事务设置 |                                                              |
+| Spring MVC的工作流程描述一下                                 | 7大步：请求进入、寻找控制器、执行控制器、返回模型数据、解析视图、渲染视图、响应返回 | [Editorial](./Spring/Spring MVC的工作流程描述一下.md)        |
+|                                                              |                                                              |                                                              |
+|                                                              |                                                              |                                                              |
+|                                                              |                                                              |                                                              |
 
 ## 【操作系统】
 
@@ -93,9 +137,16 @@
 
 ## 【计算机网络】
 
-| Problems                   | Hints                                                       | Solution                                       |
-| -------------------------- | ----------------------------------------------------------- | ---------------------------------------------- |
-| HTTP 与 HTTPS 协议的区别？ | 安全、端口、加密方式、证书、完整性、身份认证、SEO、适用场景 | [Editorial](./计算机网络/http与https的区别.md) |
-|                            |                                                             |                                                |
-|                            |                                                             |                                                |
+| Problems                            | Hints                                                        | Solution                                                     |
+| ----------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| HTTP 与 HTTPS 协议的区别？          | 安全、端口、加密方式、证书、完整性、身份认证、SEO、适用场景  | [Editorial](./计算机网络/http与https的区别.md)               |
+| 网络有什么常用的通信协议？          | **HTTP**：用于在**Web浏览器**和**Web服务器**之间传输超文本的协议，是目前最常见的**应用层**协议。  **HTTPS**：在HTTP的基础上添加了**SSL/TLS**加密层，用于在不安全的网络上安全地传输数据。  **TCP**：面向连接的**传输层**协议，提供可靠的数据传输服务，保证数据的顺序和完整性。  **UDP**：无连接的**传输层**协议，提供了数据包传输的简单服务，适用于实时性要求高的应用。  **IP**：**网络层**协议，用于在网络中传输数据包，定义了数据包的格式和传输规则。 |                                                              |
+| 前后端交互用的是什么协议？          | 用HTTP和HTTPS协议比较多。前端通过HTTP协议向服务器端发送请求，服务器端接收请求并返回相应的数据，实现了前后端的交互。HTTP协议简单、灵活，适用于各种类型的应用场景。 |                                                              |
+| HTTP 常见状态码有哪些？             | 1XX：提示信息；2XX：成功；3XX：重定向；4XX：报文有误；5XX：服务器内部错误 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/meituan.html#http-%E5%B8%B8%E8%A7%81%E7%8A%B6%E6%80%81%E7%A0%81%E6%9C%89%E5%93%AA%E4%BA%9B) |
+| Java 线程池的核心参数有哪些？       | **7个参数**：corePoolSize（核心线程数量）、 **maximumPoolSize** （ 线程池中最多可容纳的线程数量 ）、 **keepAliveTime** （ 当线程池中线程的数量大于corePoolSize，并且某个线程的空闲时间超过了keepAliveTime，那么这个线程就会被销毁。 ）、 **unit** （ 就是keepAliveTime时间的单位。 ） 、**workQueue** （工作队列）、 **threadFactory **（线程工厂） 、**handler**（拒绝策略） | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/meituan.html#java-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8F%82%E6%95%B0%E6%9C%89%E5%93%AA%E4%BA%9B) |
+| Dns基于什么协议实现？udp 还是 tcp？ | DNS 基于UDP协议实现，DNS使用UDP协议进行域名解析和数据传输。  |                                                              |
+| 为什么是udp？                       | **低延迟** 、**简单快速**、**轻量级**                        | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/kuaishou.html#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AFudp) |
+| http的特点是什么？                  | 基于文本、可扩展性、灵活性、无状态                           | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/kuaishou.html#http%E7%9A%84%E7%89%B9%E7%82%B9%E6%98%AF%E4%BB%80%E4%B9%88) |
+| http无状态体现在哪？                | HTTP的无状态体现在每个请求之间**相互独立**，服务器不会保留之前请求的状态信息。每次客户端向服务器发送请求时，服务器都会独立处理该请求，不会记住之前的请求信息或状态。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/kuaishou.html#http%E6%97%A0%E7%8A%B6%E6%80%81%E4%BD%93%E7%8E%B0%E5%9C%A8%E5%93%AA) |
+| Cookie和session的区别是什么？       | 存储位置、安全性、存储容量                                   | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/kuaishou.html#cookie%E5%92%8Csession%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88) |
 
