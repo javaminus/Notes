@@ -159,17 +159,17 @@
 | http无状态体现在哪？                 | HTTP的无状态体现在每个请求之间**相互独立**，服务器不会保留之前请求的状态信息。每次客户端向服务器发送请求时，服务器都会独立处理该请求，不会记住之前的请求信息或状态。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/kuaishou.html#http%E6%97%A0%E7%8A%B6%E6%80%81%E4%BD%93%E7%8E%B0%E5%9C%A8%E5%93%AA) |
 | Cookie和session的区别是什么？        | 存储位置、安全性、存储容量                                   | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/kuaishou.html#cookie%E5%92%8Csession%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88) |
 | 服务器处理并发请求有哪几种方式？     | 单线程web服务器方式 、 多进程/多线程web服务器 、 I/O多路复用web服务器 、 多路复用多线程web服务器 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%A4%84%E7%90%86%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F) |
-| 说一下select，poll，epoll的区别？    | `select`、`poll` 和 `epoll` 都是 **I/O 多路复用** 机制，用于 **同时监听多个文件描述符（FD）**，当某个 FD **可读/可写** 时通知应用程序。   `select`、`poll` 适用于小规模连接，**O(N) 复杂度**，随 FD 数量增加性能下降。  **现代 Linux 服务器推荐 epoll**，性能最佳！🚀 | [Editorial](./计算机网络/说一下select，poll，epoll的区别.md) |
+| 说一下select，poll，epoll的区别？    | `select`、`poll` 和 `epoll` 都是 **I/O 多路复用** 机制，用于 **同时监听多个文件描述符（FD）**，当某个 FD **可读/可写** 时通知应用程序。   `select`、`poll` 适用于小规模连接，**O(N) 复杂度**，随 FD 数量增加性能下降。  **现代 Linux 服务器推荐 epoll**，性能最佳！🚀 | [Editorial](./计算机网络/说一下select_poll_epoll的区别.md)   |
 | https是如何防范中间人的攻击？        | 加密、身份校验机制                                           | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#https%E6%98%AF%E5%A6%82%E4%BD%95%E9%98%B2%E8%8C%83%E4%B8%AD%E9%97%B4%E4%BA%BA%E7%9A%84%E6%94%BB%E5%87%BB) |
 | 描述一下打开百度首页后发生的网络过程 | 解析`URL`、对域名进行`dns`解析、发起`NNS`查询、 本地`DNS`服务器查询 、 根DNS服务器查询 、 顶级域名服务器查询 、 权威域名服务器查询 、 返回结果 、 建立`TCP`连接 、 三次握手 、 发送`HTTP`请求 、 服务器处理请求 、 发送`HTTP`响应 、 接收响应和渲染页面 、 关闭`TCP`连接 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#%E6%8F%8F%E8%BF%B0%E4%B8%80%E4%B8%8B%E6%89%93%E5%BC%80%E7%99%BE%E5%BA%A6%E9%A6%96%E9%A1%B5%E5%90%8E%E5%8F%91%E7%94%9F%E7%9A%84%E7%BD%91%E7%BB%9C%E8%BF%87%E7%A8%8B) |
-| 什么是ddos攻击？怎么防范？           | 分布式拒绝服务（DDoS）攻击是通过大规模互联网流量淹没目标服务器或其周边基础设施，以破坏目标服务器、服务或网络正常流量的恶意行为。 | [ 什么是ddos攻击？怎么防范？](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#%E4%BB%80%E4%B9%88%E6%98%AFddos%E6%94%BB%E5%87%BB-%E6%80%8E%E4%B9%88%E9%98%B2%E8%8C%83) |
+| 什么是ddos攻击？怎么防范？           | 分布式拒绝服务（DDoS）攻击是通过大规模互联网流量淹没目标服务器或其周边基础设施，以破坏目标服务器、服务或网络正常流量的恶意行为。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#%E4%BB%80%E4%B9%88%E6%98%AFddos%E6%94%BB%E5%87%BB-%E6%80%8E%E4%B9%88%E9%98%B2%E8%8C%83) |
 
 ## 【高并发场景】
 
 | Problems                                       | Hints                                                        | Solution                                                     |
 | ---------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | 限流算法有哪些？                               | 计数器、滑动窗口、令牌桶、漏桶、滑动窗口日志                 | [Editorial](./高并发场景/限流算法有哪些.md)                  |
-| redis，nginx，netty 是依赖什么做的这么高性能？ | ✅**Redis**：单线程但**超快**，因 `epoll + 高效数据结构`。  ✅ **Nginx**：`epoll + sendfile` 提供**超高吞吐量**，适合 Web 服务器。  ✅ **Netty**：`epoll + ByteBuf` 提供**高并发网络通信**，用于 RPC、微服务。 | [Editorial](./高并发场景/ redis，nginx，netty 是依赖什么做的这么高性能.md) |
+| redis，nginx，netty 是依赖什么做的这么高性能？ | ✅**Redis**：单线程但**超快**，因 `epoll + 高效数据结构`。  ✅ **Nginx**：`epoll + sendfile` 提供**超高吞吐量**，适合 Web 服务器。  ✅ **Netty**：`epoll + ByteBuf` 提供**高并发网络通信**，用于 RPC、微服务。 | [Editorial](./高并发场景/redis_nginx_netty 是依赖什么做的这么高性能.md) |
 |                                                |                                                              |                                                              |
 
 ## 【其他】
