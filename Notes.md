@@ -27,6 +27,7 @@
 | 慢查询是如何调试解决的？                                     | 确认慢查询、分析执行计划、优化查询语句、优化数据库结构、缓存和查询缓存 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%98%AF%E5%A6%82%E4%BD%95%E8%B0%83%E8%AF%95%E8%A7%A3%E5%86%B3%E7%9A%84) |
 | mysql的explain有什么作用                                     | explain 是查看 sql 的执行计划，主要用来分析 sql 语句的执行过程，比如有没有走**索引**，有没有**外部排序**，有没有**索引覆盖**等等。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#mysql%E7%9A%84explain%E6%9C%89%E4%BB%80%E4%B9%88%E4%BD%9C%E7%94%A8) |
 | 数据库翻页（limit）查询时，发现越往后查询越来越慢，为什么？该如何修改 SQL 能解决? | 数据库翻页使用 `LIMIT offset` 时，`offset` 越大查询越慢，因为需要跳过前面大量数据，建议用基于主键的“条件翻页”优化SQL性能。 | [Editorial](./MySQL/数据库翻页（limit）查询时，发现越往后查询越来越慢，为什么？该如何修改 SQL 能解决.md) |
+| 什么是慢查询以及如何调试解决的?                              | 慢查询是指数据库中执行时间超过**设定阈值**的 SQL，通过开启**慢查询日志**、**分析执行计划**和**优化索引**或 **SQL 结构进行定位**和解决。 | [Editorial](./MySQL/什么是慢查询以及如何调试解决的.md)       |
 
 ## 【Redis】
 
