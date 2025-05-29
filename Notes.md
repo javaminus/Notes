@@ -144,6 +144,8 @@
 | 如果服务应用部署在 Linux 上，**CPU 打满后**，想查看哪个进程导致的，用什么命令？ | 方式1：$top$  然后可以按 `P` 键来按 CPU 使用率排序，查看哪些进程占用了最多的 CPU 资源。  方式2：$htop$。 方式3：$ps$。 | [Editorial](./操作系统/如果服务应用部署在 Linux 上，CPU 打满后，想查看哪个进程导致的，用什么命令.md) |
 | 如果想查看是**进程的哪个线程**，用什么命令？                 | 1、`top -H -p <进程PID>`;  2、`ps -mp <进程PID> -o THREAD,tid,time`; 3、 `ps -L -p <进程PID>` | [Editorial](./操作系统/如果想查看是进程的哪个线程，用什么命令.md) |
 | **想查看代码中哪个位置导致的 CPU 高，该怎么做？Java 应用怎么排查 CPU 或内存占用率过高的问题？** | - Linux 层定位进程和线程，转换线程ID为16进制。 - 用 jstack、arthas 等工具定位具体代码位置。 - 内存问题用 jmap、MAT、VisualVM。 - 线上强烈推荐使用 Arthas，简单高效。 | [Editorial](./操作系统/想查看代码中哪个位置导致的 CPU 高，该怎么做？Java 应用怎么排查 CPU 或内存占用率过高的问题.md) |
+| linux如何查看线程和进程状态                                  | Linux 查看进程和线程状态常用命令有：ps、top、pstree、以及通过 /proc 目录查看详细信息。 | [Editorial](./操作系统/linux如何查看线程和进程状态.md)       |
+| **讲一下银行家算法**                                         | 银行家算法通过安全性检查，动态决定资源分配，避免死锁，但实现较复杂，适合对资源需求可预知的系统。 | [Editorial](./操作系统/讲一下银行家算法.md)                  |
 
 ## 【计算机网络】
 
@@ -168,6 +170,7 @@
 | https是如何防范中间人的攻击？        | 加密、身份校验机制                                           | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#https%E6%98%AF%E5%A6%82%E4%BD%95%E9%98%B2%E8%8C%83%E4%B8%AD%E9%97%B4%E4%BA%BA%E7%9A%84%E6%94%BB%E5%87%BB) |
 | 描述一下打开百度首页后发生的网络过程 | 解析`URL`、对域名进行`dns`解析、发起`NNS`查询、 本地`DNS`服务器查询 、 根DNS服务器查询 、 顶级域名服务器查询 、 权威域名服务器查询 、 返回结果 、 建立`TCP`连接 、 三次握手 、 发送`HTTP`请求 、 服务器处理请求 、 发送`HTTP`响应 、 接收响应和渲染页面 、 关闭`TCP`连接 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#%E6%8F%8F%E8%BF%B0%E4%B8%80%E4%B8%8B%E6%89%93%E5%BC%80%E7%99%BE%E5%BA%A6%E9%A6%96%E9%A1%B5%E5%90%8E%E5%8F%91%E7%94%9F%E7%9A%84%E7%BD%91%E7%BB%9C%E8%BF%87%E7%A8%8B) |
 | 什么是ddos攻击？怎么防范？           | 分布式拒绝服务（DDoS）攻击是通过大规模互联网流量淹没目标服务器或其周边基础设施，以破坏目标服务器、服务或网络正常流量的恶意行为。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#%E4%BB%80%E4%B9%88%E6%98%AFddos%E6%94%BB%E5%87%BB-%E6%80%8E%E4%B9%88%E9%98%B2%E8%8C%83) |
+| 如何查看网络连接情况？               | 常用 netstat、ss、lsof、ifconfig、ip、ping 等命令，可快速查看 Linux 网络连接和状态。 | [Editorial](./计算机网络/如何查看网络连接情况.md)            |
 
 ## 【高并发场景】
 
