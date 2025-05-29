@@ -5,6 +5,7 @@
 | 事务隔离级别有哪些？                                         | 四种隔离级别：读未提交、读已提交、可重复读、串行化           | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/aliyun.html#%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E6%9C%89%E5%93%AA%E4%BA%9B) |
 | 脏读和幻读的区别？                                           | **脏读**：一个事务读到了「未提交事务修改过的数据」**幻读**：在一个事务内多次查询某个符合查询条件的「记录数量」，如果前后两次查询到的记录数量不一样。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/aliyun.html#%E5%B9%BB%E8%AF%BB%E5%92%8C%E8%84%8F%E8%AF%BB%E7%9A%84%E5%8C%BA%E5%88%AB) |
 | 如何防止幻读？                                               | **针对快照读**（普通 select 语句），是通过 MVCC 方式解决了幻读；  **针对当前读**（select ... for update等语句），是通过 `next-key lock`（记录锁+间隙锁） | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/aliyun.html#%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2%E5%B9%BB%E8%AF%BB) |
+| 可重复读有没有幻读的问题？（举了例子）                       | **可能存在幻读**问题，但不会有脏读和不可重复读               | [Editorial](./MySQL/可重复读有没有幻读的问题？（举了例子）.md) |
 | 事务的mvcc机制原理是什么？                                   | MVCC（Multi-Version Concurrency Control，多版本并发控制）是一种**无锁并发控制机制**，用于解决数据库事务的**可见性**问题，避免 **脏读、不可重复读、幻读**，同时提高数据库的**并发性能**。 主要依赖机制： （1）隐藏列（事务 ID & 回滚指针） 、 （2）Undo Log（回滚日志） | [Editorial](./MySQL/事务的MVCC机制原理是什么？.md)           |
 | mysql的什么命令会加上间隙锁？                                | 在可重复读隔离级别下。 使用非唯一索引进行带`where`语句的查询、删除、更新 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/aliyun.html#mysql%E7%9A%84%E4%BB%80%E4%B9%88%E5%91%BD%E4%BB%A4%E4%BC%9A%E5%8A%A0%E4%B8%8A%E9%97%B4%E9%9A%99%E9%94%81) |
 | MySQL 的存储引擎有哪些？为什么常用InnoDB？                   | InnoDB【支持事务、最小锁的粒度是行锁】、MyISAM、Memory       | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#mysql-%E7%9A%84%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E6%9C%89%E5%93%AA%E4%BA%9B-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%B8%B8%E7%94%A8innodb) |
@@ -13,18 +14,19 @@
 | 二级索引存放的有哪些数据？                                   | 主键索引（聚簇索引）叶子节点存放**完整数据**，二级索引存放**主键**。 |                                                              |
 | 事务的特性是什么？如何实现的？                               | 原子性（   undo log（回滚日志） ）、隔离性（  MVCC（多版本并发控制） 或锁机制 ）、持久性（ redo log （重做日志） ）、一致性（ 持久性+原子性+隔离性 ）； | [Editorial](https://www.xiaolincoding.com/interview/mysql.html#%E4%BA%8B%E5%8A%A1%E7%9A%84%E7%89%B9%E6%80%A7%E6%98%AF%E4%BB%80%E4%B9%88-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84) |
 | 间隙锁的原理                                                 | 只存在于可重复读隔离级别，目的是为了解决可重复读隔离级别下幻读的现象。 | [Editorial](./MySQL/间隙锁的原理.md)                         |
-| 滥用事务，或者一个事务里有特别多sql的弊端？                  | 容易造成死锁和锁超时、数据回滚时间边长、容易造成主从延迟     | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#%E6%BB%A5%E7%94%A8%E4%BA%8B%E5%8A%A1-%E6%88%96%E8%80%85%E4%B8%80%E4%B8%AA%E4%BA%8B%E5%8A%A1%E9%87%8C%E6%9C%89%E7%89%B9%E5%88%AB%E5%A4%9Asql%E7%9A%84%E5%BC%8A%E7%AB%AF) |
+| 滥用事务，或者一个事务里有特别多sql的弊端？                  | 容易造成死锁和锁超时、数据回滚时间变长、容易造成主从延迟     | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#%E6%BB%A5%E7%94%A8%E4%BA%8B%E5%8A%A1-%E6%88%96%E8%80%85%E4%B8%80%E4%B8%AA%E4%BA%8B%E5%8A%A1%E9%87%8C%E6%9C%89%E7%89%B9%E5%88%AB%E5%A4%9Asql%E7%9A%84%E5%BC%8A%E7%AB%AF) |
 | 两条update语句处理一张表的不同的主键范围的记录，一个<10，一个>15，会不会遇到阻塞？底层是为什么的？ | **不会**，因为锁住的范围不一样，不会形成冲突。 第一条 update sql 的话（ id<10），锁住的范围是（-♾️，10） 第二条 update sql 的话（id >15），锁住的范围是（15，+♾️） |                                                              |
 | 如果上面2个范围不是主键或索引？还会阻塞吗？                  | 触发全表扫描，会**阻塞**                                     | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#%E5%A6%82%E6%9E%9C2%E4%B8%AA%E8%8C%83%E5%9B%B4%E4%B8%8D%E6%98%AF%E4%B8%BB%E9%94%AE%E6%88%96%E7%B4%A2%E5%BC%95-%E8%BF%98%E4%BC%9A%E9%98%BB%E5%A1%9E%E5%90%97) |
 | 表中十个字段，你主键用自增ID还是UUID，为什么？               | **自增ID**。使用 InnoDB 应该尽可能的按主键的自增顺序插入，并且尽可能使用单调的增加的聚簇键的值来插入新行 。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mayi.html#%E8%A1%A8%E4%B8%AD%E5%8D%81%E4%B8%AA%E5%AD%97%E6%AE%B5-%E4%BD%A0%E4%B8%BB%E9%94%AE%E7%94%A8%E8%87%AA%E5%A2%9Eid%E8%BF%98%E6%98%AFuuid-%E4%B8%BA%E4%BB%80%E4%B9%88-%E6%88%91%E5%9B%9E%E7%AD%94%E4%BA%86%E8%87%AA%E5%A2%9E%E5%92%8Cuuid%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9) |
-| MySQL的锁讲一下                                              | 全局锁、表级锁、行级锁                                       | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mayi.html#mysql%E7%9A%84%E9%94%81%E8%AE%B2%E4%B8%80%E4%B8%8B-%E6%8C%89%E9%94%81%E7%9A%84%E7%B2%92%E5%BA%A6%E8%AE%B2%E4%BA%86%E4%B8%80%E9%81%8D) |
+| MySQL的锁讲一下                                              | 全局锁、表级锁、行级锁                                       | [Editorial](./MySQL/MySQL的锁讲一下（按锁的粒度讲一遍）.md)  |
 | 设计一个行级锁的死锁，举一个实际的例子                       | **死锁发生条件**：两个事务**交叉加锁**，形成**循环等待**。  **解决方案**：  1、 **统一加锁顺序**（最有效）。 2、 **使用 `NOWAIT` 或 `SKIP LOCKED`** 避免长时间等待。 3、 **使用短事务**，避免锁占用过长。 | [Editorial](./MySQL/行级锁死锁例子.md)                       |
 | mysql 如何避免全表扫描？                                     | 建立索引                                                     | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#mysql-%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E5%85%A8%E8%A1%A8%E6%89%AB%E6%8F%8F) |
 | mysql如何实现如果不存在就插入如果存在就更新？                | 可以使用 `INSERT ... ON DUPLICATE KEY UPDATE` 语句来实现“如果不存在就插入，如果存在就更新”的功能。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#mysql%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A6%82%E6%9E%9C%E4%B8%8D%E5%AD%98%E5%9C%A8%E5%B0%B1%E6%8F%92%E5%85%A5%E5%A6%82%E6%9E%9C%E5%AD%98%E5%9C%A8%E5%B0%B1%E6%9B%B4%E6%96%B0) |
 | 数据库访问量过大怎么办？                                     | **创建或优化索引** 、 **查询优化** 、 **避免索引失效** 、 **读写分离**、 **优化数据库表**、 **使用缓存技术** | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BF%E9%97%AE%E9%87%8F%E8%BF%87%E5%A4%A7%E6%80%8E%E4%B9%88%E5%8A%9E) |
 | MySQL的三大日志说一下，分别应用场景是什么？                  | **redolog**、**binlog**和**undolog**                         | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/kuaishou.html#mysql%E7%9A%84%E4%B8%89%E5%A4%A7%E6%97%A5%E5%BF%97%E8%AF%B4%E4%B8%80%E4%B8%8B-%E5%88%86%E5%88%AB%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E6%98%AF%E4%BB%80%E4%B9%88) |
 | 慢查询是如何调试解决的？                                     | 确认慢查询、分析执行计划、优化查询语句、优化数据库结构、缓存和查询缓存 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%98%AF%E5%A6%82%E4%BD%95%E8%B0%83%E8%AF%95%E8%A7%A3%E5%86%B3%E7%9A%84) |
-| mysql的explain有什么作用                                     | explain 是查看 sql 的执行计划，主要用来分析 sql 语句的执行过程，比如有没有走索引，有没有外部排序，有没有索引覆盖等等。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#mysql%E7%9A%84explain%E6%9C%89%E4%BB%80%E4%B9%88%E4%BD%9C%E7%94%A8) |
+| mysql的explain有什么作用                                     | explain 是查看 sql 的执行计划，主要用来分析 sql 语句的执行过程，比如有没有走**索引**，有没有**外部排序**，有没有**索引覆盖**等等。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#mysql%E7%9A%84explain%E6%9C%89%E4%BB%80%E4%B9%88%E4%BD%9C%E7%94%A8) |
+| 数据库翻页（limit）查询时，发现越往后查询越来越慢，为什么？该如何修改 SQL 能解决? | 数据库翻页使用 `LIMIT offset` 时，`offset` 越大查询越慢，因为需要跳过前面大量数据，建议用基于主键的“条件翻页”优化SQL性能。 | [Editorial](./MySQL/数据库翻页（limit）查询时，发现越往后查询越来越慢，为什么？该如何修改 SQL 能解决.md) |
 
 ## 【Redis】
 
@@ -45,8 +47,6 @@
 | Redis 使用场景?                                           | **缓存，消息队列、分布式锁等场景**。                         | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/byte_dance.html#redis-%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF) |
 | Redis 性能好的原因是什么？                                | 大部分操作**都在内存中完成** 、 采用单线程模型可以**避免了多线程之间的竞争** 、 采用了 **I/O 多路复用机制**处理大量的客户端 Socket 请求 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/byte_dance.html#redis-%E6%80%A7%E8%83%BD%E5%A5%BD%E7%9A%84%E5%8E%9F%E5%9B%A0%E6%98%AF%E4%BB%80%E4%B9%88) |
 | Redis 和 MySQL 如何保证一致性                             | **「先更新数据库 + 再删除缓存」的方案，是可以保证数据一致性的**。 |                                                              |
-| 调用 interrupt 是如何让线程抛出异常的?                    | 每个线程都有一个初始值为 `false` 的中断状态，`interrupt()` 会更新该状态。  若线程在 `sleep()`、`join()`、`wait()` 等可中断方法中，会抛出 `InterruptedException` 并解除阻塞；否则，仅设置中断状态，线程可轮询决定是否停止。 |                                                              |
-| 如果是靠变量来停止线程，缺点是什么?                       | 缺点是中断可能不够及时，循环判断时会到下一个循环才能判断出来。 |                                                              |
 | 什么情况使用MySQL，什么情况使用Redis？                    | **MySQL**： 当需要存储结构化数据，并且需要支持复杂的查询操作时，和需要支持事务处理时。  **Redis**：当需要快速访问和处理数据的缓存时，可以选择Redis，能够提供快速的数据读取和写入。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%BD%BF%E7%94%A8mysql-%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%BD%BF%E7%94%A8redis) |
 | 本地缓存和Redis缓存的区别                                 | **本地缓存** 适合 **单机、低并发场景**，速度极快，但**数据不共享**。**Redis 缓存** 适合 **分布式、高并发场景**，支持**持久化**，但**访问速度比本地缓存稍慢**。**最佳实践**：**本地缓存 + Redis 结合使用**，**热点数据走本地缓存**，大规模数据放 Redis 共享。 | [Editorial](./Redis/本地缓存与Redis缓存.md)                  |
 | Redis的Key过期了是立马删除吗                              | 不会，Redis 的过期删除策略是选择「**惰性删除+定期删除**」这两种策略配和使用。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mayi.html#redis%E7%9A%84key%E8%BF%87%E6%9C%9F%E4%BA%86%E6%98%AF%E7%AB%8B%E9%A9%AC%E5%88%A0%E9%99%A4%E5%90%97-%E5%9B%9E%E7%AD%94%E4%BA%86%E5%AE%9A%E6%9C%9F%E5%88%A0%E9%99%A4%E5%92%8C%E6%83%B0%E6%80%A7%E5%88%A0%E9%99%A4%E4%B8%A4%E7%A7%8D%E7%AD%96%E7%95%A5) |
@@ -56,6 +56,7 @@
 | redis主节点挂了怎么办？                                   | 分下面几种情况：单机单节点、主从复制结构、 Redis Sentinel（哨兵机制） 、 Redis Cluster（分布式集群模式） | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/didi.html#redis%E4%B8%BB%E8%8A%82%E7%82%B9%E6%8C%82%E4%BA%86%E6%80%8E%E4%B9%88%E5%8A%9E) |
 | redis分布式锁怎么实现？                                   | **分布式锁是用于分布式环境下并发控制的一种机制，用于控制某个资源在同一时刻只能被一个应用所使用**。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/didi.html#redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0) |
 | Redis内存淘汰策略                                         | 8种淘汰策略                                                  | [Editorial](./Redis/Redis内存淘汰策略.md)                    |
+|                                                           |                                                              |                                                              |
 
 ## 【Java基础】
 
@@ -89,8 +90,8 @@
 | Java中有哪些常用的锁，在什么场景下使用？      | ` synchronized 、 ReentrantLock 、 ReadWriteLock 、 StampedLock 、 AtomicInteger ` | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#java%E4%B8%AD%E6%9C%89%E5%93%AA%E4%BA%9B%E5%B8%B8%E7%94%A8%E7%9A%84%E9%94%81-%E5%9C%A8%E4%BB%80%E4%B9%88%E5%9C%BA%E6%99%AF%E4%B8%8B%E4%BD%BF%E7%94%A8) |
 | 什么是反射？有哪些使用场景？                  | Java 反射机制是在**运行状态中**，对于**任意一个类**，都能够知道这个类中的**所有属性和方法**，对于任意一个**对象**，都能够调用它的任意一个**方法和属性**；这种动态获取的信息以及动态调用对象的方法的功能称为 Java 语言的反射机制。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%8D%E5%B0%84-%E6%9C%89%E5%93%AA%E4%BA%9B%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF) |
 | ThreadLocal的作用和使用场景？                 | **ThreadLocal 主要用于在每个线程内部存储和隔离变量副本，实现线程间变量独立，避免多线程共享变量导致的并发问题。** | [Editorial](./Java基础/ThreadLocal作用和使用场景.md)         |
-|                                               |                                                              |                                                              |
-|                                               |                                                              |                                                              |
+| 调用 interrupt 是如何让线程抛出异常的?        | 每个线程都有一个初始值为 `false` 的中断状态，`interrupt()` 会更新该状态。  若线程在 `sleep()`、`join()`、`wait()` 等可中断方法中，会抛出 `InterruptedException` 并解除阻塞；否则，仅设置中断状态，线程可轮询决定是否停止。 |                                                              |
+| 如果是靠变量来停止线程，缺点是什么?           | 缺点是中断可能不够及时，循环判断时会到下一个循环才能判断出来。 |                                                              |
 
 ## 【JVM】
 
@@ -128,17 +129,20 @@
 
 ## 【操作系统】
 
-| Problems                                  | Hints                                                        | Solution                                                     |
-| ----------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 进程与线程的区别?                         | 本质区别：进程是操作系统资源分配的基本单位，而线程是任务调度和执行的基本单位 。  开销方面、稳定性方面、内存分配方面、包含关系。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB) |
-| 补充 - 协程                               | 协程是一种`用户态`的`轻量级线程`，其调度`完全由用户程序控制`，而不需要`内核`的参与。协程拥有自己的`寄存器上下文和栈`，但与其他协程`共享堆内存`。协程的切换开销非常小，因为只需要保存和恢复协程的上下文，而无需进行内核级的上下文切换。这使得协程在处理大量并发任务时具有非常高的效率。然而，协程需要程序员显式地进行调度和管理，相对于线程和进程来说，`其编程模型更为复杂`。 |                                                              |
-| 为什么进程崩溃不会对其他进程产生很大影响? | 进程隔离性、进程独立性。                                     | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB) |
-| 有哪些进程调度算法 ?                      | 先来先服务 、短作业优先、最短剩余时间优先、时间片轮转、优先级调度、多级反馈队列 | [Editorial](./操作系统/有哪些进程调度算法.md)                |
-| 死锁发生条件是什么？                      | 互斥条件 、 持有并等待条件 、 不可剥夺条件 、 环路等待条件   | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mihayou.html#%E6%AD%BB%E9%94%81%E5%8F%91%E7%94%9F%E6%9D%A1%E4%BB%B6%E6%98%AF%E4%BB%80%E4%B9%88) |
-| 如何避免死锁？                            | 避免死锁问题就只需要破环其中一个条件就可以，最常见的并且可行的就是**使用资源有序分配法，来破环环路等待条件**。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mihayou.html#%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E6%AD%BB%E9%94%81) |
-| 介绍一下操作系统内存管理                  | 操作系统设计了虚拟内存，每个进程都有自己的独立的虚拟内存，我们所写的程序不会直接与物理内打交道。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mihayou.html#%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8B%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86) |
-| 介绍copy on write                         | 写时复制，当多个进程或线程共享同一块数据时，**只有在有写操作时才真正复制数据**，否则大家共享同一份数据副本。 | [Editorial](./操作系统/介绍copy on write.md)                 |
-|                                           |                                                              |                                                              |
+| Problems                                                     | Hints                                                        | Solution                                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 进程与线程的区别?                                            | 本质区别：进程是操作系统资源分配的基本单位，而线程是任务调度和执行的基本单位 。  开销方面、稳定性方面、内存分配方面、包含关系。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB) |
+| 补充 - 协程                                                  | 协程是一种`用户态`的`轻量级线程`，其调度`完全由用户程序控制`，而不需要`内核`的参与。协程拥有自己的`寄存器上下文和栈`，但与其他协程`共享堆内存`。协程的切换开销非常小，因为只需要保存和恢复协程的上下文，而无需进行内核级的上下文切换。这使得协程在处理大量并发任务时具有非常高的效率。然而，协程需要程序员显式地进行调度和管理，相对于线程和进程来说，`其编程模型更为复杂`。 |                                                              |
+| 为什么进程崩溃不会对其他进程产生很大影响?                    | 进程隔离性、进程独立性。                                     | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB) |
+| 有哪些进程调度算法 ?                                         | 先来先服务 、短作业优先、最短剩余时间优先、时间片轮转、优先级调度、多级反馈队列 | [Editorial](./操作系统/有哪些进程调度算法.md)                |
+| 死锁发生条件是什么？                                         | 互斥条件 、 持有并等待条件 、 不可剥夺条件 、 环路等待条件   | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mihayou.html#%E6%AD%BB%E9%94%81%E5%8F%91%E7%94%9F%E6%9D%A1%E4%BB%B6%E6%98%AF%E4%BB%80%E4%B9%88) |
+| 如何避免死锁？                                               | 避免死锁问题就只需要破环其中一个条件就可以，最常见的并且可行的就是**使用资源有序分配法，来破环环路等待条件**。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mihayou.html#%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E6%AD%BB%E9%94%81) |
+| 介绍一下操作系统内存管理                                     | 操作系统设计了虚拟内存，每个进程都有自己的独立的虚拟内存，我们所写的程序不会直接与物理内打交道。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mihayou.html#%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8B%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86) |
+| 介绍copy on write                                            | 写时复制，当多个进程或线程共享同一块数据时，**只有在有写操作时才真正复制数据**，否则大家共享同一份数据副本。 | [Editorial](./操作系统/介绍copy on write.md)                 |
+| Linux操作系统中哪个命令可以**查看端口**被哪个应用占用？      | 可以使用`lsof`命令或`netstat`命令查看端口被哪个应用占用。` lsof -i :端口号` 或则 `netstat -tulnp | grep 端口号` |                                                              |
+| 如果服务应用部署在 Linux 上，**CPU 打满后**，想查看哪个进程导致的，用什么命令？ | 方式1：$top$  然后可以按 `P` 键来按 CPU 使用率排序，查看哪些进程占用了最多的 CPU 资源。  方式2：$htop$。 方式3：$ps$。 | [Editorial](./操作系统/如果服务应用部署在 Linux 上，CPU 打满后，想查看哪个进程导致的，用什么命令.md) |
+| 如果想查看是**进程的哪个线程**，用什么命令？                 | 1、`top -H -p <进程PID>`;  2、`ps -mp <进程PID> -o THREAD,tid,time`; 3、 `ps -L -p <进程PID>` | [Editorial](./操作系统/如果想查看是进程的哪个线程，用什么命令.md) |
+| **想查看代码中哪个位置导致的 CPU 高，该怎么做？Java 应用怎么排查 CPU 或内存占用率过高的问题？** | - Linux 层定位进程和线程，转换线程ID为16进制。 - 用 jstack、arthas 等工具定位具体代码位置。 - 内存问题用 jmap、MAT、VisualVM。 - 线上强烈推荐使用 Arthas，简单高效。 | [Editorial](./操作系统/想查看代码中哪个位置导致的 CPU 高，该怎么做？Java 应用怎么排查 CPU 或内存占用率过高的问题.md) |
 
 ## 【计算机网络】
 
@@ -180,3 +184,8 @@
 | 介绍一下cap理论                                              | CAP 原则又称 CAP 定理, 指的是在一个分布式系统中, Consistency（一致性）、 Availability（可用性）、Partition tolerance（分区容错性）, **三者不可得兼** | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/didi.html#%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8Bcap%E7%90%86%E8%AE%BA) |
 |                                                              |                                                              |                                                              |
 
+
+
+[[Editorial]:
+
+[[Editorial]:
