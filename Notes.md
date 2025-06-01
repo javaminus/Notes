@@ -48,6 +48,7 @@
 | Problems                                                     | Hints                                                        | Solution                                                     |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | Redis高级数据结构的使用场景                                  | 常见的有五种数据类型：String（字符串），Hash（哈希），List（列表），Set（集合）、Zset（有序集合）。 BitMap、HyperLogLog、GEO、Stream。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/aliyun.html#redis%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF) |
+| Redis BitMap 和 HyperLogLog 的原理是什么？分别适合哪些实际应用场景？ | **BitMap 适合大规模布尔统计（如签到、活跃统计），节省空间，支持位运算。**  **HyperLogLog 适合大规模去重计数（如UV统计），空间极小但有一定误差。**  **二者都是 Redis 的“以空间换效率”的典型高阶数据结构，适用于高并发大数据量的统计场景。** | [Editorial](./Redis/Redis BitMap 和 HyperLogLog 的原理是什么？分别适合哪些实际应用场景？.md) |
 | 热 key 是什么？怎么解决？                                    | Redis热key是指被频繁访问的key 。开启内存淘汰机制， 设置key的过期时间，  对热点key进行分片 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#%E7%83%AD-key-%E6%98%AF%E4%BB%80%E4%B9%88-%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3) |
 | String 是使用什么存储的?为什么不用 c 语言中的字符串?         | Redis 的 String 字符串是用 SDS 数据结构存储的。  **len，记录了字符串长度**。  **alloc，分配给字符数组的空间长度**。  **flags，用来表示不同类型的 SDS**。  **buf[]，字符数组，用来保存实际数据**。  增加了三个元数据：len、alloc、flags，用来解决 C 语言字符串的缺陷。  O（1）复杂度获取字符串长度 ； 二进制安全 ； 不会发生缓冲区溢出 。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#string-%E6%98%AF%E4%BD%BF%E7%94%A8%E4%BB%80%E4%B9%88%E5%AD%98%E5%82%A8%E7%9A%84-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%94%A8-c-%E8%AF%AD%E8%A8%80%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2) |
 | Redis有什么持久化策略？                                      | Redis持久化有RDB（快照）、AOF（日志）、混合模式。RDB恢复快适合备份，AOF安全性高适合重要数据，混合兼顾性能和安全。 | [Editorial](./Redis/Redis有什么持久化策略？.md)              |
@@ -55,6 +56,7 @@
 | aof的写入策略，按时间写入和每次都写入的区别，优缺点          | Redis 提供了 3 种写回硬盘的策略， 在 Redis.conf 配置文件中的 appendfsync 配置项可以有以下 3 种参数可填： Always、 Everysec 、No | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mayi.html#aof%E7%9A%84%E5%86%99%E5%85%A5%E7%AD%96%E7%95%A5-%E6%8C%89%E6%97%B6%E9%97%B4%E5%86%99%E5%85%A5%E5%92%8C%E6%AF%8F%E6%AC%A1%E9%83%BD%E5%86%99%E5%85%A5%E7%9A%84%E5%8C%BA%E5%88%AB-%E4%BC%98%E7%BC%BA%E7%82%B9-%E7%AD%94%E5%87%BA%E6%9D%A5%E4%BA%86) |
 | 你平常是怎么使用RDB和AOF的？                                 | 数据安全性（AOF）、数据恢复速度（RDB）、数据备份和迁移（RDB）、数据可读性（AOF） | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mayi.html#%E4%BD%A0%E5%B9%B3%E5%B8%B8%E6%98%AF%E6%80%8E%E4%B9%88%E4%BD%BF%E7%94%A8rdb%E5%92%8Caof%E7%9A%84) |
 | MySQL两个线程的update语句同时处理一条数据，会不会有阻塞？    | 会，因为InnoDB的行锁。                                       | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#mysql%E4%B8%A4%E4%B8%AA%E7%BA%BF%E7%A8%8B%E7%9A%84update%E8%AF%AD%E5%8F%A5%E5%90%8C%E6%97%B6%E5%A4%84%E7%90%86%E4%B8%80%E6%9D%A1%E6%95%B0%E6%8D%AE-%E4%BC%9A%E4%B8%8D%E4%BC%9A%E6%9C%89%E9%98%BB%E5%A1%9E) |
+| Redis 的压缩列表（Ziplist）和跳表（Skiplist）是什么？它们在 Redis 中分别有哪些应用？ | **压缩列表（ziplist）**：节省内存的小型线性存储结构，常用于小 List、Hash、ZSet。  **跳表（skiplist）**：高效有序数据结构，支持范围查找和排序，主要用于 ZSet 大数据量场景。 | [Editorial](./Redis/Redis 的压缩列表（Ziplist）和跳表（Skiplist）是什么？它们在 Redis 中分别有哪些应用？.md) |
 | Zset 使用了什么数据结构？                                    | Zset 类型的底层数据结构是由**压缩列表或跳表**实现的          | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/byte_dance.html#redis-%E6%9C%89%E5%93%AA%E4%BA%9B%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84) |
 | redis的hashset底层数据结构是什么？                           | Hash 类型的底层数据结构是由**压缩列表或哈希表**实现的。      | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/didi.html#redis%E7%9A%84hashset%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%98%AF%E4%BB%80%E4%B9%88) |
 | 介绍一下redis中的跳表                                        | 跳表（Skip List）是一种 **基于链表的有序数据结构**，通过**多级索引**来加速查询。 | [Editorial](./Redis/跳表.md)                                 |
@@ -82,41 +84,73 @@
 | Redis缓存雪崩、缓存击穿、缓存穿透分别是什么？如何应对这些问题？ | 缓存雪崩（分批过期、限流降级）、缓存击穿（互斥锁、热点永不过期）、缓存穿透（缓存空值、布隆过滤器）。 | [Editorial](./Redis/Redis缓存雪崩、缓存击穿、缓存穿透分别是什么？如何应对这些问题？.md) |
 | Redis的发布/订阅（Pub/Sub）机制是怎样实现的？适用于哪些场景？ | Redis Pub/Sub实现消息即时推送，适合实时通知、聊天等场景，不适合要求消息可靠或持久化的系统。 | [Editorial](./Redis/Redis的发布订阅（PubSub）机制是怎样实现的？适用于哪些场景？.md) |
 | **Redis的主从复制（Replication）是如何实现的？它在实际工作中有什么用？** | Redis主从复制通过全量+增量同步机制实现，广泛用于读写分离、高可用、数据备份等场景，是Redis高性能和高可靠性的基础技术之一。 | [Editorial](./Redis/Redis的主从复制（Replication）是如何实现的？它在实际工作中有什么用？.md ) |
+| Redis管道（Pipeline）机制是什么？它的原理、优势和应用场景有哪些？ | Pipeline机制通过`批量发送命令`、`减少RTT`，显著提升批量操作性能，适合大规模数据读写场景，但不是事务，命令`不保证原子性`。 | [Editorial](./Redis/Redis管道（Pipeline）机制是什么？它的原理、优势和应用场景有哪些？.md) |
+| Redis Stream 数据结构是什么？它的典型使用场景有哪些？与传统消息队列有何异同？ | Redis Stream是面向消息流的结构，支持持久化、消费组、消息确认和重试，适合异步任务队列、事件追踪、实时日志等场景，是Redis实现轻量级消息队列的首选。 | [Editorial](./Redis/Redis Stream 数据结构是什么？它的典型使用场景有哪些？与传统消息队列有何异同？.md) |
+| Redis 如何实现消息队列？有哪些实现方式？各自优缺点如何？     | Redis 可用 List、Pub/Sub、Stream 实现消息队列。  **List 简单高效但功能基础**，适合轻量任务。  **Pub/Sub 支持广播但消息不可靠**，适合即时通知。  **Stream 功能最强，支持消费组与持久化**，适合可靠队列和复杂业务。 | [Editorial](./Redis/Redis 如何实现消息队列？有哪些实现方式？各自优缺点如何？.md) |
+| Redis 持久化与主从复制、集群机制的关系是什么？各自如何影响数据安全和高可用？ | **持久化**保障单机数据不丢，**主从复制**实现数据冗余，**哨兵/集群**保障服务不中断。 - 生产环境要结合持久化、主从复制、自动故障转移机制，才能既高可用又高安全。 | [Editorial](./Redis/Redis 持久化与主从复制、集群机制的关系是什么？各自如何影响数据安全和高可用？.md) |
+| Redis 的慢查询如何监控与分析？常见慢查询场景如何优化？       | Redis 用 SLOWLOG 监控慢查询，重点关注大 Key 和全量操作，建议用 SCAN 代替 KEYS，定期分析慢查询日志，优化数据结构和命令使用，保障高性能。 | [Editorial](./Redis/Redis 的慢查询如何监控与分析？常见慢查询场景如何优化？.md) |
+| Redis 的事务机制是怎样的？能否保证原子性和隔离性？常见的事务相关命令有哪些？ | Redis 事务通过 `MULTI-EXEC` 保证命令批量有序执行，支持原子性但不支持回滚。可用 `WATCH` 实现`乐观锁`防止并发冲突，适合需要简单事务控制的场景。 | [Editorial](./Redis/Redis 的事务机制是怎样的？能否保证原子性和隔离性？常见的事务相关命令有哪些？.md) |
 
 ## 【Java基础】
 
-| Problems                                      | Hints                                                        | Solution                                                     |
-| --------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 双亲委派机制是什么？                          | 是Java类加载器（ClassLoader）中的一种工作原理。  主要用于**解决类加载过程中的安全和避免重复加载的问题**。 | [Editorial](./Java基础/双亲委派机制.md)                      |
-| 介绍一下类加载器                              | 加载、验证、准备、解析、初始化                               | [Editorial](./Java基础/类加载器.md)                          |
-| 编译型语言和解释型语言的区别？                | **编译型语言**：在程序执行**之前**，整个源代码会被编译成机器码或者字节码，生成可执行文件。执行时直接运行编译后的代码，速度快，但跨平台性较差。  **解释型语言**：在程序执行时，逐行解释执行源代码，不生成独立的可执行文件。通常由解释器动态解释并执行代码，跨平台性好，但执行速度相对较慢。   典型的编译型语言如C、C++，典型的解释型语言如Python、JavaScript。 |                                                              |
-| 动态数组的实现有哪些？                        | ArrayList和Vector都支持动态扩容，都属于动态数组。    **线程安全性**：Vector是线程安全的，ArrayList不是线程安全的。  **扩容策略**：ArrayList在底层数组不够用时在原来的基础上扩展0.5倍，Vector是扩展1倍。 |                                                              |
-| HashMap 的扩容条件是什么？                    | Java7扩容需要满足两个条件：   1、当前数据存储的数量（即size()）大小必须大于等于阈值 ；2、当前加入的数据是否发生了hash冲突。    Java8只需要满足**条件1**。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#hashmap-%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9D%A1%E4%BB%B6%E6%98%AF%E4%BB%80%E4%B9%88) |
-| Java 里面线程有哪些状态?                      | new、Runnable、blocked、waiting、timed_waiting、terminated； | [Editorial](./Java基础/Java里面的线程状态.md)                |
-| wait 状态下的线程如何进行恢复到 running 状态? | 等待的线程**被其他线程对象唤醒**，`notify()`和`notifyAll()`。  如果线程**没有获取到锁**则会直接进入 Waiting 状态，其实这种本质上它就是执行了 LockSupport.park() 方法进入了Waiting 状态，那么解锁的时候会执行`LockSupport.unpark(Thread)`，与上面park方法对应，给出许可证，**解除等待状态**。 |                                                              |
-| notify 和 notifyAll 的区别?                   | **notify 只唤醒一个线程，其他线程仍在等待，若该线程未调用 notify，其余线程可能永远无法唤醒。**  **notifyAll 唤醒所有等待线程，它们竞争锁，最终只有一个线程执行，剩余线程继续等待锁释放。** |                                                              |
-| notify 选择哪个线程?                          | notify在源码的注释中说到notify选择唤醒的线程是**任意的**，但是依赖于具体实现的jvm。     JVM有很多实现，比较流行的就是hotspot，hotspot对notofy()的实现并不是我们以为的随机唤醒,，而是**“先进先出”**的顺序唤醒。 |                                                              |
-| 如何停止一个线程的运行?                       | 1、使用标志位；2、使用`interrupt()`；3、结合`interrupt()`和标志位；4、使用 `FutureTask.cancel(true)` | [Editorial](./Java基础/如何停止一个线程的运行.md)            |
-| 介绍NIO BIO AIO？                             | BIO（同步阻塞）：传统 I/O 模式，适用于 小规模连接。 NIO（同步非阻塞）：通过 Selector 实现 多路复用，适用于 高并发。 AIO（异步非阻塞）：基于 回调机制，适用于 超高并发、长连接。 | [Editorial](./Java基础/介绍NIOBIOAIO.md)                     |
-| volatile 保证原子性吗？                       | volatile关键字并没有保证我们的变量的原子性，volatile是Java虚拟机提供的一种轻量级的同步机制，主要有这三个特性：**保证可见性** 、**不保证原子性**、**禁止指令重排**          使用 `synchronized`来保证原子性 |                                                              |
-| synchronized 支持重入吗？如何实现的?          | ✔ **synchronized 支持重入**，同一线程可多次获取同一把锁。  ✔ **通过对象头的“锁计数器”实现**，锁被同一线程持有时计数递增，释放时递减。  ✔ **避免死锁**，允许父子类方法或递归调用顺利执行。 🚀 | [Editorial](./Java基础/synchronized支持重入吗.md)            |
-| Java创建线程有几种方式                        | 继承Thread类，重写`run()`方法； 实现Runnable接口并实现`run()`方法，然后将实现了Runnable接口的类传递给Thread类； 使用Callable和Future接口通过Executor框架创建线程；通过线程池方式创建。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#java%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E6%9C%89%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F) |
-| 线程池有哪些优势？                            | **减少线程创建和销毁的开销**：频繁地创建和销毁线程会消耗大量系统资源，线程池通过重用已存在的线程来减少这种开销。  **提高响应速度**：当任务到达时，无需等待线程的创建即可立即执行，因为线程池中已经有等待的线程。 |                                                              |
-| 说一下面向对象3大特性理解？                   | 封装、继承、多态                                             | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#%E8%AF%B4%E4%B8%80%E4%B8%8B%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A13%E5%A4%A7%E7%89%B9%E6%80%A7%E7%90%86%E8%A7%A3) |
-| Java有什么常用的集合类？                      | List、Set、Map、Queue。                                      | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#java%E6%9C%89%E4%BB%80%E4%B9%88%E5%B8%B8%E7%94%A8%E7%9A%84%E9%9B%86%E5%90%88%E7%B1%BB) |
-| 有哪些集合类是线程安全的，哪些是不安全的？    | **Vector、HashTable、Properties是线程安全的；**  **ArrayList、LinkedList、HashSet、TreeSet、HashMap、TreeMap等都是线程不安全的。** |                                                              |
-| ArrayList和LinkedList区别？                   | 都实现了**List**接口 ，底层数据结构、插入删除元素效率、随机访问效率、空间占用、使用场景、线程安全 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#arraylist%E5%92%8Clinkedlist%E5%8C%BA%E5%88%AB) |
-| 讲下HashMap？                                 | 从JDK1.7【数组+链表】与JDK1.8【小于8使用链表，超过8使用红黑树】回答 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#%E8%AE%B2%E4%B8%8Bhashmap) |
-| 讲下ConcurrentHashMap？                       | JDK1.7【数组+链表】JDK1.8【 数组 + 链表/红黑树 】            | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#%E8%AE%B2%E4%B8%8Bconcurrenthashmap) |
-| 讲下阻塞队列？                                | 阻塞队列（BlockingQueue）是一种支持**阻塞插入和阻塞获取**的队列，它可以在 **生产者-消费者模型** 中高效地实现**线程安全的数据交换**。 | [Editorial](./Java基础/阻塞队列.md)                          |
-| 讲下线程安全的List？                          | 常见的线程安全的List实现包括 `Collections.synchronizedList` 和 `CopyOnWriteArrayList` 【适合频繁读写】。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#%E8%AE%B2%E4%B8%8B%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84list) |
-| Java类加载过程                                | 加载、验证、准备、解析、初始化                               | [Editorial](./Java基础/类加载过程.md)                        |
-| 实际中类加载会遇到哪些问题？                  | **类找不到（ClassNotFoundException）** 、   **类定义冲突（NoClassDefFoundError）** 、   **类版本不匹配（UnsupportedClassVersionError）** 、   **类加载死锁** 、   **双亲委派模型导致的类加载问题** 、   **热部署、类卸载失败** 、   **不同 ClassLoader 加载同一类** | [Editorial](./Java基础/实际中类加载会遇到哪些问题.md)        |
-| Java中有哪些常用的锁，在什么场景下使用？      | ` synchronized 、 ReentrantLock 、 ReadWriteLock 、 StampedLock 、 AtomicInteger ` | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#java%E4%B8%AD%E6%9C%89%E5%93%AA%E4%BA%9B%E5%B8%B8%E7%94%A8%E7%9A%84%E9%94%81-%E5%9C%A8%E4%BB%80%E4%B9%88%E5%9C%BA%E6%99%AF%E4%B8%8B%E4%BD%BF%E7%94%A8) |
-| 什么是反射？有哪些使用场景？                  | Java 反射机制是在**运行状态中**，对于**任意一个类**，都能够知道这个类中的**所有属性和方法**，对于任意一个**对象**，都能够调用它的任意一个**方法和属性**；这种动态获取的信息以及动态调用对象的方法的功能称为 Java 语言的反射机制。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%8D%E5%B0%84-%E6%9C%89%E5%93%AA%E4%BA%9B%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF) |
-| ThreadLocal的作用和使用场景？                 | **ThreadLocal 主要用于在每个线程内部存储和隔离变量副本，实现线程间变量独立，避免多线程共享变量导致的并发问题。** | [Editorial](./Java基础/ThreadLocal作用和使用场景.md)         |
-| 调用 interrupt 是如何让线程抛出异常的?        | 每个线程都有一个初始值为 `false` 的中断状态，`interrupt()` 会更新该状态。  若线程在 `sleep()`、`join()`、`wait()` 等可中断方法中，会抛出 `InterruptedException` 并解除阻塞；否则，仅设置中断状态，线程可轮询决定是否停止。 |                                                              |
-| 如果是靠变量来停止线程，缺点是什么?           | 缺点是中断可能不够及时，循环判断时会到下一个循环才能判断出来。 |                                                              |
+| Problems                                                     | Hints                                                        | Solution                                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 双亲委派机制是什么？                                         | 是Java类加载器（ClassLoader）中的一种工作原理。  主要用于**解决类加载过程中的安全和避免重复加载的问题**。 | [Editorial](./Java基础/双亲委派机制.md)                      |
+| 介绍一下类加载器                                             | 加载、验证、准备、解析、初始化                               | [Editorial](./Java基础/类加载器.md)                          |
+| 编译型语言和解释型语言的区别？                               | **编译型语言**：在程序执行**之前**，整个源代码会被编译成机器码或者字节码，生成可执行文件。执行时直接运行编译后的代码，速度快，但跨平台性较差。  **解释型语言**：在程序执行时，逐行解释执行源代码，不生成独立的可执行文件。通常由解释器动态解释并执行代码，跨平台性好，但执行速度相对较慢。   典型的编译型语言如C、C++，典型的解释型语言如Python、JavaScript。 |                                                              |
+| 动态数组的实现有哪些？                                       | ArrayList和Vector都支持动态扩容，都属于动态数组。    **线程安全性**：Vector是线程安全的，ArrayList不是线程安全的。  **扩容策略**：ArrayList在底层数组不够用时在原来的基础上扩展0.5倍，Vector是扩展1倍。 |                                                              |
+| HashMap 的扩容条件是什么？                                   | Java7扩容需要满足两个条件：   1、当前数据存储的数量（即size()）大小必须大于等于阈值 ；2、当前加入的数据是否发生了hash冲突。    Java8只需要满足**条件1**。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#hashmap-%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9D%A1%E4%BB%B6%E6%98%AF%E4%BB%80%E4%B9%88) |
+| Java 里面线程有哪些状态?                                     | new、Runnable、blocked、waiting、timed_waiting、terminated； | [Editorial](./Java基础/Java里面的线程状态.md)                |
+| wait 状态下的线程如何进行恢复到 running 状态?                | 等待的线程**被其他线程对象唤醒**，`notify()`和`notifyAll()`。  如果线程**没有获取到锁**则会直接进入 Waiting 状态，其实这种本质上它就是执行了 LockSupport.park() 方法进入了Waiting 状态，那么解锁的时候会执行`LockSupport.unpark(Thread)`，与上面park方法对应，给出许可证，**解除等待状态**。 |                                                              |
+| notify 和 notifyAll 的区别?                                  | **notify 只唤醒一个线程，其他线程仍在等待，若该线程未调用 notify，其余线程可能永远无法唤醒。**  **notifyAll 唤醒所有等待线程，它们竞争锁，最终只有一个线程执行，剩余线程继续等待锁释放。** |                                                              |
+| notify 选择哪个线程?                                         | notify在源码的注释中说到notify选择唤醒的线程是**任意的**，但是依赖于具体实现的jvm。     JVM有很多实现，比较流行的就是hotspot，hotspot对notofy()的实现并不是我们以为的随机唤醒,，而是**“先进先出”**的顺序唤醒。 |                                                              |
+| 如何停止一个线程的运行?                                      | 1、使用标志位；2、使用`interrupt()`；3、结合`interrupt()`和标志位；4、使用 `FutureTask.cancel(true)` | [Editorial](./Java基础/如何停止一个线程的运行.md)            |
+| 介绍NIO BIO AIO？                                            | BIO（同步阻塞）：传统 I/O 模式，适用于 小规模连接。 NIO（同步非阻塞）：通过 Selector 实现 多路复用，适用于 高并发。 AIO（异步非阻塞）：基于 回调机制，适用于 超高并发、长连接。 | [Editorial](./Java基础/介绍NIOBIOAIO.md)                     |
+| volatile 保证原子性吗？                                      | volatile关键字并没有保证我们的变量的原子性，volatile是Java虚拟机提供的一种轻量级的同步机制，主要有这三个特性：**保证可见性** 、**不保证原子性**、**禁止指令重排**          使用 `synchronized`来保证原子性 |                                                              |
+| synchronized 支持重入吗？如何实现的?                         | ✔ **synchronized 支持重入**，同一线程可多次获取同一把锁。  ✔ **通过对象头的“锁计数器”实现**，锁被同一线程持有时计数递增，释放时递减。  ✔ **避免死锁**，允许父子类方法或递归调用顺利执行。 🚀 | [Editorial](./Java基础/synchronized支持重入吗.md)            |
+| Java创建线程有几种方式                                       | 继承Thread类，重写`run()`方法； 实现Runnable接口并实现`run()`方法，然后将实现了Runnable接口的类传递给Thread类； 使用Callable和Future接口通过Executor框架创建线程；通过线程池方式创建。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#java%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B%E6%9C%89%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F) |
+| 线程池有哪些优势？                                           | **减少线程创建和销毁的开销**：频繁地创建和销毁线程会消耗大量系统资源，线程池通过重用已存在的线程来减少这种开销。  **提高响应速度**：当任务到达时，无需等待线程的创建即可立即执行，因为线程池中已经有等待的线程。 |                                                              |
+| 说一下面向对象3大特性理解？                                  | 封装、继承、多态                                             | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#%E8%AF%B4%E4%B8%80%E4%B8%8B%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A13%E5%A4%A7%E7%89%B9%E6%80%A7%E7%90%86%E8%A7%A3) |
+| Java有什么常用的集合类？                                     | List、Set、Map、Queue。                                      | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#java%E6%9C%89%E4%BB%80%E4%B9%88%E5%B8%B8%E7%94%A8%E7%9A%84%E9%9B%86%E5%90%88%E7%B1%BB) |
+| 有哪些集合类是线程安全的，哪些是不安全的？                   | **Vector、HashTable、Properties是线程安全的；**  **ArrayList、LinkedList、HashSet、TreeSet、HashMap、TreeMap等都是线程不安全的。** |                                                              |
+| ArrayList和LinkedList区别？                                  | 都实现了**List**接口 ，底层数据结构、插入删除元素效率、随机访问效率、空间占用、使用场景、线程安全 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#arraylist%E5%92%8Clinkedlist%E5%8C%BA%E5%88%AB) |
+| 讲下HashMap？                                                | 从JDK1.7【数组+链表】与JDK1.8【小于8使用链表，超过8使用红黑树】回答 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#%E8%AE%B2%E4%B8%8Bhashmap) |
+| 讲下ConcurrentHashMap？                                      | JDK1.7【数组+链表】JDK1.8【 数组 + 链表/红黑树 】            | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#%E8%AE%B2%E4%B8%8Bconcurrenthashmap) |
+| 讲下阻塞队列？                                               | 阻塞队列（BlockingQueue）是一种支持**阻塞插入和阻塞获取**的队列，它可以在 **生产者-消费者模型** 中高效地实现**线程安全的数据交换**。 | [Editorial](./Java基础/阻塞队列.md)                          |
+| 讲下线程安全的List？                                         | 常见的线程安全的List实现包括 `Collections.synchronizedList` 和 `CopyOnWriteArrayList` 【适合频繁读写】。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#%E8%AE%B2%E4%B8%8B%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84list) |
+| Java类加载过程                                               | 加载、验证、准备、解析、初始化                               | [Editorial](./Java基础/类加载过程.md)                        |
+| 实际中类加载会遇到哪些问题？                                 | **类找不到（ClassNotFoundException）** 、   **类定义冲突（NoClassDefFoundError）** 、   **类版本不匹配（UnsupportedClassVersionError）** 、   **类加载死锁** 、   **双亲委派模型导致的类加载问题** 、   **热部署、类卸载失败** 、   **不同 ClassLoader 加载同一类** | [Editorial](./Java基础/实际中类加载会遇到哪些问题.md)        |
+| Java中有哪些常用的锁，在什么场景下使用？                     | ` synchronized 、 ReentrantLock 、 ReadWriteLock 、 StampedLock 、 AtomicInteger ` | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#java%E4%B8%AD%E6%9C%89%E5%93%AA%E4%BA%9B%E5%B8%B8%E7%94%A8%E7%9A%84%E9%94%81-%E5%9C%A8%E4%BB%80%E4%B9%88%E5%9C%BA%E6%99%AF%E4%B8%8B%E4%BD%BF%E7%94%A8) |
+| 什么是反射？有哪些使用场景？                                 | Java 反射机制是在**运行状态中**，对于**任意一个类**，都能够知道这个类中的**所有属性和方法**，对于任意一个**对象**，都能够调用它的任意一个**方法和属性**；这种动态获取的信息以及动态调用对象的方法的功能称为 Java 语言的反射机制。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%8D%E5%B0%84-%E6%9C%89%E5%93%AA%E4%BA%9B%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF) |
+| ThreadLocal的作用和使用场景？                                | **ThreadLocal 主要用于在每个线程内部存储和隔离变量副本，实现线程间变量独立，避免多线程共享变量导致的并发问题。** | [Editorial](./Java基础/ThreadLocal作用和使用场景.md)         |
+| 调用 interrupt 是如何让线程抛出异常的?                       | 每个线程都有一个初始值为 `false` 的中断状态，`interrupt()` 会更新该状态。  若线程在 `sleep()`、`join()`、`wait()` 等可中断方法中，会抛出 `InterruptedException` 并解除阻塞；否则，仅设置中断状态，线程可轮询决定是否停止。 |                                                              |
+| 如果是靠变量来停止线程，缺点是什么?                          | 缺点是中断可能不够及时，循环判断时会到下一个循环才能判断出来。 |                                                              |
+| 什么是不可变对象（Immutable Object）？Java中如何实现不可变对象？ | 不可变对象：final类 + final字段 + 无setter + 深拷贝引用类型字段，线程安全、可作哈希键、设计简单。 | [Editorial](./Java基础/什么是不可变对象（Immutable Object）？Java中如何实现不可变对象？.md) |
+| 什么是Java中的自动装箱与拆箱（Autoboxing & Unboxing）？      | 自动装箱/拆箱：基本类型与包装类型自动转换，常见于集合和运算，注意性能和空指针风险。 | [Editorial](./Java基础/什么是Java中的自动装箱与拆箱（Autoboxing & Unboxing）？.md) |
+| 什么是泛型（Generics）？Java 泛型的原理和常见使用场景?       | 泛型：类型参数化，类型检查安全，底层类型擦除，常用于集合、自定义通用类和方法。 | [Editorial](./Java基础/什么是泛型（Generics）？Java 泛型的原理和常见使用场景？.md) |
+| 什么是Java中的序列化？常见的应用场景有哪些？                 | 序列化：对象转字节流用于存储或传输，常用于网络通信、持久化、分布式系统。实现`Serializable`，配合ObjectOutputStream/ObjectInputStream使用。 | [Editorial](./Java基础/什么是Java中的序列化？常见的应用场景有哪些？.md) |
+| 什么是Java中的深拷贝与浅拷贝？它们的区别是什么？             | 深拷贝复制对象及其引用对象，浅拷贝只复制`引用地址`。深拷贝两对象完全独立，浅拷贝引用类型字段会相互影响。 | [Editorial](./Java基础/什么是Java中的深拷贝与浅拷贝？它们的区别是什么？.md) |
+| 什么是Java中的多态？多态的实现方式和实际应用场景有哪些？     | 多态：同一接口多种实现，分为重载和重写，父类引用指向子类对象，提升代码扩展性和灵活性。 | [Editorial](./Java基础/什么是Java中的多态？多态的实现方式和实际应用场景有哪些？.md) |
+| 什么是Java中的反射？反射的常见用途是什么？                   | 反射：运行时获取类信息、动态创建对象和调用方法，常用于框架、工具库、JDBC、插件机制等场景。 | [Editorial](./Java基础/什么是Java中的反射？反射的常见用途是什么？.md) |
+| 什么是Java中的接口（interface）和抽象类（abstract class）？它们有什么区别，实际开发中如何选择？ | 接口注重规范、支持多实现；抽象类关注复用、可有成员变量和部分实现。只定义规范选接口，需要共性实现选抽象类。 | [Editorial](./Java基础/什么是Java中的接口（interface）和抽象类（abstract class）？它们有什么区别，实际开发中如何选择？.md) |
+| 什么是Java中的异常处理机制？Checked和Unchecked异常的区别是什么？ | Java异常分Checked（编译器强制处理）、Unchecked（运行时异常），用try-catch/throws处理，提升程序健壮性和容错性。 | [Editorial](./Java基础/什么是Java中的异常处理机制？Checked和Unchecked异常的区别是什么？.md) |
+| 常见的Java异常类型有哪些？异常和错误的区别是什么？           | 异常可分为运行时和受检异常，可被程序处理；错误是严重问题，通常无法恢复。 | [Editorial](./Java基础/常见的Java异常类型有哪些？异常和错误的区别是什么？.md) |
+| 什么是Java中的内部类？有哪些类型？实际开发中如何使用？       | 内部类有成员、静态、局部、匿名四种，常用于封装辅助逻辑、事件回调和隐藏实现细节。可访问外部类成员，简化开发。 | [Editorial](./Java基础/什么是Java中的内部类？有哪些类型？实际开发中如何使用？.md) |
+| 什么是Java中的Lambda表达式？常见的使用场景有哪些？           | Lambda表达式用于简化单方法接口实现，常用于集合操作、线程、回调等场景，使代码更简洁明了。 | [Editorial](./Java基础/什么是Java中的Lambda表达式？常见的使用场景有哪些？.md) |
+| 什么是Java中的泛型擦除（Type Erasure）？泛型擦除带来了哪些限制？ | Java泛型编译后类型被擦除，运行时无泛型信息，限制了泛型数组、类型判断等操作，常需用Class参数或反射辅助。 | [Editorial](./Java基础/什么是Java中的泛型擦除（Type Erasure）？泛型擦除带来了哪些限制？.md) |
+| 什么是Java中的注解（Annotation）？常见的应用场景有哪些？     | 注解用于为代码添加元数据，常见于编译检查、框架配置、自动化文档和运行时反射。支持自定义，便于自动化和解耦。 | [Editorial](./Java基础/什么是Java中的注解（Annotation）？常见的应用场景有哪些？.md) |
+| 什么是JDK、JRE和JVM？三者有什么区别？                        | JDK用于开发，JRE用于运行，JVM用于跨平台。JDK包含JRE，JRE包含JVM。 | [Editorial](./Java基础/什么是JDK、JRE和JVM？三者有什么区别？.md) |
+| 解释Java的跨平台原理（“一次编写，到处运行”）是如何实现的？   | Java 跨平台靠 JVM，不同平台有不同 JVM，只需编译一次字节码，就能在多种系统运行。 | [Editorial](./Java基础/解释Java的跨平台原理（“一次编写，到处运行”）是如何实现的？.md) |
+| Java中的String和StringBuilder、StringBuffer有什么区别？      | String不可变，适合少量拼接；StringBuilder高效适合单线程拼接；StringBuffer线程安全适合多线程。 | [Editorial](./Java基础/Java中的String和StringBuilder、StringBuffer有什么区别？.md) |
+| Java中的面向对象特性有哪些？请简要说明。                     | Java面向对象特性有封装、继承、多态和抽象，提升代码复用性、安全性和扩展性。 | [Editorial](./Java基础/Java中的面向对象特性有哪些？请简要说明。.md) |
+| 简述Java类与对象的关系。                                     | 类是`模板`，对象是`实例`。类描述属性和行为，对象具体持有数据并能执行操作。 | [Editorial](./Java基础/简述Java类与对象的关系。.md)          |
+| 什么是构造方法？构造方法的特点和作用是什么？                 | 构造方法用于对象创建时初始化，方法名与类名一致，无返回值，可重载。 | [Editorial](./Java基础/什么是构造方法？构造方法的特点和作用是什么？.md) |
+| 什么是方法重载（Overload）和方法重写（Override）？有何区别？ | 重载是同类中方法名相同参数不同，重写是子类改变父类方法实现，二者关注点不同。 | [Editorial](./Java基础/什么是方法重载（Overload）和方法重写（Override）？有何区别？.md) |
+| 什么是this关键字？Java中this的常用场景有哪些？               | this代表当前对象，常用于区分同名变量、调用本类其他构造及返回自身实例。 | [Editorial](./Java基础/什么是this关键字？Java中this的常用场景有哪些？.md) |
+| 什么是static关键字？它的常见用途有哪些？                     | static修饰的成员属于类本身，常用于共享变量、工具方法、静态初始化和内部类。 | [Editorial](./Java基础/什么是static关键字？它的常见用途有哪些？.md) |
+| 什么是包（package）？Java中包的作用是什么？                  | 包用于组织类，防止命名冲突，便于管理和控制访问，建议用域名倒序命名。 | [Editorial](./Java基础/什么是包（package）？Java中包的作用是什么？.md) |
+| Java中的访问修饰符有哪些？分别有什么作用？                   | 四种访问修饰符：private最严格，public最开放，default包内可见，protected包及子类可见。 | [Editorial](./Java基础/Java中的访问修饰符有哪些？分别有什么作用？.md) |
+|                                                              |                                                              |                                                              |
 
 ## 【JVM】
 
@@ -213,7 +247,3 @@
 |                                                              |                                                              |                                                              |
 
 
-
-[[Editorial]:
-
-[[Editorial]:
