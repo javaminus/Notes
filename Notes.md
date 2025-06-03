@@ -160,15 +160,41 @@
 
 ## 【JVM】
 
-| Problems                                                | Hints                                                        | Solution                                                     |
-| ------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| JVM中对象的生命周期和引用类型有哪些？如何影响垃圾回收？ | 对象生命周期：创建→使用→不可达→等待回收→被回收  四种引用类型：强、软、弱、虚  引用强度影响GC回收时机  典型应用：缓存（软引用）、ThreadLocal（弱引用）、回收通知（虚引用）  复习提示：**“强软弱虚四种引用，引用越弱越易被GC”** | [Editorial](./JVM/JVM中对象的生命周期和引用类型有哪些？如何影响垃圾回收？.md) |
-| 垃圾回收 cms和g1的区别是什么？                          | 回收策略、垃圾收集目标、内存划分、STW停顿时间、回收过程、吞吐量、适用场景、废弃情况 | [Editorial](./JVM/垃圾回收 cms和g1的区别是什么.md)           |
-| 讲下JVM内存区域？                                       | **方法区**：存储类元数据，JDK 8 之后使用 **元空间（Metaspace）**。  **堆**：存储对象，GC 主要管理区域，分 **新生代 & 老年代**。  **虚拟机栈**：存储局部变量表、方法调用信息，递归深会导致 **StackOverflowError**。  **本地方法栈**：服务于 JNI 调用，溢出也会抛出 **StackOverflowError**。  **程序计数器**：记录当前线程执行的 **字节码指令地址**。 | [Editorial](./JVM/JVM内存区域.md)                            |
-| 你知道哪些 JVM 的 GC 机制？                             | Serial收集器（复制算法) 、 ParNew收集器 (复制算法) 、 Parallel Scavenge收集器 (复制算法) 、 Serial Old收集器 (标记-整理算法) 、 Parallel Old收集器 (标记-整理算法) 、 CMS(Concurrent Mark Sweep)收集器（标记-清除算法） 、 G1(Garbage First)收集器 (标记-整理算法) | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/meituan.html#%E4%BD%A0%E7%9F%A5%E9%81%93%E5%93%AA%E4%BA%9B-jvm-%E7%9A%84-gc-%E6%9C%BA%E5%88%B6) |
-| 什么是逃逸分析？它是如何优化对象分配和同步的？          | 逃逸分析：判断对象作用域，决定对象分配位置和优化锁  优化点：栈上分配、标量替换、同步消除  典型例子：方法内临时对象、同步块优化  相关JVM参数：`-XX:+DoEscapeAnalysis`  复习提示：**“判断对象是否只在方法内使用，能否避免堆分配和无用同步”** | [Editorial](./JVM/什么是逃逸分析？它是如何优化对象分配和同步的？.md) |
-| 什么是JVM内存溢出（OOM）和内存泄漏？如何定位和解决？    | OOM：JVM分配内存失败，常见于堆、元空间、栈  内存泄漏：无用对象仍被引用，无法回收  排查思路：分析日志、heap dump、监控曲线、代码审查  解决方法：优化代码、合理配置参数、用工具分析  复习提示：**“OOM看异常类型，heap dump查根因，注意静态变量和大对象引用”** | [Editorial](./JVM/什么是JVM内存溢出（OOM）和内存泄漏？如何定位和解决？.md) |
-| JVM中有哪些常见的性能监控与排查工具？各自适用哪些场景？ | JDK自带工具：jps、jstack、jmap、jstat、jinfo、VisualVM、JConsole  生产/复杂场景：JMC、MAT、Arthas、YourKit/JProfiler  典型用途：查线程死锁（jstack）、查内存泄漏（jmap+MAT）、实时GC监控（jstat/VisualVM）、线上低开销采集（JMC）  复习提示：**“jps找进程、jstack查线程、jmap导内存、VisualVM/JMC图形化分析”** | [Editorial](./JVM/JVM中有哪些常见的性能监控与排查工具？各自适用哪些场景？.md) |
+| Problems                                                     | Hints                                                        | Solution                                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| JVM中对象的生命周期和引用类型有哪些？如何影响垃圾回收？      | 对象生命周期：创建→使用→不可达→等待回收→被回收  四种引用类型：强、软、弱、虚  引用强度影响GC回收时机  典型应用：缓存（软引用）、ThreadLocal（弱引用）、回收通知（虚引用）  复习提示：**“强软弱虚四种引用，引用越弱越易被GC”** | [Editorial](./JVM/JVM中对象的生命周期和引用类型有哪些？如何影响垃圾回收？.md) |
+| 垃圾回收 cms和g1的区别是什么？                               | 回收策略、垃圾收集目标、内存划分、STW停顿时间、回收过程、吞吐量、适用场景、废弃情况 | [Editorial](./JVM/垃圾回收 cms和g1的区别是什么.md)           |
+| 讲下JVM内存区域？                                            | **方法区**：存储类元数据，JDK 8 之后使用 **元空间（Metaspace）**。  **堆**：存储对象，GC 主要管理区域，分 **新生代 & 老年代**。  **虚拟机栈**：存储局部变量表、方法调用信息，递归深会导致 **StackOverflowError**。  **本地方法栈**：服务于 JNI 调用，溢出也会抛出 **StackOverflowError**。  **程序计数器**：记录当前线程执行的 **字节码指令地址**。 | [Editorial](./JVM/JVM内存区域.md)                            |
+| 你知道哪些 JVM 的 GC 机制？                                  | Serial收集器（复制算法) 、 ParNew收集器 (复制算法) 、 Parallel Scavenge收集器 (复制算法) 、 Serial Old收集器 (标记-整理算法) 、 Parallel Old收集器 (标记-整理算法) 、 CMS(Concurrent Mark Sweep)收集器（标记-清除算法） 、 G1(Garbage First)收集器 (标记-整理算法) | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/meituan.html#%E4%BD%A0%E7%9F%A5%E9%81%93%E5%93%AA%E4%BA%9B-jvm-%E7%9A%84-gc-%E6%9C%BA%E5%88%B6) |
+| 什么是逃逸分析？它是如何优化对象分配和同步的？               | 逃逸分析：判断对象作用域，决定对象分配位置和优化锁  优化点：栈上分配、标量替换、同步消除  典型例子：方法内临时对象、同步块优化  相关JVM参数：`-XX:+DoEscapeAnalysis`  复习提示：**“判断对象是否只在方法内使用，能否避免堆分配和无用同步”** | [Editorial](./JVM/什么是逃逸分析？它是如何优化对象分配和同步的？.md) |
+| 什么是JVM内存溢出（OOM）和内存泄漏？如何定位和解决？         | OOM：JVM分配内存失败，常见于堆、元空间、栈  内存泄漏：无用对象仍被引用，无法回收  排查思路：分析日志、heap dump、监控曲线、代码审查  解决方法：优化代码、合理配置参数、用工具分析  复习提示：**“OOM看异常类型，heap dump查根因，注意静态变量和大对象引用”** | [Editorial](./JVM/什么是JVM内存溢出（OOM）和内存泄漏？如何定位和解决？.md) |
+| JVM中有哪些常见的性能监控与排查工具？各自适用哪些场景？      | JDK自带工具：jps、jstack、jmap、jstat、jinfo、VisualVM、JConsole  生产/复杂场景：JMC、MAT、Arthas、YourKit/JProfiler  典型用途：查线程死锁（jstack）、查内存泄漏（jmap+MAT）、实时GC监控（jstat/VisualVM）、线上低开销采集（JMC）  复习提示：**“jps找进程、jstack查线程、jmap导内存、VisualVM/JMC图形化分析”** | [Editorial](./JVM/JVM中有哪些常见的性能监控与排查工具？各自适用哪些场景？.md) |
+| JVM是如何进行类的热加载和热替换的？有哪些常见实现方式和使用场景？ | - JVM热加载/热替换：动态加载、替换类字节码，无需重启JVM - 原生HotSwap支持有限（方法体），复杂变更需第三方工具 - 常用工具：JRebel、HotswapAgent、IDEA热加载、Spring Boot Devtools - 典型场景：开发调试、插件系统、服务平滑升级 - 复习提示：**“热替换=改代码不重启，结构变更需用Agent/插件”** | [Editorial](./JVM/JVM是如何进行类的热加载和热替换的？有哪些常见实现方式和使用场景？.md) |
+| JVM的即时编译（JIT）机制是什么？有哪些优化手段？如何影响运行性能？ | - JIT：热点代码动态编译为机器码，提升执行效率 - 优化手段：方法内联、逃逸分析、锁优化、循环优化 - 影响：运行越久，性能越高效（预热期） - 典型参数：`-XX:+PrintCompilation`, `-XX:+TieredCompilation` - 复习提示：**“JIT=热点编译提升性能，方法内联+逃逸分析是核心”** | [Editorial](./JVM/JVM的即时编译（JIT）机制是什么？有哪些优化手段？如何影响运行性能？.md) |
+| JVM是如何实现线程安全的？有哪些内存模型和关键字保障并发正确性？ | JVM线程安全依靠JMM+关键字（volatile、synchronized、final、原子类）  关注可见性、原子性、有序性  典型场景：单例模式、原子计数、高并发下的锁和无锁  复习提示：**“JMM三性，volatile可见性/synchronized互斥，原子类无锁并发”** | [Editorial](./JVM/JVM是如何实现线程安全的？有哪些内存模型和关键字保障并发正确性？) |
+| JVM垃圾回收（GC）的分代模型是什么？各代的回收器如何协同工作？ | JVM分代：新生代（Eden+Survivor）、老年代、元空间  GC分为Minor GC（新生代）、Full GC（全堆/老年代）  对象“熬老”：多次GC后晋升老年代  典型回收器组合：ParNew/CMS、Parallel Scavenge/Parallel Old、G1  复习提示：**“分代GC分新老，复制算法快，晋升规则定，回收器协同优化效率”** | [Editorial](./JVM/JVM垃圾回收（GC）的分代模型是什么？各代的回收器如何协同工作？.md) |
+| JVM常见的内存参数有哪些？如何调优不同场景下的JVM内存设置？   | - JVM常用参数：-Xms、-Xmx、-Xss、-XX:MetaspaceSize - 调优思路：结合业务类型、内存监控、GC日志，合理设置堆/栈/元空间 - 典型组合：高并发服务=大堆+G1，高吞吐=Parallel GC，线程多=小-Xss - 复习提示：**“根据应用特性设内存参数，堆/栈/元空间分清楚，监控+调优”** | [Editorial](./JVM/JVM常见的内存参数有哪些？如何调优不同场景下的JVM内存设置？.md) |
+| JVM的Safepoint是什么？为什么需要Safepoint？有哪些典型触发场景？ | - Safepoint：JVM让所有线程统一挂起，便于全局操作（如GC、Dump）。 - 典型触发：GC、线程Dump、类卸载、Deoptimization等。 - 停顿长原因：线程长时间无Safepoint（常见于大循环）。 - 复习提示：**“Safepoint=全线程暂停点，保障GC等全局操作安全”** | [Editorial](./JVM/JVM的Safepoint是什么？为什么需要Safepoint？有哪些典型触发场景？.md) |
+| JVM垃圾回收（GC）有哪些常见的回收器？它们各自的特点和适用场景是什么？ | - GC有串行、并行、并发、低延迟多种，按业务选型 - 响应时间敏感选CMS/G1，吞吐量优先选Parallel，高并发/大堆优先选G1、ZGC、Shenandoah - 复习提示：**“G1服务器首选，ZGC低延迟，CMS老年代并发，Parallel吞吐量优先”** | [Editorial](./JVM/JVM垃圾回收（GC）有哪些常见的回收器？它们各自的特点和适用场景是什么？.md) |
+| JVM运行时数据区包含哪些部分？各自作用是什么？                | **五大区域**：PC寄存器、JVM栈、本地方法栈、堆、方法区（元空间）    **常量池**：方法区的一部分，存字面量和符号引用    **直接内存**：堆外，由 NIO 等框架使用    **OOM类型**：StackOverflowError, Java heap space, PermGen／Metaspace, Direct buffer memory    复习提示：**“PC懂指令；栈存帧；堆存对象；区分PermGen与Metaspace”** | [Editorial](./JVM/JVM运行时数据区包含哪些部分？各自作用是什么？.md) |
+| JVM有哪些常见的类加载器？它们的加载顺序和作用是什么？        | - **三大内置加载器**：Bootstrap、Extension、Application   - **双亲委派**：先父后子，防篡改   - **自定义加载器**：插件隔离、热部署、加密加载   - 复习提示：**“启动扩展系统三层委派，自定义破委派灵活拓展”** | [Editorial](./JVM/JVM有哪些常见的类加载器？它们的加载顺序和作用是什么？.md) |
+| 请举例说明一次实际的 JVM 参数调优过程和调整依据              | “收集（GC 日志+Heap Dump）→ 分析（晋升率+Gen 使用率）→ 策略（新生代、GC 算法、堆大小、晋升阈值）→ 小步验证→上线监控” | [Editorial](./JVM/请举例说明一次实际的 JVM 参数调优过程和调整依据.md) |
+| JVM中常见的OOM错误类型有哪些？如何定位和解决？               | 常见 OOM：Heap Space、PermGen/Metaspace、GC Overhead、Direct Buffer、Native Thread    定位思路：GC 日志 → Heap Dump/Class Histogram → 分析工具（MAT/VisualVM）    解决策略：调参（堆、元空间、Direct Memory、线程栈）、代码优化（缓存、代理、线程池）    复习口诀：  “看日志、导 dump、用 MAT，定位泄漏／大对象；参数扩／收；优化代码防 OOM” | [Editorial](./JVM/JVM中常见的OOM错误类型有哪些？如何定位和解决？.md) |
+| 生产环境下如何监控JVM健康状态？常见监控指标有哪些？          | - 关键监控：堆内存、GC（次数/耗时/停顿）、线程、类加载、Metaspace、CPU   - 工具链：JMX（JConsole/JMC）、Prometheus+Grafana、APM、ELK   - 告警：堆使用率＞80%、GC 停顿过长、线程饱和、业务指标异常   - 复习口诀：**“堆／GC／线程／Metaspace／CPU＋业务埋点，视图+告警+演练”** | [Editorial](./JVM/生产环境下如何监控JVM健康状态？常见监控指标有哪些？.md) |
+| Java对象的创建与内存分配过程是什么？TLAB是什么？             | **步骤**：加载→分配（Eden/老年代/TLAB）→设头→归零→构造    **TLAB**：线程本地分配，减少竞争    **大对象**：直接老年代或晋升    复习提示：**“TLAB 本地分配，Eden 碰撞快，老年代晋升慎”** | [Editorial](./JVM/Java对象的创建与内存分配过程是什么？TLAB是什么？.md) |
+| JVM如何支持 Java 以外的语言特性（如 Kotlin、Scala 等）？     | - “统一字节码” + “invokedynamic” + “MethodHandle”   - 类型擦除与桥接方法   - 运行时库＋编译器代码生成支持多语言特性   - 复习提示：**“JVM 执行字节码，不关心源语言；invokedynamic 与 MethodHandle 是动态语言的利器”** | [Editorial](./JVM/JVM如何支持 Java 以外的语言特性（如 Kotlin、Scala 等）？.md) |
+| 如何解读GC日志？常见GC日志参数有哪些？                       | - **开启日志**：`-XX:+PrintGCDetails`／`-Xlog:gc*`   - **解析要点**：时间戳、GC类型、空间变化、停顿时长   - **算法差异**：Parallel、CMS、G1 日志标签与阶段   - **调优指标**：频率、停顿、吞吐、年龄分布   - 复习口诀：     “看日志先识类型 → 空间前后对比 → 停顿时长 → 调参（代大小+算法+线程）” | [Editorial](./JVM/如何解读GC日志？常见GC日志参数有哪些？.md) |
+| JVM如何保证类与字节码的安全性？类加载安全机制有哪些？        | - **验证**：魔数→版本→常量池→数据/控制流   - **委派**：先父后子，保核心不被篡改   - **ProtectionDomain** + **SecurityManager**：代码来源→权限检查   - **JAR 签名**：完整性验证   - **JPMS**：模块封装与可见性控制   - **隔离**：自定义加载器沙箱   - 复习口诀：     “验字节→委加载→域限权→签可信→模块封→隔离沙” | [Editorial](./JVM/JVM如何保证类与字节码的安全性？类加载安全机制有哪些？.md) |
+| Java 内存模型（JMM）与 volatile 的可见性保证                 | JMM：主内存 vs 工作内存    happens-before：顺序、锁、volatile、线程启动/终止    volatile：可见+有序，不原子    synchronized/CAS/AQS：互斥与高并发原语    复习口诀：“先行发生规则定序，volatile 可见有序锁互斥” | [Editorial](./JVM/Java 内存模型（JMM）与 volatile 的可见性保证.md) |
+| synchronized 的实现原理和锁优化                              | “对象头 Mark Word + Monitor → 偏向／轻量级／重量级三态 → JIT 锁消除／锁粗化 → 参数调优（偏向、自旋）” | [Editorial](./JVM/synchronized 的实现原理和锁优化.md)        |
+| JVM 中的字符串常量池（String Constant Pool）及 `intern()` 机制是什么？它们对内存和 GC 有什么影响？ | **字符串常量池**：复用字面量和 intern 生成的字符串，节省内存。  **intern()**：将字符串放入常量池，返回池中引用。  **GC 影响**：JDK7+ 常量池在堆，未被引用的字符串可被 GC。频繁 intern 需防 OOM。  **口诀**：`“池中复用，intern 去重，堆上易回收，滥用会 OOM”` | [Editorial](./JVM/JVM 中的字符串常量池（String Constant Pool）及 `intern()` 机制是什么？它们对内存和 GC 有什么影响？.md) |
+| 什么是 GC Roots？它们如何决定对象的可达性，进而影响垃圾回收？ | **GC Roots**：栈引用、静态属性、常量、JNI、活跃线程    **可达性**：从 Roots 出发的引用链标记算法    **影响**：只要可达就不回收 → 静态缓存/单例易泄漏    **提示口诀**：  `“栈、静、常、JNI、线程 五大 Root → 图搜标记可达 → 不可达即回收”` | [Editorial](./JVM/什么是 GC Roots？它们如何决定对象的可达性，进而影响垃圾回收？.md) |
+| 什么是 JVM 直接内存（Direct Memory）？它的原理、典型应用及对 GC/内存管理的影响是什么？ | **直接内存**：堆外本地内存，NIO/Netty/高性能场景常用。  **管理方式**：GC 间接触发回收，受 MaxDirectMemorySize 限制。  **风险**：大量分配或回收不及时会导致直接内存 OOM。  **口诀**：`“堆外直连高效IO，GC间接管生命周期，参数控量防 OOM”` | [Editorial](./JVM/什么是 JVM 直接内存（Direct Memory）？它的原理典型应用及对 GC内存管理的影响是什么？.md) |
+| JVM 中的 Finalizer（finalize 方法）和清理机制是什么？为什么不推荐使用？如何安全地管理对象资源？ | **finalize()**：资源清理，但不安全，易泄漏  **不推荐**：不可控、不可预测、性能差  **推荐**：AutoCloseable + try-with-resources，JDK9+ 用 Cleaner  **口诀**：`“资源要手关，finalize 不可靠，try-with-resources 最安全”` | [Editorial](./JVM/JVM 中的 Finalizer（finalize 方法）和清理机制是什么？为什么不推荐使用？如何安全地管理对象资源？.md) |
+| JVM 中线程栈（Stack）溢出（StackOverflowError、OutOfMemoryError: unable to create new native thread）是怎么发生的？如何排查与优化？ | **线程栈溢出**：单线程栈满 = StackOverflowError；系统线程数满 = unable to create new native thread  **排查方法**：递归/线程池/线程数量  **优化手段**：递归转迭代、合理分配线程池、控制线程数  **口诀**：`“单栈爆栈是递归，线程数爆是池管，jstack定位，参数调优”` | [Editorial](./JVM/JVM 中线程栈（Stack）溢出（StackOverflowError、OutOfMemoryError unable to create new native thread）是怎么发生的？如何排查与优化？.md) |
+| JVM 的方法区、永久代（PermGen）与元空间（Metaspace）有什么区别？各自的作用与常见问题是什么？ | **方法区**：存类元数据/常量池/静态变量  **PermGen**：JDK8-，JVM进程内，易OOM  **Metaspace**：JDK8+，本地内存，物理内存限制  **口诀**：`“方法区元数据信息，PermGen易爆，Metaspace更大，一样可OOM”` | [Editorial](./JVM/JVM 的方法区、永久代（PermGen）与元空间（Metaspace）有什么区别？各自的作用与常见问题是什么？.md) |
+| JVM 的方法区、永久代（PermGen）与元空间（Metaspace）有什么区别？各自的作用与常见问题是什么？ | **GC调优误区**：只调堆、不分代、参数混用、忽略非堆、只看次数、乱用Full GC  **优化建议**：结合业务场景，分析GC日志，合理分代与参数，关注非堆区域  **口诀**：`“调优不迷信，参数看回收，日志细分析，场景定策略”` | [Editorial](./JVM/JVM GC 调优中常见的误区与陷阱有哪些？如何避免？.md) |
+| JVM 新生代（Young Generation）与老年代（Old Generation）是怎么划分的？对象在不同代的“晋升”与“回收”机制是什么？ | **新生代**：Eden、S0、S1，短命对象多，Minor GC 频繁  **老年代**：长寿对象、缓存、晋升/大对象  **晋升机制**：年龄、空间不足、大对象  **口诀**：`“朝生夕死新生代，历经磨难进老年，空间不足早晋升，大对象直接进老年”` | [Editorial](./JVM/JVM 新生代（Young Generation）与老年代（Old Generation）是怎么划分的？对象在不同代的“晋升”与“回收”机制是什么？.md) |
 
 
 
@@ -192,9 +218,23 @@
 | Spring的aop介绍一下                                          | 切面编程、动态代理实现                                       | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/kuaishou.html#spring%E7%9A%84aop%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8B) |
 | Spring的事务，使用this调用是否生效？                         | 不能生效。因为Spring事务是通过代理对象来控制的，只有通过代理对象的方法调用才会应用事务管理的相关规则。当使用`this`直接调用时，是绕过了Spring的代理机制，因此不会应用事务设置 |                                                              |
 | Spring MVC的工作流程描述一下                                 | 7大步：请求进入、寻找控制器、执行控制器、返回模型数据、解析视图、渲染视图、响应返回 | [Editorial](./Spring/Spring MVC的工作流程描述一下.md)        |
-|                                                              |                                                              |                                                              |
-|                                                              |                                                              |                                                              |
-|                                                              |                                                              |                                                              |
+| Spring 中的 BeanFactory 和 ApplicationContext 有什么区别？   | ApplicationContext = BeanFactory + 企业级特性（如国际化、事件等），开发中优先用 ApplicationContext，BeanFactory 适合底层或特殊场景。 | [Editorial](./Spring/Spring 中的 BeanFactory 和 ApplicationContext 有什么区别？.md) |
+| Spring 中的单例 Bean 是线程安全的吗？为什么？                | Spring 单例 Bean 并不保证线程安全；与线程安全无关，需开发者自行保证。无状态 Bean 通常安全，有状态需加锁或避免状态共享。 | [Editorial](./Spring/Spring 中的单例 Bean 是线程安全的吗？为什么？.md) |
+| Spring 中如何实现事件发布与监听机制？                        | Spring 事件机制：发布-监听模式，解耦模块通信。发布用 ApplicationEventPublisher，监听用 @EventListener 或 ApplicationListener。常用于通知、日志、异步等场景。 | [Editorial](./Spring/Spring 中如何实现事件发布与监听机制？.md) |
+| Spring 中的循环依赖是什么？Spring 是如何解决循环依赖的？     | Spring 循环依赖：A 依赖 B，B 又依赖 A。Spring 通过三级缓存（singletonObjects、earlySingletonObjects、singletonFactories）机制，提前暴露 Bean 引用，解决 setter/属性注入的循环依赖。构造器注入无法解决。 | [Editorial](./Spring/Spring 中的循环依赖是什么？Spring 是如何解决循环依赖的？.md) |
+| 什么是 Spring 的依赖注入（DI）？有哪些常用的依赖注入方式？   | 依赖注入（DI）：Spring IoC 核心。构造器注入优先，Setter 适合可选依赖，字段注入不推荐。DI 解耦代码，便于测试和维护。 | [Editorial](./Spring/什么是 Spring 的依赖注入（DI）？有哪些常用的依赖注入方式？.md) |
+| Spring 的事务管理是如何实现的？声明式事务和编程式事务有何区别？ | Spring 事务管理：声明式（@Transactional，推荐，自动控制）和编程式（TransactionTemplate，手动控制）。事务传播行为很重要。大多数业务用声明式，复杂场景用编程式。 | [Editorial](./Spring/Spring 的事务管理是如何实现的？声明式事务和编程式事务有何区别？.md) |
+| Spring 中的 @Component、@Service、@Repository、@Controller 注解有什么区别？ | @Component 通用组件，@Service 业务服务，@Repository DAO 持久层（异常转换），@Controller Web 控制器（Spring MVC）。本质一样，主要是语义和层次区分。 | [Editorial](./Spring/Spring 中的 @Component、@Service、@Repository、@Controller 注解有什么区别？.md) |
+| Spring 中的 Bean 作用域（Scope）有哪些？它们的应用场景是什么？ | Spring Bean 作用域：singleton（单例，默认），prototype（多例），request/session/application/websocket（Web 环境）。常用 singleton，原型适合有状态对象，Web 场景用 request、session。 | [Editorial](./Spring/Spring 中的 Bean 作用域（Scope）有哪些？它们的应用场景是什么？.md) |
+| Spring 的 AOP（面向切面编程）是什么？有哪些常用的应用场景？  | Spring AOP：面向切面编程，横切关注点（如日志、事务、安全）自动织入方法执行，提升复用和解耦。常见注解 @Aspect、@Before、@After、@Around。 | [Editorial](./Spring/Spring 的 AOP（面向切面编程）是什么？有哪些常用的应用场景？.md) |
+| Spring Boot 自动配置的原理是什么？如何自定义自动配置？       | Spring Boot 自动配置原理：@EnableAutoConfiguration + spring.factories + 条件注解。自定义自动配置需实现配置类并注册到 spring.factories。 | [Editorial](./Spring/Spring Boot 自动配置的原理是什么？如何自定义自动配置？.md) |
+| Spring Boot 和 Spring Cloud 有什么区别？各自的主要功能是什么？ | Spring Boot：简化开发，自动配置、内嵌服务器、Starter。Spring Cloud：微服务基础设施，服务注册发现、配置中心、网关、熔断等。Cloud 基于 Boot，用于云原生/微服务架构。 | [Editorial](./Spring/Spring Boot 和 Spring Cloud 有什么区别？各自的主要功能是什么？.md) |
+| Spring 中的条件注解（@Conditional）有什么作用？常见的条件注解有哪些？ | 条件注解：控制 Bean 是否装配（如 @ConditionalOnClass、@ConditionalOnMissingBean、@ConditionalOnProperty），常用于自动配置和环境切换，可自定义条件。 | [Editorial](./Spring/Spring 中的条件注解（@Conditional）有什么作用？常见的条件注解有哪些？.md) |
+| Spring 中的事件机制（ApplicationEvent）是什么？有哪些常见应用场景？ | Spring 事件机制（ApplicationEvent）：应用内异步/同步解耦通信，事件发布者 publish，监听器监听处理，常用于业务解耦、扩展、异步任务等场景。 | [Editorial](./Spring/Spring 中的事件机制（ApplicationEvent）是什么？有哪些常见应用场景？.md) |
+| Spring 的配置文件有哪些常用方式？如何实现配置的动态刷新？    | Spring 配置方式：properties、YAML、环境变量、配置中心。动态刷新常用 @RefreshScope + Spring Cloud Config/Nacos 等，支持不重启服务实时生效。 | [Editorial](./Spring/Spring 的配置文件有哪些常用方式？如何实现配置的动态刷新？.md) |
+| Spring 如何实现多环境（多 profile）配置？如何切换环境？      | 多环境配置：多 profile 文件（如 application-dev.properties），用 spring.profiles.active 指定激活环境，也可用 @Profile 控制 Bean 加载。支持命令行、环境变量、YAML 多块等切换方式。 | [Editorial](./Spring/Spring 如何实现多环境（多 profile）配置？如何切换环境？.md) |
+| 如何在 Spring 中实现自定义注解？自定义注解一般有哪些使用场景？ | 自定义注解：@interface 定义 + @Target/@Retention + AOP/后处理配合使用。常用于统一日志、权限、参数校验、标记元数据等场景。 | [Editorial](./Spring/如何在 Spring 中实现自定义注解？自定义注解一般有哪些使用场景？.md) |
+| Spring 中的 BeanPostProcessor 有什么作用？常见的应用场景有哪些？ | BeanPostProcessor：对 Bean 初始化前后进行扩展增强，常用于 AOP 代理、自动注解处理、自定义注解逻辑、属性修改等，是 Spring 容器的重要扩展点。 | [Editorial](./Spring/Spring 中的 BeanPostProcessor 有什么作用？常见的应用场景有哪些？.md) |
 
 ## 【操作系统】
 
@@ -242,11 +282,41 @@
 
 ## 【高并发场景】
 
-| Problems                                       | Hints                                                        | Solution                                                     |
-| ---------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 限流算法有哪些？                               | 计数器、滑动窗口、令牌桶、漏桶、滑动窗口日志                 | [Editorial](./高并发场景/限流算法有哪些.md)                  |
-| redis，nginx，netty 是依赖什么做的这么高性能？ | ✅**Redis**：单线程但**超快**，因 `epoll + 高效数据结构`。  ✅ **Nginx**：`epoll + sendfile` 提供**超高吞吐量**，适合 Web 服务器。  ✅ **Netty**：`epoll + ByteBuf` 提供**高并发网络通信**，用于 RPC、微服务。 | [Editorial](./高并发场景/redis_nginx_netty 是依赖什么做的这么高性能.md) |
-|                                                |                                                              |                                                              |
+| Problems                                             | Hints                                                        | Solution                                                     |
+| ---------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 限流算法有哪些？                                     | 计数器、滑动窗口、令牌桶、漏桶、滑动窗口日志                 | [Editorial](./高并发场景/限流算法有哪些.md)                  |
+| redis，nginx，netty 是依赖什么做的这么高性能？       | ✅**Redis**：单线程但**超快**，因 `epoll + 高效数据结构`。  ✅ **Nginx**：`epoll + sendfile` 提供**超高吞吐量**，适合 Web 服务器。  ✅ **Netty**：`epoll + ByteBuf` 提供**高并发网络通信**，用于 RPC、微服务。 | [Editorial](./高并发场景/redis_nginx_netty 是依赖什么做的这么高性能.md) |
+| 如何实现高并发下的唯一订单号生成？                   | **分布式唯一ID生成方案**：数据库自增（易冲突）、UUID（不可读）、Redis自增（高并发）、雪花算法（趋势递增/高性能）  **高并发推荐**：Redis自增或雪花算法，注意时钟回拨和高可用  **记忆口诀**：自增易阻塞，UUID难查找，Redis快雪花妙，唯一有序最重要 | [Editorial](./高并发场景/如何实现高并发下的唯一订单号生成？.md) |
+| 高并发场景下如何保证接口的幂等性？                   | **幂等性含义**：同一操作多次执行结果相同    **场景**：支付回调、订单创建、消息消费    **常用方案**：唯一请求号（幂等号）、数据库唯一约束、token机制、乐观锁    **高并发建议**：前端生成幂等号，后端Redis/DB去重，注意性能与存储清理 | [Editorial](./高并发场景/高并发场景下如何保证接口的幂等性？.md) |
+| 高并发下如何实现分布式锁？常见方案和优缺点分析       | - **分布式锁方案**：数据库锁（简单低效）、Redis锁（高性能高并发）、ZooKeeper锁（强一致性） - **高并发推荐**：Redis锁+唯一标识+自动过期，或Redisson - **记忆口诀**：数据库易瓶颈，Redis快需防误删，ZooKeeper强一致 | [Editorial](./高并发场景/高并发下如何实现分布式锁？常见方案和优缺点分析.md) |
+| 高并发场景下如何防止重复提交？                       | **防重提交方案**：幂等Token、接口Token机制、数据库唯一约束、前端防抖/节流  **高并发推荐**：幂等号+Redis存储，数据库唯一约束兜底  **记忆口诀**：幂等号拦重复，Token校验防误触，DB唯一兜底忙 | [Editorial](./高并发场景/高并发场景下如何防止重复提交？.md)  |
+| 高并发下如何进行限流？常见限流算法和场景分析         | - **限流算法**：固定窗口、滑动窗口、漏桶、令牌桶 - **高并发推荐**：令牌桶适合突发，漏桶适合平滑，滑动窗口防突刺 - **记忆口诀**：窗口计数易突刺，漏桶平滑流量忙，令牌桶突发抗压强 | [Editorial](./高并发场景/高并发下如何进行限流？常见限流算法和场景分析.md) |
+| 高并发下如何实现异步消息削峰填谷？                   | **削峰填谷原理**：用消息队列缓冲高并发请求，慢慢消费  **常见模型**：生产-消费模型 + 限流排队  **高并发建议**：异步写队列+多消费者+幂等消费+死信队列  **记忆口诀**：高峰进队列，后台慢处理，幂等防重复，死信防丢失 | [Editorial](./高并发场景/高并发下如何实现异步消息削峰填谷？.md) |
+| 高并发下如何保证数据一致性？常见一致性方案与适用场景 | - **一致性模型**：强一致性、最终一致性、弱一致性 - **常用方案**：分布式事务（2PC/TCC/SAGA）、消息中间件+补偿、乐观锁/悲观锁 - **高并发建议**：最终一致性+幂等+补偿，关键业务用强一致 - **记忆口诀**：强一致慢安全，最终一致高性能，幂等补偿保周全 | [Editorial](./高并发场景/高并发下如何保证数据一致性？常见一致性方案与适用场景.md) |
+| 高并发场景下如何合理利用多级缓存？                   | **多级缓存架构**：本地缓存（低延迟）+分布式缓存（高容量）+数据库（最终兜底）  **高并发建议**：优先读本地，未命中再查分布式，再查数据库  **常见问题**：一致性、容量、更新策略、缓存预热  **记忆口诀**：本地快，分布广，分级兜底保高并，更新一致少烦恼 | [Editorial](./高并发场景/高并发场景下如何合理利用多级缓存？.md) |
+| 高并发下如何实现热点数据和热点Key的优化防护？        | - **热点Key识别与优化**：监控分析+分片分流+本地缓存+静态化+限流降级 - **高并发建议**：热点分片、本地预热、请求排队、静态内容、限流兜底 - **记忆口诀**：分片分流解热点，本地缓存降压力，静态限流兜底忙 | [Editorial](./高并发场景/高并发下如何实现热点数据和热点Key的优化防护？.md) |
+| 高并发下如何设计高可用与自动故障转移机制？           | **高可用目标**：无单点、自动切换、弹性伸缩、持续服务  **常用方案**：负载均衡+多实例、主从/主备切换、集群、副本、健康检查  **高并发建议**：分层高可用（服务/缓存/数据库）、自动故障转移、监控告警  **记忆口诀**：负载均衡分流忙，主备切换保不停，集群副本抗风险，健康自愈少故障 | [Editorial](./高并发场景/高并发下如何设计高可用与自动故障转移机制？.md) |
+| 高并发系统下如何实现高效日志采集与追踪？             | **日志采集目标**：高性能、集中分析、全链路追踪、高可用  **常用架构**：ELK/EFK、Kafka、SkyWalking/Jaeger  **高并发建议**：异步采集、批量入库、traceId贯穿、降采样、索引优化  **记忆口诀**：采集异步快，链路trace全，ELK集中看，Kafka削峰难 | [Editorial](./高并发场景/高并发系统下如何实现高效日志采集与追踪？.md) |
+|                                                      |                                                              |                                                              |
+
+## 【中间件】
+
+| Problems                                                     | Hints                                                        | Solution                                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 中间件基础知识总结                                           | - 中间件是“系统粘合剂”，帮助各模块解耦协作、提升扩展性和可维护性。 - 常见类型：Web服务器、消息队列、缓存、数据库中间件、服务注册与发现。 - 作用关键词：解耦、复用、扩展、高可用、分布式协作。 | [Editorial](./中间件/中间件基础知识总结.md)                  |
+|                                                              |                                                              |                                                              |
+|                                                              |                                                              |                                                              |
+| 如何设计一个支持“限流（Rate Limiting）”功能的中间件？为什么在分布式系统中限流如此重要？ | - **限流的作用**：防止系统过载，保障服务可用性和公平性。 - **常见算法**：固定窗口、滑动窗口、令牌桶、漏桶。 - **分布式难点**：状态一致性、性能瓶颈、数据同步。 - **场景记忆法**：把限流理解为“超市排队+中央排号机”。 | [Editorial](./中间件/如何设计一个支持“限流（Rate Limiting）”功能的中间件？为什么在分布式系统中限流如此重要？.md) |
+| 如何实现“服务的健康检查（Health Check）”中间件？它在微服务架构中有何意义？ | - **健康检查的作用**：提升系统稳定性、自动容错与流量管理。 - **常见类型**：Liveness、Readiness、自定义业务检查。 - **微服务意义**：防止流量打到异常实例，辅助自动恢复，提升可观测性。 - **记忆法**：“航班起飞前的安全检查”——活着≠准备好了。 | [Editorial](./中间件/如何实现“服务的健康检查（Health Check）”中间件？它在微服务架构中有何意义？.md) |
+| 在中间件中如何实现“请求追踪（Request Tracing）”？它为何是分布式系统开发的关键？ |                                                              | [Editorial](./中间件/在中间件中如何实现“请求追踪（Request Tracing）”？它为何是分布式系统开发的关键？.md) |
+|                                                              |                                                              |                                                              |
+|                                                              |                                                              |                                                              |
+|                                                              |                                                              |                                                              |
+|                                                              |                                                              |                                                              |
+|                                                              |                                                              |                                                              |
+|                                                              |                                                              |                                                              |
+
+
 
 ## 【其他】
 
