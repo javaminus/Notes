@@ -57,7 +57,7 @@
 | 你平常是怎么使用RDB和AOF的？                                 | 数据安全性（AOF）、数据恢复速度（RDB）、数据备份和迁移（RDB）、数据可读性（AOF） | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mayi.html#%E4%BD%A0%E5%B9%B3%E5%B8%B8%E6%98%AF%E6%80%8E%E4%B9%88%E4%BD%BF%E7%94%A8rdb%E5%92%8Caof%E7%9A%84) |
 | MySQL两个线程的update语句同时处理一条数据，会不会有阻塞？    | 会，因为InnoDB的行锁。                                       | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/taobao.html#mysql%E4%B8%A4%E4%B8%AA%E7%BA%BF%E7%A8%8B%E7%9A%84update%E8%AF%AD%E5%8F%A5%E5%90%8C%E6%97%B6%E5%A4%84%E7%90%86%E4%B8%80%E6%9D%A1%E6%95%B0%E6%8D%AE-%E4%BC%9A%E4%B8%8D%E4%BC%9A%E6%9C%89%E9%98%BB%E5%A1%9E) |
 | Redis 的压缩列表（Ziplist）和跳表（Skiplist）是什么？它们在 Redis 中分别有哪些应用？ | **压缩列表（ziplist）**：节省内存的小型线性存储结构，常用于小 List、Hash、ZSet。  **跳表（skiplist）**：高效有序数据结构，支持范围查找和排序，主要用于 ZSet 大数据量场景。 | [Editorial](./Redis/Redis 的压缩列表（Ziplist）和跳表（Skiplist）是什么？它们在 Redis 中分别有哪些应用？.md) |
-| Zset 使用了什么数据结构？                                    | Zset 类型的底层数据结构是由**压缩列表或跳表**实现的          | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/byte_dance.html#redis-%E6%9C%89%E5%93%AA%E4%BA%9B%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84) |
+| Zset 使用了什么数据结构？                                    | Zset 类型的底层数据结构是由**压缩列表或跳表**实现的          | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/byte_dance.html#zset-%E4%BD%BF%E7%94%A8%E4%BA%86%E4%BB%80%E4%B9%88%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84) |
 | redis的hashset底层数据结构是什么？                           | Hash 类型的底层数据结构是由**压缩列表或哈希表**实现的。      | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/didi.html#redis%E7%9A%84hashset%E5%BA%95%E5%B1%82%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E6%98%AF%E4%BB%80%E4%B9%88) |
 | 介绍一下redis中的跳表                                        | 跳表（Skip List）是一种 **基于链表的有序数据结构**，通过**多级索引**来加速查询。 | [Editorial](./Redis/跳表.md)                                 |
 | 为什么 MySQL 不用 SkipList？                                 | B+树的高度在3层时存储的数据可能已达千万级别，但对于跳表而言同样去维护千万的数据量那么所造成的跳表层数过高而导致的磁盘io次数增多，也就是使用B+树在存储同样的数据下**磁盘io次数**更少 。 |                                                              |
@@ -96,6 +96,7 @@
 | Problems                                                     | Hints                                                        | Solution                                                     |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | 双亲委派机制是什么？                                         | 是Java类加载器（ClassLoader）中的一种工作原理。  主要用于**解决类加载过程中的安全和避免重复加载的问题**。 | [Editorial](./Java基础/双亲委派机制.md)                      |
+| 什么是类加载器？如何实现自定义类加载器？                     | **类加载器类型、双亲委派流程、定制场景和实现方式**要熟记。  记得举例：Tomcat 热部署、SPI 插件机制、加密 class 加载等。  刷题口诀：   类加载三类清  双亲委派防篡改  自定义 loader 灵活用 | [Editorial](./Java基础/什么是类加载器？如何实现自定义类加载器？.md) |
 | 介绍一下类加载器                                             | 加载、验证、准备、解析、初始化                               | [Editorial](./Java基础/类加载器.md)                          |
 | 编译型语言和解释型语言的区别？                               | **编译型语言**：在程序执行**之前**，整个源代码会被编译成机器码或者字节码，生成可执行文件。执行时直接运行编译后的代码，速度快，但跨平台性较差。  **解释型语言**：在程序执行时，逐行解释执行源代码，不生成独立的可执行文件。通常由解释器动态解释并执行代码，跨平台性好，但执行速度相对较慢。   典型的编译型语言如C、C++，典型的解释型语言如Python、JavaScript。 |                                                              |
 | 动态数组的实现有哪些？                                       | ArrayList和Vector都支持动态扩容，都属于动态数组。    **线程安全性**：Vector是线程安全的，ArrayList不是线程安全的。  **扩容策略**：ArrayList在底层数组不够用时在原来的基础上扩展0.5倍，Vector是扩展1倍。 |                                                              |
@@ -150,15 +151,24 @@
 | 什么是static关键字？它的常见用途有哪些？                     | static修饰的成员属于类本身，常用于共享变量、工具方法、静态初始化和内部类。 | [Editorial](./Java基础/什么是static关键字？它的常见用途有哪些？.md) |
 | 什么是包（package）？Java中包的作用是什么？                  | 包用于组织类，防止命名冲突，便于管理和控制访问，建议用域名倒序命名。 | [Editorial](./Java基础/什么是包（package）？Java中包的作用是什么？.md) |
 | Java中的访问修饰符有哪些？分别有什么作用？                   | 四种访问修饰符：private最严格，public最开放，default包内可见，protected包及子类可见。 | [Editorial](./Java基础/Java中的访问修饰符有哪些？分别有什么作用？.md) |
-|                                                              |                                                              |                                                              |
+| 什么是 Java 内存模型（Java Memory Model, JMM）？它解决了哪些问题？请举例说明 JMM 如何影响多线程程序的正确性。 | JMM 三大性，主内存/工作内存分离，volatile 保可见，synchronized 保原子，写多线程一定牢记！ | [Editorial](./Java基础/什么是 Java 内存模型（Java Memory Model, JMM）？它解决了哪些问题？请举例说明 JMM 如何影响多线程程序的正确性。.md) |
+| 什么是乐观锁与悲观锁？它们的实现方式和适用场景各是什么？     | - 乐观锁适合读多写少，性能高但可能要重试（如 CAS）。 - 悲观锁适合写多读少，安全但效率低（如 synchronized）。 - 典型面试点：CAS、AtomicXXX、数据库版本号、synchronized 区别和应用。 | [Editorial](./Java基础/什么是乐观锁与悲观锁？它们的实现方式和适用场景各是什么？.md) |
+| 什么是CAS（Compare-And-Swap）？它在Java中的实现原理、优缺点以及应用场景是什么？ | - CAS 是无锁并发的核心，compare-and-swap原理+自旋重试机制。 - 优点：高性能，无阻塞。缺点：ABA、自旋、单变量。 - 面试常考：CAS原理、ABA问题、CAS与synchronized对比及适用场景。 | [Editorial](./Java基础/什么是CAS（Compare-And-Swap）？它在Java中的实现原理、优缺点以及应用场景是什么？.md) |
+| 什么是AQS的原理、应用及常见实现有哪些？                      | AQS 用 state + 队列统一管理同步器，实现锁/信号量/闭锁等并发工具 - 原理：CAS修改state，失败则排队阻塞，唤醒后重试 - 常用同步器（ReentrantLock、Semaphore、CountDownLatch 等）都基于AQS - 面试重点：AQS的队列原理、独占与共享模式、模板方法设计 | [Editorial](./Java基础/什么是AQS（AbstractQueuedSynchronizer）？AQS的原理、应用及常见实现有哪些？.md) |
+| AQS的底层原理细节与面试要点                                  | 用简明语言描述AQS的结构（state+队列），说明其支持的两种模式； - 能举出常见实现类，并解释其底层原理； - 强调AQS模板方法思想，子类只需实现资源获取/释放逻辑。 | [Editorial](./Java基础/AQS的底层原理细节与面试要点.md)       |
+| AQS常见面试追问与补充                                        | AQS是JUC包下锁和同步器的基础框架，核心思想是用CAS保证state原子性，用FIFO队列管理等待线程，通过模板方法支持独占与共享两种模式。常见实现有ReentrantLock、Semaphore、CountDownLatch等。AQS通过高效挂起/唤醒和公平/非公平策略，兼顾了性能和灵活性，是Java并发编程的基石。 | [Editorial](./Java基础/AQS常见面试追问与补充.md)             |
 
 ## 【JVM】
 
-| Problems                       | Hints                                                        | Solution                                                     |
-| ------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 垃圾回收 cms和g1的区别是什么？ | 回收策略、垃圾收集目标、内存划分、STW停顿时间、回收过程、吞吐量、适用场景、废弃情况 | [Editorial](./JVM/垃圾回收 cms和g1的区别是什么.md)           |
-| 讲下JVM内存区域？              | **方法区**：存储类元数据，JDK 8 之后使用 **元空间（Metaspace）**。  **堆**：存储对象，GC 主要管理区域，分 **新生代 & 老年代**。  **虚拟机栈**：存储局部变量表、方法调用信息，递归深会导致 **StackOverflowError**。  **本地方法栈**：服务于 JNI 调用，溢出也会抛出 **StackOverflowError**。  **程序计数器**：记录当前线程执行的 **字节码指令地址**。 | [Editorial](./JVM/JVM内存区域.md)                            |
-| 你知道哪些 JVM 的 GC 机制？    | Serial收集器（复制算法) 、 ParNew收集器 (复制算法) 、 Parallel Scavenge收集器 (复制算法) 、 Serial Old收集器 (标记-整理算法) 、 Parallel Old收集器 (标记-整理算法) 、 CMS(Concurrent Mark Sweep)收集器（标记-清除算法） 、 G1(Garbage First)收集器 (标记-整理算法) | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/meituan.html#%E4%BD%A0%E7%9F%A5%E9%81%93%E5%93%AA%E4%BA%9B-jvm-%E7%9A%84-gc-%E6%9C%BA%E5%88%B6) |
+| Problems                                                | Hints                                                        | Solution                                                     |
+| ------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| JVM中对象的生命周期和引用类型有哪些？如何影响垃圾回收？ | 对象生命周期：创建→使用→不可达→等待回收→被回收  四种引用类型：强、软、弱、虚  引用强度影响GC回收时机  典型应用：缓存（软引用）、ThreadLocal（弱引用）、回收通知（虚引用）  复习提示：**“强软弱虚四种引用，引用越弱越易被GC”** | [Editorial](./JVM/JVM中对象的生命周期和引用类型有哪些？如何影响垃圾回收？.md) |
+| 垃圾回收 cms和g1的区别是什么？                          | 回收策略、垃圾收集目标、内存划分、STW停顿时间、回收过程、吞吐量、适用场景、废弃情况 | [Editorial](./JVM/垃圾回收 cms和g1的区别是什么.md)           |
+| 讲下JVM内存区域？                                       | **方法区**：存储类元数据，JDK 8 之后使用 **元空间（Metaspace）**。  **堆**：存储对象，GC 主要管理区域，分 **新生代 & 老年代**。  **虚拟机栈**：存储局部变量表、方法调用信息，递归深会导致 **StackOverflowError**。  **本地方法栈**：服务于 JNI 调用，溢出也会抛出 **StackOverflowError**。  **程序计数器**：记录当前线程执行的 **字节码指令地址**。 | [Editorial](./JVM/JVM内存区域.md)                            |
+| 你知道哪些 JVM 的 GC 机制？                             | Serial收集器（复制算法) 、 ParNew收集器 (复制算法) 、 Parallel Scavenge收集器 (复制算法) 、 Serial Old收集器 (标记-整理算法) 、 Parallel Old收集器 (标记-整理算法) 、 CMS(Concurrent Mark Sweep)收集器（标记-清除算法） 、 G1(Garbage First)收集器 (标记-整理算法) | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/meituan.html#%E4%BD%A0%E7%9F%A5%E9%81%93%E5%93%AA%E4%BA%9B-jvm-%E7%9A%84-gc-%E6%9C%BA%E5%88%B6) |
+| 什么是逃逸分析？它是如何优化对象分配和同步的？          | 逃逸分析：判断对象作用域，决定对象分配位置和优化锁  优化点：栈上分配、标量替换、同步消除  典型例子：方法内临时对象、同步块优化  相关JVM参数：`-XX:+DoEscapeAnalysis`  复习提示：**“判断对象是否只在方法内使用，能否避免堆分配和无用同步”** | [Editorial](./JVM/什么是逃逸分析？它是如何优化对象分配和同步的？.md) |
+| 什么是JVM内存溢出（OOM）和内存泄漏？如何定位和解决？    | OOM：JVM分配内存失败，常见于堆、元空间、栈  内存泄漏：无用对象仍被引用，无法回收  排查思路：分析日志、heap dump、监控曲线、代码审查  解决方法：优化代码、合理配置参数、用工具分析  复习提示：**“OOM看异常类型，heap dump查根因，注意静态变量和大对象引用”** | [Editorial](./JVM/什么是JVM内存溢出（OOM）和内存泄漏？如何定位和解决？.md) |
+| JVM中有哪些常见的性能监控与排查工具？各自适用哪些场景？ | JDK自带工具：jps、jstack、jmap、jstat、jinfo、VisualVM、JConsole  生产/复杂场景：JMC、MAT、Arthas、YourKit/JProfiler  典型用途：查线程死锁（jstack）、查内存泄漏（jmap+MAT）、实时GC监控（jstat/VisualVM）、线上低开销采集（JMC）  复习提示：**“jps找进程、jstack查线程、jmap导内存、VisualVM/JMC图形化分析”** | [Editorial](./JVM/JVM中有哪些常见的性能监控与排查工具？各自适用哪些场景？.md) |
 
 
 
