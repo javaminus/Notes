@@ -9,8 +9,8 @@
 | **MySQL的MVCC是什么？它是如何实现高并发读写的？**            | MVCC（Multi-Version Concurrency Control，多版本并发控制）是一种**无锁并发控制机制**，用于解决数据库事务的**可见性**问题，避免 **脏读、不可重复读、幻读**，同时提高数据库的**并发性能**。 主要依赖机制： （1）隐藏列（事务 ID & 回滚指针） 、 （2）Undo Log（回滚日志） | [Editorial](./MySQL/MySQL的MVCC是什么？它是如何实现高并发读写的？.md) |
 | mysql的什么命令会加上间隙锁？                                | 在可重复读隔离级别下。 使用非唯一索引进行带`where`语句的查询、删除、更新 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/aliyun.html#mysql%E7%9A%84%E4%BB%80%E4%B9%88%E5%91%BD%E4%BB%A4%E4%BC%9A%E5%8A%A0%E4%B8%8A%E9%97%B4%E9%9A%99%E9%94%81) |
 | MySQL 的存储引擎有哪些？为什么常用InnoDB？                   | InnoDB【支持事务、最小锁的粒度是行锁】、MyISAM、Memory       | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#mysql-%E7%9A%84%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E6%9C%89%E5%93%AA%E4%BA%9B-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%B8%B8%E7%94%A8innodb) |
-| B+ 树和 B 树的比较                                           | 叶子节点存储数据不同、B+树支持范围查询（叶子节点通过双向链表连接）、B+树修改树的效率更高（矮胖） | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#b-%E6%A0%91%E5%92%8C-b-%E6%A0%91%E7%9A%84%E6%AF%94%E8%BE%83) |
-| 索引失效的情况                                               | 使用左或者左右模糊匹配 、 对索引列使用函数 、 对索引列进行表达式计算 、 联合索引没有正确使用需要遵循最左匹配原则 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#%E7%B4%A2%E5%BC%95%E5%A4%B1%E6%95%88%E7%9A%84%E6%83%85%E5%86%B5) |
+| B+ 树和 B 树的比较                                           | 叶子节点存储数据不同、B+树支持范围查询（叶子节点通过双向链表连接）、B+树修改树的效率更高（矮胖） | [Editorial](./MySQL/B+ 树和 B 树的比较.md)                   |
+| 索引失效的情况                                               | 使用左或者左右模糊匹配 、 对索引列使用函数 、 对索引列进行表达式计算 、 联合索引没有正确使用需要遵循最左匹配原则 | [Editorial](./MySQL/索引失效的情况.md)                       |
 | **MySQL的联合索引为什么要遵循最左前缀原则？**                | 联合索引按最左字段排列，查询必须包含最左字段，才能用上索引（最左前缀原则）。 | [Editorial](./MySQL/MySQL的联合索引为什么要遵循最左前缀原则？.md ) |
 | 什么是覆盖索引？它的优点是什么？                             | 覆盖索引是指一个查询的**所有字段**都能从索引中获取到，而不需要回表到数据表中查找。优点包括：减少磁盘IO，提升查询性能，减少锁的范围。 |                                                              |
 | MySQL 的**自增主键**在高并发下会出现什么问题？如何解决？     | 在高并发场景下，自增主键可能会导致**主键冲突**、**插入性能瓶颈**，甚至在主从复制时因主键重复导致数据不一致。解决方案包括：使用**分布式唯一ID**（如雪花算法、UUID等）、主键预分配、或者采用数据库自带的分布式ID生成器。 |                                                              |
@@ -25,15 +25,15 @@
 | 设计一个行级锁的死锁，举一个实际的例子                       | **死锁发生条件**：两个事务**交叉加锁**，形成**循环等待**。  **解决方案**：  1、 **统一加锁顺序**（最有效）。 2、 **使用 `NOWAIT` 或 `SKIP LOCKED`** 避免长时间等待。 3、 **使用短事务**，避免锁占用过长。 | [Editorial](./MySQL/行级锁死锁例子.md)                       |
 | mysql 如何避免全表扫描？                                     | 建立索引                                                     | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#mysql-%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E5%85%A8%E8%A1%A8%E6%89%AB%E6%8F%8F) |
 | mysql如何实现如果不存在就插入如果存在就更新？                | 可以使用 `INSERT ... ON DUPLICATE KEY UPDATE` 语句来实现“如果不存在就插入，如果存在就更新”的功能。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#mysql%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%A6%82%E6%9E%9C%E4%B8%8D%E5%AD%98%E5%9C%A8%E5%B0%B1%E6%8F%92%E5%85%A5%E5%A6%82%E6%9E%9C%E5%AD%98%E5%9C%A8%E5%B0%B1%E6%9B%B4%E6%96%B0) |
-| 数据库访问量过大怎么办？                                     | **创建或优化索引** 、 **查询优化** 、 **避免索引失效** 、 **读写分离**、 **优化数据库表**、 **使用缓存技术** | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BF%E9%97%AE%E9%87%8F%E8%BF%87%E5%A4%A7%E6%80%8E%E4%B9%88%E5%8A%9E) |
-| MySQL的三大日志说一下，分别应用场景是什么？                  | **redolog**、**binlog**和**undolog**                         | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/kuaishou.html#mysql%E7%9A%84%E4%B8%89%E5%A4%A7%E6%97%A5%E5%BF%97%E8%AF%B4%E4%B8%80%E4%B8%8B-%E5%88%86%E5%88%AB%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E6%98%AF%E4%BB%80%E4%B9%88) |
+| 数据库访问量过大怎么办？                                     | **创建或优化索引** 、 **查询优化** 、 **避免索引失效** 、 **读写分离**、 **优化数据库表**、 **使用缓存技术** | [Editorial](./MySQL/数据库访问量过大怎么办.md)               |
+| MySQL的三大日志说一下，分别应用场景是什么？                  | **redolog**、**binlog**和**undolog**                         | [Editorial](./MySQL/MySQL的三大日志说一下，分别应用场景是什么？.md) |
 | **MySQL的Binlog有哪几种格式？各自的优缺点是什么？**          | Binlog有STATEMENT、ROW、MIXED三种格式；STATEMENT体积小但有一致性风险，ROW安全但日志大，MIXED自动切换，生产常用ROW或MIXED。 | [Editorial](./MySQL/MySQL的Binlog有哪几种格式？各自的优缺点是什么？.md) |
 | 慢查询是如何调试解决的？                                     | 确认慢查询、分析执行计划、优化查询语句、优化数据库结构、缓存和查询缓存 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/baidu.html#%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%98%AF%E5%A6%82%E4%BD%95%E8%B0%83%E8%AF%95%E8%A7%A3%E5%86%B3%E7%9A%84) |
 | MySQL 的慢查询日志是什么？如何开启和分析慢查询？             | 慢查询日志：记录慢SQL，定位数据库瓶颈，常用mysqldumpslow或pt-query-digest分析。 | [Editorial](./MySQL/MySQL 的慢查询日志是什么？如何开启和分析慢查询？.md) |
 | **MySQL 的 explain 工具怎么用？各字段含义是什么？**          | EXPLAIN分析SQL执行计划，重点关注type、key、rows、extra字段，定位是否走索引、是否全表扫描，优化性能必备。 | [Editorial](./MySQL/MySQL 的 explain 工具怎么用？各字段含义是什么？.md) |
 | 数据库翻页（limit）查询时，发现越往后查询越来越慢，为什么？该如何修改 SQL 能解决? | 数据库翻页使用 `LIMIT offset` 时，`offset` 越大查询越慢，因为需要跳过前面大量数据，建议用基于主键的“条件翻页”优化SQL性能。 | [Editorial](./MySQL/数据库翻页（limit）查询时，发现越往后查询越来越慢，为什么？该如何修改 SQL 能解决.md) |
 | 什么是慢查询以及如何调试解决的?                              | 慢查询是指数据库中执行时间超过**设定阈值**的 SQL，通过开启**慢查询日志**、**分析执行计划**和**优化索引**或 **SQL 结构进行定位**和解决。 | [Editorial](./MySQL/什么是慢查询以及如何调试解决的.md)       |
-| **什么是回表？为什么有时候会发生回表操作？举例说明。**       | 普通索引查不到的数据，需要通过主键回到聚簇索引获取；**索引覆盖**可避免回表。 | [Editorial](./MySQL/ 什么是回表？为什么有时候会发生回表操作？举例说明.md ) |
+| **什么是回表？为什么有时候会发生回表操作？举例说明。**       | 普通索引查不到的数据，需要通过主键回到聚簇索引获取；**索引覆盖**可避免回表。 | [Editorial](./MySQL/什么是回表？为什么有时候会发生回表操作？举例说明.md ) |
 | MySQL 的唯一索引与普通索引有什么区别？各自的应用场景是什么?  | 唯一索引：唯一性约束+加速查询；普通索引：只加速查询，无唯一性约束。 | [Editorial](./MySQL/MySQL 的唯一索引与普通索引有什么区别？各自的应用场景是什么.md) |
 | **为什么建议在InnoDB表中使用自增主键作为聚簇索引？**         | 自增主键聚簇索引：插入有序、性能高、碎片少，建议优先选择。   | [Editorial](./MySQL/为什么建议在InnoDB表中使用自增主键作为聚簇索引？.md) |
 | MySQL中为什么需要分库分表，以及常见的分库分表策略有哪些？    | 分库分表：为解决单表单库性能瓶颈，常用范围、哈希、时间、逻辑分表策略。 | [Editorial](./MySQL/MySQL中为什么需要分库分表，以及常见的分库分表策略有哪些？.md) |
@@ -42,6 +42,7 @@
 | MySQL中的“锁表”和“锁行”有什么区别？在什么场景下会发生锁表？  | 锁表锁全表，锁行锁单行，InnoDB支持行级锁，MyISAM只支持表级锁，表锁常见于DDL或无索引大操作。 | [Editorial](./MySQL/MySQL中的“锁表”和“锁行”有什么区别？在什么场景下会发生锁表？.md) |
 | MySQL 的分区表是什么？适合解决哪些问题？                     | 分区表：大表分片存储，优化大表性能，常用于时间、范围分区，提升查询和归档效率。 | [Editorial](./MySQL/MySQL 的分区表是什么？适合解决哪些问题？.md) |
 | 如何在MySQL中创建一个按月份分区的订单表？                    | 分区表按规则“切片”存储大表，每个分区独立管理，常见按时间分区，DDL可直接操作分区。 | [Editorial](./MySQL/如何在MySQL中创建一个按月份分区的订单表？.md) |
+|                                                              |                                                              |                                                              |
 
 ## 【Redis】
 
@@ -163,6 +164,7 @@
 
 | Problems                                                     | Hints                                                        | Solution                                                     |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| JVM 入门到进阶全解析                                         |                                                              | [Editorial](./JVM/JVM 入门到进阶全解析.md)                   |
 | JVM中对象的生命周期和引用类型有哪些？如何影响垃圾回收？      | 对象生命周期：创建→使用→不可达→等待回收→被回收  四种引用类型：强、软、弱、虚  引用强度影响GC回收时机  典型应用：缓存（软引用）、ThreadLocal（弱引用）、回收通知（虚引用）  复习提示：**“强软弱虚四种引用，引用越弱越易被GC”** | [Editorial](./JVM/JVM中对象的生命周期和引用类型有哪些？如何影响垃圾回收？.md) |
 | 垃圾回收 cms和g1的区别是什么？                               | 回收策略、垃圾收集目标、内存划分、STW停顿时间、回收过程、吞吐量、适用场景、废弃情况 | [Editorial](./JVM/垃圾回收 cms和g1的区别是什么.md)           |
 | 讲下JVM内存区域？                                            | **方法区**：存储类元数据，JDK 8 之后使用 **元空间（Metaspace）**。  **堆**：存储对象，GC 主要管理区域，分 **新生代 & 老年代**。  **虚拟机栈**：存储局部变量表、方法调用信息，递归深会导致 **StackOverflowError**。  **本地方法栈**：服务于 JNI 调用，溢出也会抛出 **StackOverflowError**。  **程序计数器**：记录当前线程执行的 **字节码指令地址**。 | [Editorial](./JVM/JVM内存区域.md)                            |
@@ -176,6 +178,7 @@
 | JVM垃圾回收（GC）的分代模型是什么？各代的回收器如何协同工作？ | JVM分代：新生代（Eden+Survivor）、老年代、元空间  GC分为Minor GC（新生代）、Full GC（全堆/老年代）  对象“熬老”：多次GC后晋升老年代  典型回收器组合：ParNew/CMS、Parallel Scavenge/Parallel Old、G1  复习提示：**“分代GC分新老，复制算法快，晋升规则定，回收器协同优化效率”** | [Editorial](./JVM/JVM垃圾回收（GC）的分代模型是什么？各代的回收器如何协同工作？.md) |
 | JVM常见的内存参数有哪些？如何调优不同场景下的JVM内存设置？   | - JVM常用参数：-Xms、-Xmx、-Xss、-XX:MetaspaceSize - 调优思路：结合业务类型、内存监控、GC日志，合理设置堆/栈/元空间 - 典型组合：高并发服务=大堆+G1，高吞吐=Parallel GC，线程多=小-Xss - 复习提示：**“根据应用特性设内存参数，堆/栈/元空间分清楚，监控+调优”** | [Editorial](./JVM/JVM常见的内存参数有哪些？如何调优不同场景下的JVM内存设置？.md) |
 | JVM的Safepoint是什么？为什么需要Safepoint？有哪些典型触发场景？ | - Safepoint：JVM让所有线程统一挂起，便于全局操作（如GC、Dump）。 - 典型触发：GC、线程Dump、类卸载、Deoptimization等。 - 停顿长原因：线程长时间无Safepoint（常见于大循环）。 - 复习提示：**“Safepoint=全线程暂停点，保障GC等全局操作安全”** | [Editorial](./JVM/JVM的Safepoint是什么？为什么需要Safepoint？有哪些典型触发场景？.md) |
+| 介绍一下：线程Dump（jstack）                                 | 线程Dump（jstack）是Java并发问题排查的重要工具，可以帮助快速定位线程相关的各种异常，是Java开发和运维必备技能之一。 | [Editorial](./JVM/介绍一下：线程Dump（jstack）.md)           |
 | JVM垃圾回收（GC）有哪些常见的回收器？它们各自的特点和适用场景是什么？ | - GC有串行、并行、并发、低延迟多种，按业务选型 - 响应时间敏感选CMS/G1，吞吐量优先选Parallel，高并发/大堆优先选G1、ZGC、Shenandoah - 复习提示：**“G1服务器首选，ZGC低延迟，CMS老年代并发，Parallel吞吐量优先”** | [Editorial](./JVM/JVM垃圾回收（GC）有哪些常见的回收器？它们各自的特点和适用场景是什么？.md) |
 | JVM运行时数据区包含哪些部分？各自作用是什么？                | **五大区域**：PC寄存器、JVM栈、本地方法栈、堆、方法区（元空间）    **常量池**：方法区的一部分，存字面量和符号引用    **直接内存**：堆外，由 NIO 等框架使用    **OOM类型**：StackOverflowError, Java heap space, PermGen／Metaspace, Direct buffer memory    复习提示：**“PC懂指令；栈存帧；堆存对象；区分PermGen与Metaspace”** | [Editorial](./JVM/JVM运行时数据区包含哪些部分？各自作用是什么？.md) |
 | JVM有哪些常见的类加载器？它们的加载顺序和作用是什么？        | - **三大内置加载器**：Bootstrap、Extension、Application   - **双亲委派**：先父后子，防篡改   - **自定义加载器**：插件隔离、热部署、加密加载   - 复习提示：**“启动扩展系统三层委派，自定义破委派灵活拓展”** | [Editorial](./JVM/JVM有哪些常见的类加载器？它们的加载顺序和作用是什么？.md) |
@@ -261,8 +264,8 @@
 | Problems                             | Hints                                                        | Solution                                                     |
 | ------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | HTTP 与 HTTPS 协议的区别？           | 安全、端口、加密方式、证书、完整性、身份认证、SEO、适用场景  | [Editorial](./计算机网络/http与https的区别.md)               |
-| HTTP原理是什么？                     | HTTP（超文本传输协议）是应用层协议 、 HTTP 是基于 TCP 协议来实现的 、 一个完整的 HTTP 请求从请求行开始 、 HTTP 是一种无状态协议，这意味着每个请求都是独立的 、 HTTP 可以传输多种类型的数据，包括文本、图像、音频、视频等 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/didi.html#http%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88) |
-| TCP和UDP区别是什么？                 | 连接、服务对象、可靠性、 拥塞控制、流量控制 、首部开销、传输方式 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/didi.html#tcp%E5%92%8Cudp%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88) |
+| HTTP原理是什么？                     | HTTP（超文本传输协议）是应用层协议 、 HTTP 是基于 TCP 协议来实现的 、 一个完整的 HTTP 请求从请求行开始 、 HTTP 是一种无状态协议，这意味着每个请求都是独立的 、 HTTP 可以传输多种类型的数据，包括文本、图像、音频、视频等 | [Editorial](./计算机网络/HTTP原理是什么.md)                  |
+| TCP和UDP区别是什么？                 | 连接、服务对象、可靠性、 拥塞控制、流量控制 、首部开销、传输方式 | [Editorial](./计算机网络/TCP和UDP区别是什么？.md)            |
 | TCP协议里的TIME_WAIT状态是什么？     | TIME_WAIT 状态的存在是为了确保网络连接的可靠关闭。只有主动发起关闭连接的一方（即主动关闭方）才会有 TIME_WAIT 状态。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/didi.html#tcp%E5%8D%8F%E8%AE%AE%E9%87%8C%E7%9A%84time-wait%E7%8A%B6%E6%80%81%E6%98%AF%E4%BB%80%E4%B9%88) |
 | UDP怎么保证可靠性？                  | 连接迁移 、 重传机制 、 前向纠错 、 拥塞控制                 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/didi.html#udp%E6%80%8E%E4%B9%88%E4%BF%9D%E8%AF%81%E5%8F%AF%E9%9D%A0%E6%80%A7) |
 | 网络有什么常用的通信协议？           | **HTTP**：用于在**Web浏览器**和**Web服务器**之间传输超文本的协议，是目前最常见的**应用层**协议。  **HTTPS**：在HTTP的基础上添加了**SSL/TLS**加密层，用于在不安全的网络上安全地传输数据。  **TCP**：面向连接的**传输层**协议，提供可靠的数据传输服务，保证数据的顺序和完整性。  **UDP**：无连接的**传输层**协议，提供了数据包传输的简单服务，适用于实时性要求高的应用。  **IP**：**网络层**协议，用于在网络中传输数据包，定义了数据包的格式和传输规则。 |                                                              |
@@ -309,7 +312,7 @@
 |                                                              |                                                              |                                                              |
 | 如何设计一个支持“限流（Rate Limiting）”功能的中间件？为什么在分布式系统中限流如此重要？ | - **限流的作用**：防止系统过载，保障服务可用性和公平性。 - **常见算法**：固定窗口、滑动窗口、令牌桶、漏桶。 - **分布式难点**：状态一致性、性能瓶颈、数据同步。 - **场景记忆法**：把限流理解为“超市排队+中央排号机”。 | [Editorial](./中间件/如何设计一个支持“限流（Rate Limiting）”功能的中间件？为什么在分布式系统中限流如此重要？.md) |
 | 如何实现“服务的健康检查（Health Check）”中间件？它在微服务架构中有何意义？ | - **健康检查的作用**：提升系统稳定性、自动容错与流量管理。 - **常见类型**：Liveness、Readiness、自定义业务检查。 - **微服务意义**：防止流量打到异常实例，辅助自动恢复，提升可观测性。 - **记忆法**：“航班起飞前的安全检查”——活着≠准备好了。 | [Editorial](./中间件/如何实现“服务的健康检查（Health Check）”中间件？它在微服务架构中有何意义？.md) |
-| 在中间件中如何实现“请求追踪（Request Tracing）”？它为何是分布式系统开发的关键？ |                                                              | [Editorial](./中间件/在中间件中如何实现“请求追踪（Request Tracing）”？它为何是分布式系统开发的关键？.md) |
+| 在中间件中如何实现“请求追踪（Request Tracing）”？它为何是分布式系统开发的关键？ | **作用**：请求追踪帮助定位分布式系统中的性能瓶颈与故障。  **关键点**：生成唯一Trace ID，全链路传递，日志聚合。  **常见工具**：OpenTelemetry、Jaeger、Zipkin。  **场景记忆法**：快递单号追踪包裹轨迹。 | [Editorial](./中间件/在中间件中如何实现“请求追踪（Request Tracing）”？它为何是分布式系统开发的关键？.md) |
 |                                                              |                                                              |                                                              |
 |                                                              |                                                              |                                                              |
 |                                                              |                                                              |                                                              |
