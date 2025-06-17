@@ -1,0 +1,2724 @@
+{
+  "questions": [
+    {
+      "id": "mysql_001",
+      "title": "事务隔离级别有哪些？",
+      "content": "请详细说明数据库事务的四种隔离级别，并解释每种隔离级别的特点和可能出现的问题。",
+      "hint": "四种隔离级别：读未提交、读已提交、可重复读、串行化",
+      "answer": "",
+      "category": "MySQL事务",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:01:08.000Z"
+    },
+    {
+      "id": "mysql_002",
+      "title": "脏读和幻读的区别？",
+      "content": "请详细解释脏读和幻读这两种数据库异常现象的区别，并说明它们分别在什么情况下会发生。",
+      "hint": "脏读：一个事务读到了「未提交事务修改过的数据」幻读：在一个事务内多次查询某个符合查询条件的「记录数量」，如果前后两次查询到的记录数量不一样。",
+      "answer": "",
+      "category": "MySQL事务",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:02:08.000Z"
+    },
+    {
+      "id": "mysql_003",
+      "title": "如何防止幻读？",
+      "content": "请详细说明MySQL中防止幻读的机制，分别针对不同类型的读操作进行解释。",
+      "hint": "针对快照读（普通 select 语句），是通过 MVCC 方式解决了幻读；针对当前读（select ... for update等语句），是通过 next-key lock（记录锁+间隙锁）",
+      "answer": "",
+      "category": "MySQL事务",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:03:08.000Z"
+    },
+    {
+      "id": "mysql_004",
+      "title": "可重复读有没有幻读的问题？",
+      "content": "在可重复读隔离级别下，是否还会出现幻读问题？请举例说明并分析原因。",
+      "hint": "可能存在幻读问题，但不会有脏读和不可重复读",
+      "answer": "",
+      "category": "MySQL事务",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:04:08.000Z"
+    },
+    {
+      "id": "mysql_005",
+      "title": "MySQL的MVCC是什么？它是如何实现高并发读写的？",
+      "content": "请详细解释MVCC的概念、原理和实现机制，以及它如何解决并发控制问题。",
+      "hint": "MVCC（Multi-Version Concurrency Control，多版本并发控制）是一种无锁并发控制机制，用于解决数据库事务的可见性问题，避免脏读、不可重复读、幻读，同时提高数据库的并发性能。主要依赖机制：（1）隐藏列（事务 ID & 回滚指针）、（2）Undo Log（回滚日志）",
+      "answer": "",
+      "category": "MySQL事务",
+      "difficulty": "困难",
+      "createdAt": "2025-06-16T07:05:08.000Z"
+    },
+    {
+      "id": "mysql_006",
+      "title": "mysql的什么命令会加上间隙锁？",
+      "content": "请说明在什么情况下MySQL会使用间隙锁，以及间隙锁的作用机制。",
+      "hint": "在可重复读隔离级别下。使用非唯一索引进行带where语句的查询、删除、更新",
+      "answer": "",
+      "category": "MySQL锁",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:06:08.000Z"
+    },
+    {
+      "id": "mysql_007",
+      "title": "MySQL 的存储引擎有哪些？为什么常用InnoDB？",
+      "content": "请介绍MySQL的主要存储引擎，并详细分析为什么InnoDB成为了最常用的存储引擎。",
+      "hint": "InnoDB【支持事务、最小锁的粒度是行锁】、MyISAM、Memory",
+      "answer": "",
+      "category": "MySQL架构",
+      "difficulty": "简单",
+      "createdAt": "2025-06-16T07:07:08.000Z"
+    },
+    {
+      "id": "mysql_008",
+      "title": "B+ 树和 B 树的比较",
+      "content": "请详细比较B+树和B树的结构差异，以及为什么MySQL选择B+树作为索引结构。",
+      "hint": "叶子节点存储数据不同、B+树支持范围查询（叶子节点通过双向链表连接）、B+树修改树的效率更高（矮胖）",
+      "answer": "",
+      "category": "MySQL索引",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:08:08.000Z"
+    },
+    {
+      "id": "mysql_009",
+      "title": "索引失效的情况",
+      "content": "请详细说明MySQL中索引失效的各种情况，并解释为什么会导致索引失效。",
+      "hint": "使用左或者左右模糊匹配、对索引列使用函数、对索引列进行表达式计算、联合索引没有正确使用需要遵循最左匹配原则",
+      "answer": "",
+      "category": "MySQL索引",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:09:08.000Z"
+    },
+    {
+      "id": "mysql_010",
+      "title": "MySQL的联合索引为什么要遵循最左前缀原则？",
+      "content": "请解释联合索引的最左前缀原则的原理，以及为什么必须遵循这个原则。",
+      "hint": "联合索引按最左字段排列，查询必须包含最左字段，才能用上索引（最左前缀原则）。",
+      "answer": "",
+      "category": "MySQL索引",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:10:08.000Z"
+    },
+    {
+      "id": "mysql_011",
+      "title": "什么是覆盖索引？它的优点是什么？",
+      "content": "请详细解释覆盖索引的概念，并分析它在查询优化中的作用和优势。",
+      "hint": "覆盖索引是指一个查询的所有字段都能从索引中获取到，而不需要回表到数据表中查找。优点包括：减少磁盘IO，提升查询性能，减少锁的范围。",
+      "answer": "",
+      "category": "MySQL索引",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:11:08.000Z"
+    },
+    {
+      "id": "mysql_012",
+      "title": "MySQL 的自增主键在高并发下会出现什么问题？如何解决？",
+      "content": "请分析自增主键在高并发场景下可能遇到的问题，并提供相应的解决方案。",
+      "hint": "在高并发场景下，自增主键可能会导致主键冲突、插入性能瓶颈，甚至在主从复制时因主键重复导致数据不一致。解决方案包括：使用分布式唯一ID（如雪花算法、UUID等）、主键预分配、或者采用数据库自带的分布式ID生成器。",
+      "answer": "",
+      "category": "MySQL高并发",
+      "difficulty": "困难",
+      "createdAt": "2025-06-16T07:12:08.000Z"
+    },
+    {
+      "id": "mysql_013",
+      "title": "二级索引存放的有哪些数据？",
+      "content": "请详细说明MySQL中二级索引和主键索引在数据存储上的区别。",
+      "hint": "主键索引（聚簇索引）叶子节点存放完整数据，二级索引存放主键。",
+      "answer": "",
+      "category": "MySQL索引",
+      "difficulty": "简单",
+      "createdAt": "2025-06-16T07:13:08.000Z"
+    },
+    {
+      "id": "mysql_014",
+      "title": "事务的特性是什么？如何实现的？",
+      "content": "请详细说明数据库事务的ACID特性，并解释MySQL是如何实现这些特性的。",
+      "hint": "原子性（undo log（回滚日志））、隔离性（MVCC（多版本并发控制）或锁机制）、持久性（redo log（重做日志））、一致性（持久性+原子性+隔离性）",
+      "answer": "",
+      "category": "MySQL事务",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:14:08.000Z"
+    },
+    {
+      "id": "mysql_015",
+      "title": "间隙锁的原理",
+      "content": "请详细解释间隙锁的工作原理、适用场景和作用机制。",
+      "hint": "只存在于可重复读隔离级别，目的是为了解决可重复读隔离级别下幻读的现象。",
+      "answer": "",
+      "category": "MySQL锁",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:15:08.000Z"
+    },
+    {
+      "id": "mysql_016",
+      "title": "滥用事务，或者一个事务里有特别多sql的弊端？",
+      "content": "请分析在实际开发中滥用事务或者在单个事务中执行过多SQL语句会带来哪些问题。",
+      "hint": "容易造成死锁和锁超时、数据回滚时间变长、容易造成主从延迟",
+      "answer": "",
+      "category": "MySQL事务",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:16:08.000Z"
+    },
+    {
+      "id": "mysql_017",
+      "title": "两条update语句处理一张表的不同的主键范围的记录，一个<10，一个>15，会不会遇到阻塞？底层是为什么的？",
+      "content": "请分析两个不同范围的update语句是否会产生阻塞，并从锁的角度解释底层原理。",
+      "hint": "不会，因为锁住的范围不一样，不会形成冲突。第一条 update sql 的话（id<10），锁住的范围是（-♾️，10）第二条 update sql 的话（id >15），锁住的范围是（15，+♾️）",
+      "answer": "",
+      "category": "MySQL锁",
+      "difficulty": "困难",
+      "createdAt": "2025-06-16T07:17:08.000Z"
+    },
+    {
+      "id": "mysql_018",
+      "title": "如果上面2个范围不是主键或索引？还会阻塞吗？",
+      "content": "请分析在没有索引的情况下，不同范围的update语句是否会产生阻塞，并解释原因。",
+      "hint": "触发全表扫描，会阻塞",
+      "answer": "",
+      "category": "MySQL锁",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:18:08.000Z"
+    },
+    {
+      "id": "mysql_019",
+      "title": "表中十个字段，你主键用自增ID还是UUID，为什么？",
+      "content": "在设计数据库表时，选择自增ID和UUID作为主键各有什么优缺点？应该如何选择？",
+      "hint": "自增ID。使用 InnoDB 应该尽可能的按主键的自增顺序插入，并且尽可能使用单调的增加的聚簇键的值来插入新行。",
+      "answer": "",
+      "category": "MySQL设计",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:19:08.000Z"
+    },
+    {
+      "id": "mysql_020",
+      "title": "MySQL的锁讲一下",
+      "content": "请详细介绍MySQL中的各种锁类型，包括它们的特点和适用场景。",
+      "hint": "全局锁、表级锁、行级锁",
+      "answer": "",
+      "category": "MySQL锁",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:20:08.000Z"
+    },
+    {
+      "id": "mysql_021",
+      "title": "设计一个行级锁的死锁，举一个实际的例子",
+      "content": "请设计一个具体的死锁场景，分析死锁产生的原因和解决方案。",
+      "hint": "死锁发生条件：两个事务交叉加锁，形成循环等待。解决方案：1、统一加锁顺序（最有效）。2、使用 NOWAIT 或 SKIP LOCKED 避免长时间等待。3、使用短事务，避免锁占用过长。",
+      "answer": "",
+      "category": "MySQL锁",
+      "difficulty": "困难",
+      "createdAt": "2025-06-16T07:21:08.000Z"
+    },
+    {
+      "id": "mysql_022",
+      "title": "mysql 如何避免全表扫描？",
+      "content": "请说明在什么情况下会出现全表扫描，以及如何通过各种方法来避免全表扫描。",
+      "hint": "建立索引",
+      "answer": "",
+      "category": "MySQL优化",
+      "difficulty": "简单",
+      "createdAt": "2025-06-16T07:22:08.000Z"
+    },
+    {
+      "id": "mysql_023",
+      "title": "mysql如何实现如果不存在就插入如果存在就更新？",
+      "content": "请介绍MySQL中实现‘不存在就插入，存在就更新’功能的方法和语法。",
+      "hint": "可以使用 INSERT ... ON DUPLICATE KEY UPDATE 语句来实现‘如果不存在就插入，如果存在就更新’的功能。",
+      "answer": "",
+      "category": "MySQL语法",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:23:08.000Z"
+    },
+    {
+      "id": "mysql_024",
+      "title": "数据库访问量过大怎么办？",
+      "content": "当数据库面临高并发访问压力时，有哪些优化策略和解决方案？",
+      "hint": "创建或优化索引、查询优化、避免索引失效、读写分离、优化数据库表、使用缓存技术",
+      "answer": "",
+      "category": "MySQL优化",
+      "difficulty": "困难",
+      "createdAt": "2025-06-16T07:24:08.000Z"
+    },
+    {
+      "id": "mysql_025",
+      "title": "MySQL的三大日志说一下，分别应用场景是什么？",
+      "content": "请详细介绍MySQL的三大日志系统，包括它们的作用机制和应用场景。",
+      "hint": "redolog、binlog和undolog",
+      "answer": "",
+      "category": "MySQL日志",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:25:08.000Z"
+    },
+    {
+      "id": "mysql_026",
+      "title": "MySQL的Binlog有哪几种格式？各自的优缺点是什么？",
+      "content": "请详细介绍MySQL Binlog的不同格式，分析每种格式的特点和适用场景。",
+      "hint": "Binlog有STATEMENT、ROW、MIXED三种格式；STATEMENT体积小但有一致性风险，ROW安全但日志大，MIXED自动切换，生产常用ROW或MIXED。",
+      "answer": "",
+      "category": "MySQL日志",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:26:08.000Z"
+    },
+    {
+      "id": "mysql_027",
+      "title": "慢查询是如何调试解决的？",
+      "content": "请详细描述慢查询问题的排查和优化流程，包括具体的操作步骤。",
+      "hint": "确认慢查询、分析执行计划、优化查询语句、优化数据库结构、缓存和查询缓存",
+      "answer": "",
+      "category": "MySQL优化",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:27:08.000Z"
+    },
+    {
+      "id": "mysql_028",
+      "title": "MySQL 的慢查询日志是什么？如何开启和分析慢查询？",
+      "content": "请详细介绍MySQL慢查询日志的配置方法和分析工具的使用。",
+      "hint": "慢查询日志：记录慢SQL，定位数据库瓶颈，常用mysqldumpslow或pt-query-digest分析。",
+      "answer": "",
+      "category": "MySQL优化",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:28:08.000Z"
+    },
+    {
+      "id": "mysql_029",
+      "title": "MySQL 的 explain 工具怎么用？各字段含义是什么？",
+      "content": "请详细介绍EXPLAIN命令的使用方法，以及输出结果中各个字段的含义和分析要点。",
+      "hint": "EXPLAIN分析SQL执行计划，重点关注type、key、rows、extra字段，定位是否走索引、是否全表扫描，优化性能必备。",
+      "answer": "",
+      "category": "MySQL优化",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:29:08.000Z"
+    },
+    {
+      "id": "mysql_030",
+      "title": "数据库翻页（limit）查询时，发现越往后查询越来越慢，为什么？该如何修改 SQL 能解决?",
+      "content": "请分析LIMIT分页查询性能问题的原因，并提供有效的优化方案。",
+      "hint": "数据库翻页使用 LIMIT offset 时，offset 越大查询越慢，因为需要跳过前面大量数据，建议用基于主键的‘条件翻页’优化SQL性能。",
+      "answer": "",
+      "category": "MySQL优化",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:30:08.000Z"
+    },
+    {
+      "id": "mysql_031",
+      "title": "什么是慢查询以及如何调试解决的?",
+      "content": "请详细定义慢查询的概念，并描述完整的慢查询问题定位和解决流程。",
+      "hint": "慢查询是指数据库中执行时间超过设定阈值的 SQL，通过开启慢查询日志、分析执行计划和优化索引或 SQL 结构进行定位和解决。",
+      "answer": "",
+      "category": "MySQL优化",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:31:08.000Z"
+    },
+    {
+      "id": "mysql_032",
+      "title": "什么是回表？为什么有时候会发生回表操作？举例说明。",
+      "content": "请详细解释回表操作的概念、产生原因，并通过具体例子说明如何避免回表。",
+      "hint": "普通索引查不到的数据，需要通过主键回到聚簇索引获取；索引覆盖可避免回表。",
+      "answer": "",
+      "category": "MySQL索引",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:32:08.000Z"
+    },
+    {
+      "id": "mysql_033",
+      "title": "MySQL 的唯一索引与普通索引有什么区别？各自的应用场景是什么?",
+      "content": "请详细比较唯一索引和普通索引的特点、性能差异和适用场景。",
+      "hint": "唯一索引：唯一性约束+加速查询；普通索引：只加速查询，无唯一性约束。",
+      "answer": "",
+      "category": "MySQL索引",
+      "difficulty": "简单",
+      "createdAt": "2025-06-16T07:33:08.000Z"
+    },
+    {
+      "id": "mysql_034",
+      "title": "为什么建议在InnoDB表中使用自增主键作为聚簇索引？",
+      "content": "请分析在InnoDB存储引擎中使用自增主键作为聚簇索引的优势和原因。",
+      "hint": "自增主键聚簇索引：插入有序、性能高、碎片少，建议优先选择。",
+      "answer": "",
+      "category": "MySQL设计",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:34:08.000Z"
+    },
+    {
+      "id": "mysql_035",
+      "title": "MySQL中为什么需要分库分表，以及常见的分库分表策略有哪些？",
+      "content": "请分析分库分表的必要性，并详细介绍各种分库分表策略的特点和适用场景。",
+      "hint": "分库分表：为解决单表单库性能瓶颈，常用范围、哈希、时间、逻辑分表策略。",
+      "answer": "",
+      "category": "MySQL架构",
+      "difficulty": "困难",
+      "createdAt": "2025-06-16T07:35:08.000Z"
+    },
+    {
+      "id": "mysql_036",
+      "title": "MySQL为什么要使用索引？索引的弊端有哪些？",
+      "content": "请分析索引在数据库中的作用，以及使用索引可能带来的负面影响。",
+      "hint": "索引加速查询有空间和维护开销，数量需适度，查读写平衡。",
+      "answer": "",
+      "category": "MySQL索引",
+      "difficulty": "简单",
+      "createdAt": "2025-06-16T07:36:08.000Z"
+    },
+    {
+      "id": "mysql_037",
+      "title": "MySQL的主从复制原理是什么？常见的主从延迟有哪些原因？",
+      "content": "请详细解释MySQL主从复制的工作机制，并分析导致主从延迟的常见原因和解决方案。",
+      "hint": "主从复制：binlog同步与重放，主写从读，常因写入压力、硬件、网络或大事务导致延迟。",
+      "answer": "",
+      "category": "MySQL架构",
+      "difficulty": "困难",
+      "createdAt": "2025-06-16T07:37:08.000Z"
+    },
+    {
+      "id": "mysql_038",
+      "title": "MySQL中的‘锁表’和‘锁行’有什么区别？在什么场景下会发生锁表？",
+      "content": "请详细比较表级锁和行级锁的特点，并分析在什么情况下会发生锁表操作。",
+      "hint": "锁表锁全表，锁行锁单行，InnoDB支持行级锁，MyISAM只支持表级锁，表锁常见于DDL或无索引大操作。",
+      "answer": "",
+      "category": "MySQL锁",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:38:08.000Z"
+    },
+    {
+      "id": "mysql_039",
+      "title": "MySQL 的分区表是什么？适合解决哪些问题？",
+      "content": "请详细介绍MySQL分区表的概念、工作原理和适用场景。",
+      "hint": "分区表：大表分片存储，优化大表性能，常用于时间、范围分区，提升查询和归档效率。",
+      "answer": "",
+      "category": "MySQL架构",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:39:08.000Z"
+    },
+    {
+      "id": "mysql_040",
+      "title": "如何在MySQL中创建一个按月份分区的订单表？",
+      "content": "请提供创建按月份分区的订单表的具体SQL语句，并解释分区表的管理操作。",
+      "hint": "分区表按规则‘切片’存储大表，每个分区独立管理，常见按时间分区，DDL可直接操作分区。",
+      "answer": "",
+      "category": "MySQL架构",
+      "difficulty": "中等",
+      "createdAt": "2025-06-16T07:40:08.000Z"
+    },
+    {
+      "id": "redis_001",
+      "title": "Redis高级数据结构的使用场景",
+      "content": "请详细介绍Redis的数据类型，包括基础数据类型和高级数据结构，并说明它们各自的使用场景。",
+      "hint": "常见的有五种数据类型：String（字符串），Hash（哈希），List（列表），Set（集合）、Zset（有序集合）。BitMap、HyperLogLog、GEO、Stream。",
+      "answer": "",
+      "category": "Redis数据结构",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.000Z"
+    },
+    {
+      "id": "redis_002",
+      "title": "Redis BitMap 和 HyperLogLog 的原理是什么？分别适合哪些实际应用场景？",
+      "content": "请详细解释BitMap和HyperLogLog的工作原理，并分析它们在实际项目中的应用场景和优势。",
+      "hint": "BitMap 适合大规模布尔统计（如签到、活跃统计），节省空间，支持位运算。HyperLogLog 适合大规模去重计数（如UV统计），空间极小但有一定误差。二者都是 Redis 的'以空间换效率'的典型高阶数据结构，适用于高并发大数据量的统计场景。",
+      "answer": "",
+      "category": "Redis数据结构",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T01:59:24.001Z"
+    },
+    {
+      "id": "redis_003",
+      "title": "热 key 是什么？怎么解决？",
+      "content": "请解释Redis中热key的概念，分析热key带来的问题，并提供相应的解决方案。",
+      "hint": "Redis热key是指被频繁访问的key。开启内存淘汰机制，设置key的过期时间，对热点key进行分片",
+      "answer": "",
+      "category": "Redis性能优化",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.002Z"
+    },
+    {
+      "id": "redis_004",
+      "title": "String 是使用什么存储的?为什么不用 c 语言中的字符串?",
+      "content": "请详细介绍Redis中String类型的底层存储结构，并分析为什么不使用C语言原生字符串。",
+      "hint": "Redis 的 String 字符串是用 SDS 数据结构存储的。len，记录了字符串长度。alloc，分配给字符数组的空间长度。flags，用来表示不同类型的 SDS。buf[]，字符数组，用来保存实际数据。增加了三个元数据：len、alloc、flags，用来解决 C 语言字符串的缺陷。O（1）复杂度获取字符串长度；二进制安全；不会发生缓冲区溢出。",
+      "answer": "",
+      "category": "Redis数据结构",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.003Z"
+    },
+    {
+      "id": "redis_005",
+      "title": "Redis有什么持久化策略？",
+      "content": "请详细介绍Redis的持久化机制，包括各种策略的特点和适用场景。",
+      "hint": "Redis持久化有RDB（快照）、AOF（日志）、混合模式。RDB恢复快适合备份，AOF安全性高适合重要数据，混合兼顾性能和安全。",
+      "answer": "",
+      "category": "Redis持久化",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.004Z"
+    },
+    {
+      "id": "redis_006",
+      "title": "RDB是怎样做的？",
+      "content": "请详细解释Redis的RDB持久化机制的工作原理和实现方式。",
+      "hint": "Redis 提供了两个命令来生成 RDB 文件，分别是 save 和 bgsave，他们的区别就在于是否在「主线程」里执行",
+      "answer": "",
+      "category": "Redis持久化",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.005Z"
+    },
+    {
+      "id": "redis_007",
+      "title": "aof的写入策略，按时间写入和每次都写入的区别，优缺点",
+      "content": "请详细介绍AOF的不同写入策略，分析各种策略的优缺点和适用场景。",
+      "hint": "Redis 提供了 3 种写回硬盘的策略，在 Redis.conf 配置文件中的 appendfsync 配置项可以有以下 3 种参数可填：Always、Everysec、No",
+      "answer": "",
+      "category": "Redis持久化",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.006Z"
+    },
+    {
+      "id": "redis_008",
+      "title": "你平常是怎么使用RDB和AOF的？",
+      "content": "请结合实际工作场景，说明如何合理选择和配置RDB和AOF持久化策略。",
+      "hint": "数据安全性（AOF）、数据恢复速度（RDB）、数据备份和迁移（RDB）、数据可读性（AOF）",
+      "answer": "",
+      "category": "Redis持久化",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.007Z"
+    },
+    {
+      "id": "redis_009",
+      "title": "MySQL两个线程的update语句同时处理一条数据，会不会有阻塞？",
+      "content": "请分析在MySQL中并发update操作是否会产生阻塞，并解释其原理。",
+      "hint": "会，因为InnoDB的行锁。",
+      "answer": "",
+      "category": "数据库并发",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T01:59:24.008Z"
+    },
+    {
+      "id": "redis_010",
+      "title": "Redis 的压缩列表（Ziplist）和跳表（Skiplist）是什么？它们在 Redis 中分别有哪些应用？",
+      "content": "请详细介绍压缩列表和跳表的数据结构特点，以及它们在Redis中的具体应用场景。",
+      "hint": "压缩列表（ziplist）：节省内存的小型线性存储结构，常用于小 List、Hash、ZSet。跳表（skiplist）：高效有序数据结构，支持范围查找和排序，主要用于 ZSet 大数据量场景。",
+      "answer": "",
+      "category": "Redis数据结构",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T01:59:24.009Z"
+    },
+    {
+      "id": "redis_011",
+      "title": "Zset 使用了什么数据结构？",
+      "content": "请详细说明Redis有序集合（Zset）的底层数据结构实现。",
+      "hint": "Zset 类型的底层数据结构是由压缩列表或跳表实现的",
+      "answer": "",
+      "category": "Redis数据结构",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.010Z"
+    },
+    {
+      "id": "redis_012",
+      "title": "redis的hashset底层数据结构是什么？",
+      "content": "请详细介绍Redis中Hash类型的底层数据结构实现方式。",
+      "hint": "Hash 类型的底层数据结构是由压缩列表或哈希表实现的。",
+      "answer": "",
+      "category": "Redis数据结构",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.011Z"
+    },
+    {
+      "id": "redis_013",
+      "title": "介绍一下redis中的跳表",
+      "content": "请详细介绍跳表的数据结构特点、工作原理和在Redis中的应用。",
+      "hint": "跳表（Skip List）是一种基于链表的有序数据结构，通过多级索引来加速查询。",
+      "answer": "",
+      "category": "Redis数据结构",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T01:59:24.012Z"
+    },
+    {
+      "id": "redis_014",
+      "title": "为什么 MySQL 不用 SkipList？",
+      "content": "请分析为什么MySQL选择B+树而不是跳表作为索引结构，并比较两者的优缺点。",
+      "hint": "B+树的高度在3层时存储的数据可能已达千万级别，但对于跳表而言同样去维护千万的数据量那么所造成的跳表层数过高而导致的磁盘io次数增多，也就是使用B+树在存储同样的数据下磁盘io次数更少。",
+      "answer": "",
+      "category": "数据库设计",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T01:59:24.013Z"
+    },
+    {
+      "id": "redis_015",
+      "title": "Redis 使用场景?",
+      "content": "请详细介绍Redis在实际项目中的主要应用场景和使用方式。",
+      "hint": "缓存，消息队列、分布式锁等场景。",
+      "answer": "",
+      "category": "Redis应用",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T01:59:24.014Z"
+    },
+    {
+      "id": "redis_016",
+      "title": "Redis 性能好的原因是什么？",
+      "content": "请分析Redis具有高性能的技术原因，从架构和实现角度进行说明。",
+      "hint": "大部分操作都在内存中完成、采用单线程模型可以避免了多线程之间的竞争、采用了 I/O 多路复用机制处理大量的客户端 Socket 请求",
+      "answer": "",
+      "category": "Redis性能",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.015Z"
+    },
+    {
+      "id": "redis_017",
+      "title": "Redis 和 MySQL 如何保证一致性",
+      "content": "请详细说明在使用Redis作为缓存时，如何保证与MySQL数据库的数据一致性。",
+      "hint": "「先更新数据库 + 再删除缓存」的方案，是可以保证数据一致性的。",
+      "answer": "",
+      "category": "缓存一致性",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T01:59:24.016Z"
+    },
+    {
+      "id": "redis_018",
+      "title": "什么情况使用MySQL，什么情况使用Redis？",
+      "content": "请分析MySQL和Redis各自的特点，说明在什么场景下应该选择哪种数据库。",
+      "hint": "MySQL：当需要存储结构化数据，并且需要支持复杂的查询操作时，和需要支持事务处理时。Redis：当需要快速访问和处理数据的缓存时，可以选择Redis，能够提供快速的数据读取和写入。",
+      "answer": "",
+      "category": "数据库选型",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.017Z"
+    },
+    {
+      "id": "redis_019",
+      "title": "本地缓存和Redis缓存的区别",
+      "content": "请详细比较本地缓存和Redis缓存的特点、优缺点和适用场景。",
+      "hint": "本地缓存适合单机、低并发场景，速度极快，但数据不共享。Redis 缓存适合分布式、高并发场景，支持持久化，但访问速度比本地缓存稍慢。最佳实践：本地缓存 + Redis 结合使用，热点数据走本地缓存，大规模数据放 Redis 共享。",
+      "answer": "",
+      "category": "缓存设计",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.018Z"
+    },
+    {
+      "id": "redis_020",
+      "title": "Redis的Key过期了是立马删除吗",
+      "content": "请详细解释Redis中key过期后的删除机制和策略。",
+      "hint": "不会，Redis 的过期删除策略是选择「惰性删除+定期删除」这两种策略配和使用。",
+      "answer": "",
+      "category": "Redis内存管理",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.019Z"
+    },
+    {
+      "id": "redis_021",
+      "title": "Redis的大Key问题是什么？",
+      "content": "请解释Redis中大Key的概念，分析大Key会带来什么问题。",
+      "hint": "某个key对应的value值所占的内存空间比较大，导致Redis的性能下降、内存不足、数据不均衡以及主从同步延迟等问题。",
+      "answer": "",
+      "category": "Redis性能优化",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.020Z"
+    },
+    {
+      "id": "redis_022",
+      "title": "大Key问题的缺点？",
+      "content": "请详细分析Redis中大Key问题会带来哪些具体的负面影响。",
+      "hint": "内存占用过高、性能下降、阻塞其他操作、网络拥塞、主从同步延迟、数据倾斜",
+      "answer": "",
+      "category": "Redis性能优化",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.021Z"
+    },
+    {
+      "id": "redis_023",
+      "title": "redis hotkey用什么查，怎么解决hotkey？",
+      "content": "请介绍如何发现和监控Redis中的热key，并提供解决热key问题的方案。",
+      "hint": "使用 Monitor 命令可以实时监控 Redis 数据库的所有命令操作，包括对 Hotkey 的读取和写入操作，通过对返回的执行命令进行统计来分析 Hotkey 的分布。",
+      "answer": "",
+      "category": "Redis性能优化",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.022Z"
+    },
+    {
+      "id": "redis_024",
+      "title": "redis主节点挂了怎么办？",
+      "content": "请详细分析Redis主节点故障时的处理方案，包括不同架构下的应对策略。",
+      "hint": "分下面几种情况：单机单节点、主从复制结构、Redis Sentinel（哨兵机制）、Redis Cluster（分布式集群模式）",
+      "answer": "",
+      "category": "Redis高可用",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T01:59:24.023Z"
+    },
+    {
+      "id": "redis_025",
+      "title": "redis分布式锁怎么实现？",
+      "content": "请详细介绍如何使用Redis实现分布式锁，包括具体的实现方案和注意事项。",
+      "hint": "分布式锁是用于分布式环境下并发控制的一种机制，用于控制某个资源在同一时刻只能被一个应用所使用。",
+      "answer": "",
+      "category": "Redis分布式",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T01:59:24.024Z"
+    },
+    {
+      "id": "redis_026",
+      "title": "Redis内存淘汰策略",
+      "content": "请详细介绍Redis的内存淘汰策略，包括各种策略的特点和适用场景。",
+      "hint": "8种淘汰策略",
+      "answer": "",
+      "category": "Redis内存管理",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.025Z"
+    },
+    {
+      "id": "redis_027",
+      "title": "Redis为什么采用单线程模型，单线程模型下为什么还这么快？",
+      "content": "请分析Redis选择单线程模型的原因，以及单线程下依然保持高性能的技术原理。",
+      "hint": "单线程避免了锁竞争和上下文切换，配合高效的I/O多路复用和纯内存操作，让Redis即使单线程也极快。",
+      "answer": "",
+      "category": "Redis架构",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.026Z"
+    },
+    {
+      "id": "redis_028",
+      "title": "Redis为什么要采用哨兵（Sentinel）机制？它的作用和工作原理是什么？",
+      "content": "请详细介绍Redis哨兵机制的设计目的、主要作用和工作原理。",
+      "hint": "哨兵（Sentinel）机制用于Redis高可用，自动监控、故障转移和通知，实现主从切换保障服务不中断。",
+      "answer": "",
+      "category": "Redis高可用",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T01:59:24.027Z"
+    },
+    {
+      "id": "redis_029",
+      "title": "Redis的过期键删除策略有哪些？为什么要用多种策略结合？",
+      "content": "请详细介绍Redis处理过期键的各种删除策略，并分析为什么需要多种策略配合使用。",
+      "hint": "Redis 过期键删除采用惰性删除+定期删除+内存淘汰三种策略结合，兼顾性能和内存利用。",
+      "answer": "",
+      "category": "Redis内存管理",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.028Z"
+    },
+    {
+      "id": "redis_030",
+      "title": "Redis如何实现分布式锁？有哪些常见的实现方式和注意事项？",
+      "content": "请详细介绍Redis分布式锁的实现方案，包括不同实现方式的对比和实际使用中的注意事项。",
+      "hint": "Redis分布式锁常用SETNX+过期时间+唯一标识，解锁要校验value，生产用RedLock提升可靠性。",
+      "answer": "",
+      "category": "Redis分布式",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T01:59:24.029Z"
+    },
+    {
+      "id": "redis_031",
+      "title": "Redis集群（Cluster）是如何实现分布式存储和高可用的？主要原理和机制是什么？",
+      "content": "请详细解释Redis集群的架构设计、分布式存储原理和高可用机制。",
+      "hint": "Redis Cluster通过哈希槽分片+多主多从架构，实现分布式存储和高可用，支持自动故障转移和请求自动路由。",
+      "answer": "",
+      "category": "Redis集群",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T01:59:24.030Z"
+    },
+    {
+      "id": "redis_032",
+      "title": "Redis的事务（Transaction）是如何实现的？它能保证原子性和隔离性吗？",
+      "content": "请详细介绍Redis事务的实现机制，分析其在原子性和隔离性方面的特点和限制。",
+      "hint": "Redis事务通过MULTI/EXEC实现批量命令原子性，不支持回滚。WATCH可实现乐观锁，保证事务隔离性，但不是传统数据库的强隔离/原子性。",
+      "answer": "",
+      "category": "Redis事务",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T01:59:24.031Z"
+    },
+    {
+      "id": "redis_033",
+      "title": "Redis的慢查询是如何监控和分析的？出现慢查询一般怎么优化？",
+      "content": "请介绍Redis慢查询的监控方法、分析工具和常见的优化策略。",
+      "hint": "Redis通过SLOWLOG监控慢查询，分析记录后优化数据结构、避免大key、合理分片和优化命令，提升整体性能。",
+      "answer": "",
+      "category": "Redis性能优化",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.032Z"
+    },
+    {
+      "id": "redis_034",
+      "title": "Redis如何实现高并发下的数据一致性？比如缓存和数据库如何保证一致性？",
+      "content": "请详细分析在高并发场景下，如何保证Redis缓存与数据库之间的数据一致性。",
+      "hint": "缓存一致性推荐'先更新数据库，再删除缓存'，可配合延迟双删或消息队列，确保高并发下数据最终一致。",
+      "answer": "",
+      "category": "缓存一致性",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T01:59:24.033Z"
+    },
+    {
+      "id": "redis_035",
+      "title": "Redis缓存雪崩、缓存击穿、缓存穿透分别是什么？如何应对这些问题？",
+      "content": "请详细解释这三种缓存问题的概念、产生原因和相应的解决方案。",
+      "hint": "缓存雪崩（分批过期、限流降级）、缓存击穿（互斥锁、热点永不过期）、缓存穿透（缓存空值、布隆过滤器）。",
+      "answer": "",
+      "category": "缓存问题",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T01:59:24.034Z"
+    },
+    {
+      "id": "redis_036",
+      "title": "Redis的发布/订阅（Pub/Sub）机制是怎样实现的？适用于哪些场景？",
+      "content": "请详细介绍Redis发布订阅模式的实现原理、特点和适用场景。",
+      "hint": "Redis Pub/Sub实现消息即时推送，适合实时通知、聊天等场景，不适合要求消息可靠或持久化的系统。",
+      "answer": "",
+      "category": "Redis消息",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.035Z"
+    },
+    {
+      "id": "redis_037",
+      "title": "Redis的主从复制（Replication）是如何实现的？它在实际工作中有什么用？",
+      "content": "请详细介绍Redis主从复制的实现机制和在实际项目中的应用价值。",
+      "hint": "Redis主从复制通过全量+增量同步机制实现，广泛用于读写分离、高可用、数据备份等场景，是Redis高性能和高可靠性的基础技术之一。",
+      "answer": "",
+      "category": "Redis复制",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.036Z"
+    },
+    {
+      "id": "redis_038",
+      "title": "Redis管道（Pipeline）机制是什么？它的原理、优势和应用场景有哪些？",
+      "content": "请详细介绍Redis管道技术的工作原理、性能优势和实际应用场景。",
+      "hint": "Pipeline机制通过批量发送命令、减少RTT，显著提升批量操作性能，适合大规模数据读写场景，但不是事务，命令不保证原子性。",
+      "answer": "",
+      "category": "Redis性能优化",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.037Z"
+    },
+    {
+      "id": "redis_039",
+      "title": "Redis Stream 数据结构是什么？它的典型使用场景有哪些？与传统消息队列有何异同？",
+      "content": "请详细介绍Redis Stream的特点、功能和与传统消息队列的对比。",
+      "hint": "Redis Stream是面向消息流的结构，支持持久化、消费组、消息确认和重试，适合异步任务队列、事件追踪、实时日志等场景，是Redis实现轻量级消息队列的首选。",
+      "answer": "",
+      "category": "Redis数据结构",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T01:59:24.038Z"
+    },
+    {
+      "id": "redis_040",
+      "title": "Redis 如何实现消息队列？有哪些实现方式？各自优缺点如何？",
+      "content": "请详细比较Redis实现消息队列的不同方式，分析各自的优缺点和适用场景。",
+      "hint": "Redis 可用 List、Pub/Sub、Stream 实现消息队列。List 简单高效但功能基础，适合轻量任务。Pub/Sub 支持广播但消息不可靠，适合即时通知。Stream 功能最强，支持消费组与持久化，适合可靠队列和复杂业务。",
+      "answer": "",
+      "category": "Redis消息",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T01:59:24.039Z"
+    },
+    {
+      "id": "redis_041",
+      "title": "Redis 持久化与主从复制、集群机制的关系是什么？各自如何影响数据安全和高可用？",
+      "content": "请分析Redis持久化、主从复制和集群机制之间的关系，以及它们对数据安全和高可用的影响。",
+      "hint": "持久化保障单机数据不丢，主从复制实现数据冗余，哨兵/集群保障服务不中断。生产环境要结合持久化、主从复制、自动故障转移机制，才能既高可用又高安全。",
+      "answer": "",
+      "category": "Redis架构",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T01:59:24.040Z"
+    },
+    {
+      "id": "redis_042",
+      "title": "Redis 的慢查询如何监控与分析？常见慢查询场景如何优化？",
+      "content": "请详细介绍Redis慢查询的监控方法、分析技巧和常见场景的优化策略。",
+      "hint": "Redis 用 SLOWLOG 监控慢查询，重点关注大 Key 和全量操作，建议用 SCAN 代替 KEYS，定期分析慢查询日志，优化数据结构和命令使用，保障高性能。",
+      "answer": "",
+      "category": "Redis性能优化",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.041Z"
+    },
+    {
+      "id": "redis_043",
+      "title": "Redis 的事务机制是怎样的？能否保证原子性和隔离性？常见的事务相关命令有哪些？",
+      "content": "请详细介绍Redis事务的实现机制、ACID特性支持情况和相关命令的使用。",
+      "hint": "Redis 事务通过 MULTI-EXEC 保证命令批量有序执行，支持原子性但不支持回滚。可用 WATCH 实现乐观锁防止并发冲突，适合需要简单事务控制的场景。",
+      "answer": "",
+      "category": "Redis事务",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T01:59:24.042Z"
+    },
+    {
+      "id": "java_001",
+      "title": "双亲委派机制是什么？",
+      "content": "请详细解释Java中双亲委派机制的工作原理，包括其设计目的和解决的问题。",
+      "hint": "是Java类加载器（ClassLoader）中的一种工作原理。主要用于解决类加载过程中的安全和避免重复加载的问题。",
+      "answer": "",
+      "category": "Java类加载",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.000Z"
+    },
+    {
+      "id": "java_002",
+      "title": "什么是类加载器？如何实现自定义类加载器？",
+      "content": "请详细介绍Java类加载器的分类、工作流程，并说明如何实现自定义类加载器，包括常见的应用场景。",
+      "hint": "类加载器类型、双亲委派流程、定制场景和实现方式要熟记。记得举例：Tomcat 热部署、SPI 插件机制、加密 class 加载等。刷题口诀：类加载三类清、双亲委派防篡改、自定义 loader 灵活用",
+      "answer": "",
+      "category": "Java类加载",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:03:37.001Z"
+    },
+    {
+      "id": "java_003",
+      "title": "介绍一下类加载器",
+      "content": "请详细介绍Java类加载的完整过程，包括每个阶段的具体作用和执行内容。",
+      "hint": "加载、验证、准备、解析、初始化",
+      "answer": "",
+      "category": "Java类加载",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.002Z"
+    },
+    {
+      "id": "java_004",
+      "title": "编译型语言和解释型语言的区别？",
+      "content": "请详细比较编译型语言和解释型语言的特点、执行方式、优缺点，并举例说明。",
+      "hint": "编译型语言：在程序执行之前，整个源代码会被编译成机器码或者字节码，生成可执行文件。执行时直接运行编译后的代码，速度快，但跨平台性较差。解释型语言：在程序执行时，逐行解释执行源代码，不生成独立的可执行文件。通常由解释器动态解释并执行代码，跨平台性好，但执行速度相对较慢。典型的编译型语言如C、C++，典型的解释型语言如Python、JavaScript。",
+      "answer": "",
+      "category": "编程语言基础",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:03:37.003Z"
+    },
+    {
+      "id": "java_005",
+      "title": "动态数组的实现有哪些？",
+      "content": "请介绍Java中动态数组的实现类型，并比较它们的特点和使用场景。",
+      "hint": "ArrayList和Vector都支持动态扩容，都属于动态数组。线程安全性：Vector是线程安全的，ArrayList不是线程安全的。扩容策略：ArrayList在底层数组不够用时在原来的基础上扩展0.5倍，Vector是扩展1倍。",
+      "answer": "",
+      "category": "Java集合",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:03:37.004Z"
+    },
+    {
+      "id": "java_006",
+      "title": "HashMap 的扩容条件是什么？",
+      "content": "请详细解释HashMap在Java7和Java8中的扩容条件和机制差异。",
+      "hint": "Java7扩容需要满足两个条件：1、当前数据存储的数量（即size()）大小必须大于等于阈值；2、当前加入的数据是否发生了hash冲突。Java8只需要满足条件1。",
+      "answer": "",
+      "category": "Java集合",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.005Z"
+    },
+    {
+      "id": "java_007",
+      "title": "Java 里面线程有哪些状态?",
+      "content": "请详细介绍Java线程的生命周期状态，以及各状态之间的转换条件。",
+      "hint": "new、Runnable、blocked、waiting、timed_waiting、terminated；",
+      "answer": "",
+      "category": "Java多线程",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.006Z"
+    },
+    {
+      "id": "java_008",
+      "title": "wait 状态下的线程如何进行恢复到 running 状态?",
+      "content": "请详细解释处于wait状态的线程如何被唤醒并恢复执行，包括不同的唤醒机制。",
+      "hint": "等待的线程被其他线程对象唤醒，notify()和notifyAll()。如果线程没有获取到锁则会直接进入 Waiting 状态，其实这种本质上它就是执行了 LockSupport.park() 方法进入了Waiting 状态，那么解锁的时候会执行LockSupport.unpark(Thread)，与上面park方法对应，给出许可证，解除等待状态。",
+      "answer": "",
+      "category": "Java多线程",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.007Z"
+    },
+    {
+      "id": "java_009",
+      "title": "notify 和 notifyAll 的区别?",
+      "content": "请详细比较notify和notifyAll的作用机制和使用场景，分析各自的优缺点。",
+      "hint": "notify 只唤醒一个线程，其他线程仍在等待，若该线程未调用 notify，其余线程可能永远无法唤醒。notifyAll 唤醒所有等待线程，它们竞争锁，最终只有一个线程执行，剩余线程继续等待锁释放。",
+      "answer": "",
+      "category": "Java多线程",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.008Z"
+    },
+    {
+      "id": "java_010",
+      "title": "notify 选择哪个线程?",
+      "content": "请解释notify方法在多个等待线程中选择唤醒哪个线程的规则和实现机制。",
+      "hint": "notify在源码的注释中说到notify选择唤醒的线程是任意的，但是依赖于具体实现的jvm。JVM有很多实现，比较流行的就是hotspot，hotspot对notofy()的实现并不是我们以为的随机唤醒，而是‘先进先出’的顺序唤醒。",
+      "answer": "",
+      "category": "Java多线程",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:03:37.009Z"
+    },
+    {
+      "id": "java_011",
+      "title": "如何停止一个线程的运行?",
+      "content": "请详细介绍停止Java线程的各种方法，分析各种方法的优缺点和适用场景。",
+      "hint": "1、使用标志位；2、使用interrupt()；3、结合interrupt()和标志位；4、使用 FutureTask.cancel(true)",
+      "answer": "",
+      "category": "Java多线程",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.010Z"
+    },
+    {
+      "id": "java_012",
+      "title": "介绍NIO BIO AIO？",
+      "content": "请详细比较Java中的BIO、NIO和AIO三种I/O模型，包括它们的特点、原理和适用场景。",
+      "hint": "BIO（同步阻塞）：传统 I/O 模式，适用于小规模连接。NIO（同步非阻塞）：通过 Selector 实现多路复用，适用于高并发。AIO（异步非阻塞）：基于回调机制，适用于超高并发、长连接。",
+      "answer": "",
+      "category": "Java IO",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:03:37.011Z"
+    },
+    {
+      "id": "java_013",
+      "title": "volatile可见性例子",
+      "content": "请通过具体的代码例子说明volatile关键字如何保证变量的可见性。",
+      "hint": "",
+      "answer": "",
+      "category": "Java多线程",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.012Z"
+    },
+    {
+      "id": "java_014",
+      "title": "volatile 保证原子性吗？",
+      "content": "请分析volatile关键字的作用范围，说明它是否能保证操作的原子性，并提供解决方案。",
+      "hint": "volatile关键字并没有保证我们的变量的原子性，volatile是Java虚拟机提供的一种轻量级的同步机制，主要有这三个特性：保证可见性、不保证原子性、禁止指令重排。使用 synchronized来保证原子性",
+      "answer": "",
+      "category": "Java多线程",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.013Z"
+    },
+    {
+      "id": "java_015",
+      "title": "synchronized 支持重入吗？如何实现的?",
+      "content": "请详细解释synchronized的重入特性及其底层实现机制。",
+      "hint": "✔ synchronized 支持重入，同一线程可多次获取同一把锁。✔ 通过对象头的'锁计数器'实现，锁被同一线程持有时计数递增，释放时递减。✔ 避免死锁，允许父子类方法或递归调用顺利执行。🚀",
+      "answer": "",
+      "category": "Java多线程",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.014Z"
+    },
+    {
+      "id": "java_016",
+      "title": "Java创建线程有几种方式",
+      "content": "请详细介绍Java中创建线程的各种方式，并比较它们的特点和适用场景。",
+      "hint": "继承Thread类，重写run()方法；实现Runnable接口并实现run()方法，然后将实现了Runnable接口的类传递给Thread类；使用Callable和Future接口通过Executor框架创建线程；通过线程池方式创建。",
+      "answer": "",
+      "category": "Java多线程",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:03:37.015Z"
+    },
+    {
+      "id": "java_017",
+      "title": "线程池有哪些优势？",
+      "content": "请详细分析使用线程池相比直接创建线程的优势和好处。",
+      "hint": "减少线程创建和销毁的开销：频繁地创建和销毁线程会消耗大量系统资源，线程池通过重用已存在的线程来减少这种开销。提高响应速度：当任务到达时，无需等待线程的创建即可立即执行，因为线程池中已经有等待的线程。",
+      "answer": "",
+      "category": "Java多线程",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.016Z"
+    },
+    {
+      "id": "java_018",
+      "title": "说一下面向对象3大特性理解？",
+      "content": "请详细解释面向对象编程的三大特性，并结合Java语言特点进行说明。",
+      "hint": "封装、继承、多态",
+      "answer": "",
+      "category": "Java基础",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:03:37.017Z"
+    },
+    {
+      "id": "java_019",
+      "title": "Java有什么常用的集合类？",
+      "content": "请详细介绍Java中常用的集合类，包括它们的特点和适用场景。",
+      "hint": "List、Set、Map、Queue。",
+      "answer": "",
+      "category": "Java集合",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:03:37.018Z"
+    },
+    {
+      "id": "java_020",
+      "title": "有哪些集合类是线程安全的，哪些是不安全的？",
+      "content": "请分类介绍Java集合中哪些是线程安全的，哪些是非线程安全的，并解释原因。",
+      "hint": "Vector、HashTable、Properties是线程安全的；ArrayList、LinkedList、HashSet、TreeSet、HashMap、TreeMap等都是线程不安全的。",
+      "answer": "",
+      "category": "Java集合",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.019Z"
+    },
+    {
+      "id": "java_021",
+      "title": "ArrayList和LinkedList区别？",
+      "content": "请详细比较ArrayList和LinkedList的底层实现、性能特点和适用场景。",
+      "hint": "都实现了List接口，底层数据结构、插入删除元素效率、随机访问效率、空间占用、使用场景、线程安全",
+      "answer": "",
+      "category": "Java集合",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.020Z"
+    },
+    {
+      "id": "java_022",
+      "title": "讲下HashMap？",
+      "content": "请详细介绍HashMap的底层实现原理，包括JDK1.7和JDK1.8的差异。",
+      "hint": "从JDK1.7【数组+链表】与JDK1.8【小于8使用链表，超过8使用红黑树】回答",
+      "answer": "",
+      "category": "Java集合",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:03:37.021Z"
+    },
+    {
+      "id": "java_023",
+      "title": "讲下ConcurrentHashMap？",
+      "content": "请详细介绍ConcurrentHashMap的实现原理和线程安全机制，包括不同版本的差异。",
+      "hint": "JDK1.7【数组+链表】JDK1.8【数组 + 链表/红黑树】",
+      "answer": "",
+      "category": "Java集合",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:03:37.022Z"
+    },
+    {
+      "id": "java_024",
+      "title": "讲下阻塞队列？",
+      "content": "请详细介绍Java中的阻塞队列概念、特点和在并发编程中的应用。",
+      "hint": "阻塞队列（BlockingQueue）是一种支持阻塞插入和阻塞获取的队列，它可以在生产者-消费者模型中高效地实现线程安全的数据交换。",
+      "answer": "",
+      "category": "Java集合",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.023Z"
+    },
+    {
+      "id": "java_025",
+      "title": "讲下线程安全的List？",
+      "content": "请介绍Java中线程安全的List实现类，比较它们的特点和适用场景。",
+      "hint": "常见的线程安全的List实现包括 Collections.synchronizedList 和 CopyOnWriteArrayList【适合频繁读写】。",
+      "answer": "",
+      "category": "Java集合",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.024Z"
+    },
+    {
+      "id": "java_026",
+      "title": "Java类加载过程",
+      "content": "请详细描述Java类从加载到可以使用的完整过程，包括每个阶段的具体作用。",
+      "hint": "加载、验证、准备、解析、初始化",
+      "answer": "",
+      "category": "Java类加载",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.025Z"
+    },
+    {
+      "id": "java_027",
+      "title": "实际中类加载会遇到哪些问题？",
+      "content": "请列举并分析在实际开发中可能遇到的类加载相关问题及其解决方案。",
+      "hint": "类找不到（ClassNotFoundException）、类定义冲突（NoClassDefFoundError）、类版本不匹配（UnsupportedClassVersionError）、类加载死锁、双亲委派模型导致的类加载问题、热部署、类卸载失败、不同 ClassLoader 加载同一类",
+      "answer": "",
+      "category": "Java类加载",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:03:37.026Z"
+    },
+    {
+      "id": "java_028",
+      "title": "Java中有哪些常用的锁，在什么场景下使用？",
+      "content": "请详细介绍Java中的各种锁机制，包括它们的特点和适用场景。",
+      "hint": "synchronized、ReentrantLock、ReentrantReadWriteLock、StampedLock、Semaphore、CountDownLatch、CyclicBarrier",
+      "answer": "",
+      "category": "Java多线程",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:03:37.027Z"
+    },
+    {
+      "id": "java_029",
+      "title": "什么是反射？有哪些使用场景？",
+      "content": "请详细解释Java反射机制的原理、功能和实际应用场景。",
+      "hint": "Java 反射机制是在运行状态中，对于任意一个类，都能够知道这个类中的所有属性和方法，对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为 Java 语言的反射机制。",
+      "answer": "",
+      "category": "Java反射",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.028Z"
+    },
+    {
+      "id": "java_030",
+      "title": "ThreadLocal的作用和使用场景？",
+      "content": "请详细介绍ThreadLocal的工作原理、作用和在实际开发中的应用场景。",
+      "hint": "ThreadLocal 主要用于在每个线程内部存储和隔离变量副本，实现线程间变量独立，避免多线程共享变量导致的并发问题。",
+      "answer": "",
+      "category": "Java多线程",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.029Z"
+    },
+    {
+      "id": "java_031",
+      "title": "调用 interrupt 是如何让线程抛出异常的?",
+      "content": "请详细解释interrupt方法的工作机制，以及它如何导致线程抛出InterruptedException。",
+      "hint": "每个线程都有一个初始值为 false 的中断状态，interrupt() 会更新该状态。若线程在 sleep()、join()、wait() 等可中断方法中，会抛出 InterruptedException 并解除阻塞；否则，仅设置中断状态，线程可轮询决定是否停止。",
+      "answer": "",
+      "category": "Java多线程",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.030Z"
+    },
+    {
+      "id": "java_032",
+      "title": "如果是靠变量来停止线程，缺点是什么?",
+      "content": "请分析使用变量标志位来停止线程的方法有什么缺点和不足。",
+      "hint": "缺点是中断可能不够及时，循环判断时会到下一个循环才能判断出来。",
+      "answer": "",
+      "category": "Java多线程",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.031Z"
+    },
+    {
+      "id": "java_033",
+      "title": "什么是不可变对象（Immutable Object）？Java中如何实现不可变对象？",
+      "content": "请详细解释不可变对象的概念、特点和在Java中的实现方法。",
+      "hint": "不可变对象：final类 + final字段 + 无setter + 深拷贝引用类型字段，线程安全、可作哈希键、设计简单。",
+      "answer": "",
+      "category": "Java基础",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.032Z"
+    },
+    {
+      "id": "java_034",
+      "title": "什么是Java中的自动装箱与拆箱（Autoboxing & Unboxing）？",
+      "content": "请详细解释Java自动装箱和拆箱的机制、应用场景和需要注意的问题。",
+      "hint": "自动装箱/拆箱：基本类型与包装类型自动转换，常见于集合和运算，注意性能和空指针风险。",
+      "answer": "",
+      "category": "Java基础",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:03:37.033Z"
+    },
+    {
+      "id": "java_035",
+      "title": "什么是泛型（Generics）？Java 泛型的原理和常见使用场景?",
+      "content": "请详细介绍Java泛型的概念、实现原理和在实际开发中的应用。",
+      "hint": "泛型：类型参数化，类型检查安全，底层类型擦除，常用于集合、自定义通用类和方法。",
+      "answer": "",
+      "category": "Java泛型",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.034Z"
+    },
+    {
+      "id": "java_036",
+      "title": "什么是Java中的序列化？常见的应用场景有哪些？",
+      "content": "请详细介绍Java序列化机制的原理、实现方式和实际应用场景。",
+      "hint": "序列化：对象转字节流用于存储或传输，常用于网络通信、持久化、分布式系统。实现Serializable，配合ObjectOutputStream/ObjectInputStream使用。",
+      "answer": "",
+      "category": "Java序列化",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.035Z"
+    },
+    {
+      "id": "java_037",
+      "title": "什么是Java中的深拷贝与浅拷贝？它们的区别是什么？",
+      "content": "请详细解释深拷贝和浅拷贝的概念、区别和实现方法。",
+      "hint": "深拷贝复制对象及其引用对象，浅拷贝只复制引用地址。深拷贝两对象完全独立，浅拷贝引用类型字段会相互影响。",
+      "answer": "",
+      "category": "Java基础",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.036Z"
+    },
+    {
+      "id": "java_038",
+      "title": "什么是Java中的多态？多态的实现方式和实际应用场景有哪些？",
+      "content": "请详细解释Java多态的概念、实现机制和在面向对象设计中的作用。",
+      "hint": "多态：同一接口多种实现，分为重载和重写，父类引用指向子类对象，提升代码扩展性和灵活性。",
+      "answer": "",
+      "category": "Java基础",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.037Z"
+    },
+    {
+      "id": "java_039",
+      "title": "什么是Java中的反射？反射的常见用途是什么？",
+      "content": "请详细介绍Java反射机制的原理、功能和在框架开发中的应用。",
+      "hint": "反射：运行时获取类信息、动态创建对象和调用方法，常用于框架、工具库、JDBC、插件机制等场景。",
+      "answer": "",
+      "category": "Java反射",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.038Z"
+    },
+    {
+      "id": "java_040",
+      "title": "什么是Java中的接口（interface）和抽象类（abstract class）？它们有什么区别，实际开发中如何选择？",
+      "content": "请详细比较接口和抽象类的特点、差异和在面向对象设计中的选择原则。",
+      "hint": "接口注重规范、支持多实现；抽象类关注复用、可有成员变量和部分实现。只定义规范选接口，需要共性实现选抽象类。",
+      "answer": "",
+      "category": "Java基础",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.039Z"
+    },
+    {
+      "id": "java_041",
+      "title": "什么是Java中的异常处理机制？Checked和Unchecked异常的区别是什么？",
+      "content": "请详细介绍Java异常处理机制，包括异常分类、处理方式和最佳实践。",
+      "hint": "Java异常分Checked（编译器强制处理）、Unchecked（运行时异常），用try-catch/throws处理，提升程序健壮性和容错性。",
+      "answer": "",
+      "category": "Java异常",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.040Z"
+    },
+    {
+      "id": "java_042",
+      "title": "常见的Java异常类型有哪些？异常和错误的区别是什么？",
+      "content": "请列举常见的Java异常类型，并解释异常和错误的本质区别。",
+      "hint": "异常可分为运行时和受检异常，可被程序处理；错误是严重问题，通常无法恢复。",
+      "answer": "",
+      "category": "Java异常",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:03:37.041Z"
+    },
+    {
+      "id": "java_043",
+      "title": "什么是Java中的内部类？有哪些类型？实际开发中如何使用？",
+      "content": "请详细介绍Java内部类的分类、特点和在实际开发中的应用场景。",
+      "hint": "内部类有成员、静态、局部、匿名四种，常用于封装辅助逻辑、事件回调和隐藏实现细节。可访问外部类成员，简化开发。",
+      "answer": "",
+      "category": "Java基础",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.042Z"
+    },
+    {
+      "id": "java_044",
+      "title": "什么是Java中的Lambda表达式？常见的使用场景有哪些？",
+      "content": "请详细介绍Java 8引入的Lambda表达式的语法、特点和应用场景。",
+      "hint": "Lambda表达式用于简化单方法接口实现，常用于集合操作、线程、回调等场景，使代码更简洁明了。",
+      "answer": "",
+      "category": "Java8特性",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.043Z"
+    },
+    {
+      "id": "java_045",
+      "title": "什么是Java中的泛型擦除（Type Erasure）？泛型擦除带来了哪些限制？",
+      "content": "请详细解释Java泛型擦除的机制、原因和对编程带来的影响。",
+      "hint": "Java泛型编译后类型被擦除，运行时无泛型信息，限制了泛型数组、类型判断等操作，常需用Class参数或反射辅助。",
+      "answer": "",
+      "category": "Java泛型",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:03:37.044Z"
+    },
+    {
+      "id": "java_046",
+      "title": "什么是Java中的注解（Annotation）？常见的应用场景有哪些？",
+      "content": "请详细介绍Java注解的概念、分类和在现代Java开发中的重要作用。",
+      "hint": "注解用于为代码添加元数据，常见于编译检查、框架配置、自动化文档和运行时反射。支持自定义，便于自动化和解耦。",
+      "answer": "",
+      "category": "Java注解",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.045Z"
+    },
+    {
+      "id": "java_047",
+      "title": "什么是JDK、JRE和JVM？三者有什么区别？",
+      "content": "请详细解释JDK、JRE和JVM的概念、组成和相互关系。",
+      "hint": "JDK用于开发，JRE用于运行，JVM用于跨平台。JDK包含JRE，JRE包含JVM。",
+      "answer": "",
+      "category": "Java基础",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:03:37.046Z"
+    },
+    {
+      "id": "java_048",
+      "title": "解释Java的跨平台原理（'一次编写，到处运行'）是如何实现的？",
+      "content": "请详细解释Java如何实现跨平台特性，包括编译和运行机制。",
+      "hint": "Java 跨平台靠 JVM，不同平台有不同 JVM，只需编译一次字节码，就能在多种系统运行。",
+      "answer": "",
+      "category": "Java基础",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.047Z"
+    },
+    {
+      "id": "java_049",
+      "title": "Java中的String和StringBuilder、StringBuffer有什么区别？",
+      "content": "请详细比较这三种字符串相关类的特点、性能和适用场景。",
+      "hint": "String不可变，适合少量拼接；StringBuilder高效适合单线程拼接；StringBuffer线程安全适合多线程。",
+      "answer": "",
+      "category": "Java基础",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:03:37.048Z"
+    },
+    {
+      "id": "java_050",
+      "title": "Java中的面向对象特性有哪些？请简要说明。",
+      "content": "请详细介绍Java面向对象编程的核心特性及其在语言中的体现。",
+      "hint": "Java面向对象特性有封装、继承、多态和抽象，提升代码复用性、安全性和扩展性。",
+      "answer": "",
+      "category": "Java基础",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:03:37.049Z"
+    },
+    {
+      "id": "java_051",
+      "title": "简述Java类与对象的关系。",
+      "content": "请解释Java中类和对象的概念及其相互关系。",
+      "hint": "类是模板，对象是实例。类描述属性和行为，对象具体持有数据并能执行操作。",
+      "answer": "",
+      "category": "Java基础",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:03:37.050Z"
+    },
+    {
+      "id": "java_052",
+      "title": "什么是构造方法？构造方法的特点和作用是什么？",
+      "content": "请详细介绍Java构造方法的概念、特点和在对象创建中的作用。",
+      "hint": "构造方法用于对象创建时初始化，方法名与类名一致，无返回值，可重载。",
+      "answer": "",
+      "category": "Java基础",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:03:37.051Z"
+    },
+    {
+      "id": "java_053",
+      "title": "什么是方法重载（Overload）和方法重写（Override）？有何区别？",
+      "content": "请详细比较方法重载和方法重写的概念、实现条件和应用场景。",
+      "hint": "重载是同类中方法名相同参数不同，重写是子类改变父类方法实现，二者关注点不同。",
+      "answer": "",
+      "category": "Java基础",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:03:37.052Z"
+    },
+    {
+      "id": "java_054",
+      "title": "什么是this关键字？Java中this的常用场景有哪些？",
+      "content": "请详细介绍this关键字的含义和在Java编程中的各种使用场景。",
+      "hint": "this代表当前对象，常用于区分同名变量、调用本类其他构造及返回自身实例。",
+      "answer": "",
+      "category": "Java基础",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:03:37.053Z"
+    },
+    {
+      "id": "java_055",
+      "title": "什么是static关键字？它的常见用途有哪些？",
+      "content": "请详细介绍static关键字的作用和在Java中的各种应用场景。",
+      "hint": "static修饰的成员属于类本身，常用于共享变量、工具方法、静态初始化和内部类。",
+      "answer": "",
+      "category": "Java基础",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:03:37.054Z"
+    },
+    {
+      "id": "java_056",
+      "title": "什么是包（package）？Java中包的作用是什么？",
+      "content": "请详细介绍Java包机制的概念、作用和命名规范。",
+      "hint": "包用于组织类，防止命名冲突，便于管理和控制访问，建议用域名倒序命名。",
+      "answer": "",
+      "category": "Java基础",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:03:37.055Z"
+    },
+    {
+      "id": "java_057",
+      "title": "Java中的访问修饰符有哪些？分别有什么作用？",
+      "content": "请详细介绍Java的四种访问修饰符及其访问权限范围。",
+      "hint": "四种访问修饰符：private最严格，public最开放，default包内可见，protected包及子类可见。",
+      "answer": "",
+      "category": "Java基础",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:03:37.056Z"
+    },
+    {
+      "id": "java_058",
+      "title": "什么是 Java 内存模型（Java Memory Model, JMM）？它解决了哪些问题？请举例说明 JMM 如何影响多线程程序的正确性。",
+      "content": "请详细介绍Java内存模型的概念、设计目的和对多线程编程的影响，并通过具体例子说明。",
+      "hint": "JMM 三大性，主内存/工作内存分离，volatile 保可见，synchronized 保原子，写多线程一定牢记！",
+      "answer": "",
+      "category": "Java内存模型",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:03:37.057Z"
+    },
+    {
+      "id": "java_059",
+      "title": "什么是乐观锁与悲观锁？它们的实现方式和适用场景各是什么？",
+      "content": "请详细比较乐观锁和悲观锁的概念、实现机制和在不同场景下的选择原则。",
+      "hint": "乐观锁适合读多写少，性能高但可能要重试（如 CAS）。悲观锁适合写多读少，安全但效率低（如 synchronized）。典型面试点：CAS、AtomicXXX、数据库版本号、synchronized 区别和应用。",
+      "answer": "",
+      "category": "Java并发锁",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:03:37.058Z"
+    },
+    {
+      "id": "java_060",
+      "title": "什么是CAS（Compare-And-Swap）？它在Java中的实现原理、优缺点以及应用场景是什么？",
+      "content": "请详细介绍CAS机制的工作原理、在Java中的实现和在并发编程中的应用。",
+      "hint": "CAS 是无锁并发的核心，compare-and-swap原理+自旋重试机制。优点：高性能，无阻塞。缺点：ABA、自旋、单变量。面试常考：CAS原理、ABA问题、CAS与synchronized对比及适用场景。",
+      "answer": "",
+      "category": "Java并发锁",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:03:37.059Z"
+    },
+    {
+      "id": "java_061",
+      "title": "什么是AQS的原理、应用及常见实现有哪些？",
+      "content": "请详细介绍AbstractQueuedSynchronizer的设计原理、核心机制和在JUC包中的应用。",
+      "hint": "AQS 用 state + 队列统一管理同步器，实现锁/信号量/闭锁等并发工具。原理：CAS修改state，失败则排队阻塞，唤醒后重试。常用同步器（ReentrantLock、Semaphore、CountDownLatch 等）都基于AQS。面试重点：AQS的队列原理、独占与共享模式、模板方法设计",
+      "answer": "",
+      "category": "Java并发框架",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:03:37.060Z"
+    },
+    {
+      "id": "java_062",
+      "title": "AQS的底层原理细节与面试要点",
+      "content": "请深入分析AQS的底层实现细节，包括队列管理、状态控制和线程唤醒机制。",
+      "hint": "用简明语言描述AQS的结构（state+队列），说明其支持的两种模式；能举出常见实现类，并解释其底层原理；强调AQS模板方法思想，子类只需实现资源获取/释放逻辑。",
+      "answer": "",
+      "category": "Java并发框架",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:03:37.061Z"
+    },
+    {
+      "id": "java_063",
+      "title": "AQS常见面试追问与补充",
+      "content": "请全面总结AQS在Java并发编程中的重要地位和设计思想，以及面试中的常见追问点。",
+      "hint": "AQS是JUC包下锁和同步器的基础框架，核心思想是用CAS保证state原子性，用FIFO队列管理等待线程，通过模板方法支持独占与共享两种模式。常见实现有ReentrantLock、Semaphore、CountDownLatch等。AQS通过高效挂起/唤醒和公平/非公平策略，兼顾了性能和灵活性，是Java并发编程的基石。",
+      "answer": "",
+      "category": "Java并发框架",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:03:37.062Z"
+    },
+    {
+      "id": "jvm_001",
+      "title": "JVM 入门到进阶全解析",
+      "content": "请全面介绍JVM的核心概念、架构组成和运行原理，包括内存模型、垃圾回收、类加载等主要机制。",
+      "hint": "",
+      "answer": "",
+      "category": "JVM基础",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:07:54.000Z"
+    },
+    {
+      "id": "jvm_002",
+      "title": "JVM中对象的生命周期和引用类型有哪些？如何影响垃圾回收？",
+      "content": "请详细解释Java对象的生命周期各个阶段，介绍四种引用类型的特点，并分析它们对垃圾回收的影响。",
+      "hint": "对象生命周期：创建→使用→不可达→等待回收→被回收。四种引用类型：强、软、弱、虚。引用强度影响GC回收时机。典型应用：缓存（软引用）、ThreadLocal（弱引用）、回收通知（虚引用）。复习提示：'强软弱虚四种引用，引用越弱越易被GC'",
+      "answer": "",
+      "category": "JVM垃圾回收",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:07:54.001Z"
+    },
+    {
+      "id": "jvm_003",
+      "title": "垃圾回收 cms和g1的区别是什么？",
+      "content": "请详细比较CMS和G1垃圾收集器的设计思想、工作机制、性能特点和适用场景。",
+      "hint": "回收策略、垃圾收集目标、内存划分、STW停顿时间、回收过程、吞吐量、适用场景、废弃情况",
+      "answer": "",
+      "category": "JVM垃圾回收",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:07:54.002Z"
+    },
+    {
+      "id": "jvm_004",
+      "title": "讲下JVM内存区域？",
+      "content": "请详细介绍JVM运行时数据区的各个组成部分，包括它们的作用、特点和可能出现的异常。",
+      "hint": "方法区：存储类元数据，JDK 8 之后使用元空间（Metaspace）。堆：存储对象，GC 主要管理区域，分新生代 & 老年代。虚拟机栈：存储局部变量表、方法调用信息，递归深会导致 StackOverflowError。本地方法栈：服务于 JNI 调用，溢出也会抛出 StackOverflowError。程序计数器：记录当前线程执行的字节码指令地址。",
+      "answer": "",
+      "category": "JVM内存管理",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:07:54.003Z"
+    },
+    {
+      "id": "jvm_005",
+      "title": "你知道哪些 JVM 的 GC 机制？",
+      "content": "请详细介绍JVM中各种垃圾收集器的特点、算法和适用场景。",
+      "hint": "Serial收集器（复制算法)、ParNew收集器 (复制算法)、Parallel Scavenge收集器 (复制算法)、Serial Old收集器 (标记-整理算法)、Parallel Old收集器 (标记-整理算法)、CMS(Concurrent Mark Sweep)收集器（标记-清除算法）、G1(Garbage First)收集器 (标记-整理算法)",
+      "answer": "",
+      "category": "JVM垃圾回收",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:07:54.004Z"
+    },
+    {
+      "id": "jvm_006",
+      "title": "什么是逃逸分析？它是如何优化对象分配和同步的？",
+      "content": "请详细解释逃逸分析的概念、分析过程和它带来的优化效果，包括具体的优化技术。",
+      "hint": "逃逸分析：判断对象作用域，决定对象分配位置和优化锁。优化点：栈上分配、标量替换、同步消除。典型例子：方法内临时对象、同步块优化。相关JVM参数：-XX:+DoEscapeAnalysis。复习提示：'判断对象是否只在方法内使用，能否避免堆分配和无用同步'",
+      "answer": "",
+      "category": "JVM优化",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:07:54.005Z"
+    },
+    {
+      "id": "jvm_007",
+      "title": "什么是JVM内存溢出（OOM）和内存泄漏？如何定位和解决？",
+      "content": "请详细解释内存溢出和内存泄漏的概念、产生原因，并介绍排查和解决这些问题的方法和工具。",
+      "hint": "OOM：JVM分配内存失败，常见于堆、元空间、栈。内存泄漏：无用对象仍被引用，无法回收。排查思路：分析日志、heap dump、监控曲线、代码审查。解决方法：优化代码、合理配置参数、用工具分析。复习提示：'OOM看异常类型，heap dump查根因，注意静态变量和大对象引用'",
+      "answer": "",
+      "category": "JVM故障排查",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:07:54.006Z"
+    },
+    {
+      "id": "jvm_008",
+      "title": "JVM中有哪些常见的性能监控与排查工具？各自适用哪些场景？",
+      "content": "请详细介绍JVM性能监控和问题排查的各种工具，包括它们的特点和具体使用场景。",
+      "hint": "JDK自带工具：jps、jstack、jmap、jstat、jinfo、VisualVM、JConsole。生产/复杂场景：JMC、MAT、Arthas、YourKit/JProfiler。典型用途：查线程死锁（jstack）、查内存泄漏（jmap+MAT）、实时GC监控（jstat/VisualVM）、线上低开销采集（JMC）。复习提示：'jps找进程、jstack查线程、jmap导内存、VisualVM/JMC图形化分析'",
+      "answer": "",
+      "category": "JVM工具",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:07:54.007Z"
+    },
+    {
+      "id": "jvm_009",
+      "title": "JVM是如何进行类的热加载和热替换的？有哪些常见实现方式和使用场景？",
+      "content": "请详细介绍JVM热加载和热替换的机制、实现方式和在实际开发中的应用。",
+      "hint": "JVM热加载/热替换：动态加载、替换类字节码，无需重启JVM。原生HotSwap支持有限（方法体），复杂变更需第三方工具。常用工具：JRebel、HotswapAgent、IDEA热加载、Spring Boot Devtools。典型场景：开发调试、插件系统、服务平滑升级。复习提示：'热替换=改代码不重启，结构变更需用Agent/插件'",
+      "answer": "",
+      "category": "JVM高级特性",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:07:54.008Z"
+    },
+    {
+      "id": "jvm_010",
+      "title": "JVM的即时编译（JIT）机制是什么？有哪些优化手段？如何影响运行性能？",
+      "content": "请详细解释JIT编译器的工作原理、优化技术和对Java程序性能的影响。",
+      "hint": "JIT：热点代码动态编译为机器码，提升执行效率。优化手段：方法内联、逃逸分析、锁优化、循环优化。影响：运行越久，性能越高效（预热期）。典型参数：-XX:+PrintCompilation, -XX:+TieredCompilation。复习提示：'JIT=热点编译提升性能，方法内联+逃逸分析是核心'",
+      "answer": "",
+      "category": "JVM编译优化",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:07:54.009Z"
+    },
+    {
+      "id": "jvm_011",
+      "title": "JVM是如何实现线程安全的？有哪些内存模型和关键字保障并发正确性？",
+      "content": "请详细介绍JVM在并发环境下保证线程安全的机制，包括内存模型和相关关键字的作用。",
+      "hint": "JVM线程安全依靠JMM+关键字（volatile、synchronized、final、原子类）。关注可见性、原子性、有序性。典型场景：单例模式、原子计数、高并发下的锁和无锁。复习提示：'JMM三性，volatile可见性/synchronized互斥，原子类无锁并发'",
+      "answer": "",
+      "category": "JVM并发",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:07:54.010Z"
+    },
+    {
+      "id": "jvm_012",
+      "title": "JVM垃圾回收（GC）的分代模型是什么？各代的回收器如何协同工作？",
+      "content": "请详细解释JVM分代垃圾回收的设计思想、各代的特点和回收器的协同机制。",
+      "hint": "JVM分代：新生代（Eden+Survivor）、老年代、元空间。GC分为Minor GC（新生代）、Full GC（全堆/老年代）。对象'熬老'：多次GC后晋升老年代。典型回收器组合：ParNew/CMS、Parallel Scavenge/Parallel Old、G1。复习提示：'分代GC分新老，复制算法快，晋升规则定，回收器协同优化效率'",
+      "answer": "",
+      "category": "JVM垃圾回收",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:07:54.011Z"
+    },
+    {
+      "id": "jvm_013",
+      "title": "JVM常见的内存参数有哪些？如何调优不同场景下的JVM内存设置？",
+      "content": "请详细介绍JVM内存相关的参数配置和针对不同应用场景的调优策略。",
+      "hint": "JVM常用参数：-Xms、-Xmx、-Xss、-XX:MetaspaceSize。调优思路：结合业务类型、内存监控、GC日志，合理设置堆/栈/元空间。典型组合：高并发服务=大堆+G1，高吞吐=Parallel GC，线程多=小-Xss。复习提示：'根据应用特性设内存参数，堆/栈/元空间分清楚，监控+调优'",
+      "answer": "",
+      "category": "JVM调优",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:07:54.012Z"
+    },
+    {
+      "id": "jvm_014",
+      "title": "JVM的Safepoint是什么？为什么需要Safepoint？有哪些典型触发场景？",
+      "content": "请详细解释Safepoint的概念、设计目的和在JVM中的重要作用。",
+      "hint": "Safepoint：JVM让所有线程统一挂起，便于全局操作（如GC、Dump）。典型触发：GC、线程Dump、类卸载、Deoptimization等。停顿长原因：线程长时间无Safepoint（常见于大循环）。复习提示：'Safepoint=全线程暂停点，保障GC等全局操作安全'",
+      "answer": "",
+      "category": "JVM机制",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:07:54.013Z"
+    },
+    {
+      "id": "jvm_015",
+      "title": "介绍一下：线程Dump（jstack）",
+      "content": "请详细介绍线程Dump的概念、获取方法和在问题排查中的应用。",
+      "hint": "线程Dump（jstack）是Java并发问题排查的重要工具，可以帮助快速定位线程相关的各种异常，是Java开发和运维必备技能之一。",
+      "answer": "",
+      "category": "JVM工具",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:07:54.014Z"
+    },
+    {
+      "id": "jvm_016",
+      "title": "JVM垃圾回收（GC）有哪些常见的回收器？它们各自的特点和适用场景是什么？",
+      "content": "请详细介绍各种JVM垃圾回收器的特点、性能表现和选择原则。",
+      "hint": "GC有串行、并行、并发、低延迟多种，按业务选型。响应时间敏感选CMS/G1，吞吐量优先选Parallel，高并发/大堆优先选G1、ZGC、Shenandoah。复习提示：'G1服务器首选，ZGC低延迟，CMS老年代并发，Parallel吞吐量优先'",
+      "answer": "",
+      "category": "JVM垃圾回收",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:07:54.015Z"
+    },
+    {
+      "id": "jvm_017",
+      "title": "JVM运行时数据区包含哪些部分？各自作用是什么？",
+      "content": "请详细介绍JVM运行时数据区的组成结构，包括各部分的功能和可能出现的异常。",
+      "hint": "五大区域：PC寄存器、JVM栈、本地方法栈、堆、方法区（元空间）。常量池：方法区的一部分，存字面量和符号引用。直接内存：堆外，由 NIO 等框架使用。OOM类型：StackOverflowError, Java heap space, PermGen／Metaspace, Direct buffer memory。复习提示：'PC懂指令；栈存帧；堆存对象；区分PermGen与Metaspace'",
+      "answer": "",
+      "category": "JVM内存管理",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:07:54.016Z"
+    },
+    {
+      "id": "jvm_018",
+      "title": "JVM有哪些常见的类加载器？它们的加载顺序和作用是什么？",
+      "content": "请详细介绍JVM类加载器的层次结构、双亲委派机制和自定义类加载器的应用。",
+      "hint": "三大内置加载器：Bootstrap、Extension、Application。双亲委派：先父后子，防篡改。自定义加载器：插件隔离、热部署、加密加载。复习提示：'启动扩展系统三层委派，自定义破委派灵活拓展'",
+      "answer": "",
+      "category": "JVM类加载",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:07:54.017Z"
+    },
+    {
+      "id": "jvm_019",
+      "title": "请举例说明一次实际的 JVM 参数调优过程和调整依据",
+      "content": "请结合实际案例，详细描述JVM参数调优的完整过程，包括问题分析、调优策略和验证方法。",
+      "hint": "'收集（GC 日志+Heap Dump）→ 分析（晋升率+Gen 使用率）→ 策略（新生代、GC 算法、堆大小、晋升阈值）→ 小步验证→上线监控'",
+      "answer": "",
+      "category": "JVM调优",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:07:54.018Z"
+    },
+    {
+      "id": "jvm_020",
+      "title": "JVM中常见的OOM错误类型有哪些？如何定位和解决？",
+      "content": "请详细介绍各种类型的OOM错误，包括它们的产生原因、诊断方法和解决策略。",
+      "hint": "常见 OOM：Heap Space、PermGen/Metaspace、GC Overhead、Direct Buffer、Native Thread。定位思路：GC 日志 → Heap Dump/Class Histogram → 分析工具（MAT/VisualVM）。解决策略：调参（堆、元空间、Direct Memory、线程栈）、代码优化（缓存、代理、线程池）。复习口诀：'看日志、导 dump、用 MAT，定位泄漏／大对象；参数扩／收；优化代码防 OOM'",
+      "answer": "",
+      "category": "JVM故障排查",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:07:54.019Z"
+    },
+    {
+      "id": "jvm_021",
+      "title": "生产环境下如何监控JVM健康状态？常见监控指标有哪些？",
+      "content": "请详细介绍生产环境JVM监控的策略、工具和关键指标。",
+      "hint": "关键监控：堆内存、GC（次数/耗时/停顿）、线程、类加载、Metaspace、CPU。工具链：JMX（JConsole/JMC）、Prometheus+Grafana、APM、ELK。告警：堆使用率＞80%、GC 停顿过长、线程饱和、业务指标异常。复习口诀：'堆／GC／线程／Metaspace／CPU＋业务埋点，视图+告警+演练'",
+      "answer": "",
+      "category": "JVM监控",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:07:54.020Z"
+    },
+    {
+      "id": "jvm_022",
+      "title": "Java对象的创建与内存分配过程是什么？TLAB是什么？",
+      "content": "请详细介绍Java对象的创建流程、内存分配策略和TLAB的作用机制。",
+      "hint": "步骤：加载→分配（Eden/老年代/TLAB）→设头→归零→构造。TLAB：线程本地分配，减少竞争。大对象：直接老年代或晋升。复习提示：'TLAB 本地分配，Eden 碰撞快，老年代晋升慎'",
+      "answer": "",
+      "category": "JVM内存管理",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:07:54.021Z"
+    },
+    {
+      "id": "jvm_023",
+      "title": "JVM如何支持 Java 以外的语言特性（如 Kotlin、Scala 等）？",
+      "content": "请详细解释JVM如何实现多语言支持，包括字节码兼容性和动态语言特性的支持。",
+      "hint": "'统一字节码' + 'invokedynamic' + 'MethodHandle'。类型擦除与桥接方法。运行时库＋编译器代码生成支持多语言特性。复习提示：'JVM 执行字节码，不关心源语言；invokedynamic 与 MethodHandle 是动态语言的利器'",
+      "answer": "",
+      "category": "JVM高级特性",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:07:54.022Z"
+    },
+    {
+      "id": "jvm_024",
+      "title": "如何解读GC日志？常见GC日志参数有哪些？",
+      "content": "请详细介绍GC日志的开启方法、日志格式解读和基于日志进行调优的技巧。",
+      "hint": "开启日志：-XX:+PrintGCDetails／-Xlog:gc*。解析要点：时间戳、GC类型、空间变化、停顿时长。算法差异：Parallel、CMS、G1 日志标签与阶段。调优指标：频率、停顿、吞吐、年龄分布。复习口诀：'看日志先识类型 → 空间前后对比 → 停顿时长 → 调参（代大小+算法+线程）'",
+      "answer": "",
+      "category": "JVM调优",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:07:54.023Z"
+    },
+    {
+      "id": "jvm_025",
+      "title": "JVM如何保证类与字节码的安全性？类加载安全机制有哪些？",
+      "content": "请详细介绍JVM在类加载过程中的安全验证机制和字节码安全保障措施。",
+      "hint": "验证：魔数→版本→常量池→数据/控制流。委派：先父后子，保核心不被篡改。ProtectionDomain + SecurityManager：代码来源→权限检查。JAR 签名：完整性验证。JPMS：模块封装与可见性控制。隔离：自定义加载器沙箱。复习口诀：'验字节→委加载→域限权→签可信→模块封→隔离沙'",
+      "answer": "",
+      "category": "JVM安全",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:07:54.024Z"
+    },
+    {
+      "id": "jvm_026",
+      "title": "Java 内存模型（JMM）与 volatile 的可见性保证",
+      "content": "请详细解释Java内存模型的设计原理和volatile关键字如何保证内存可见性。",
+      "hint": "JMM：主内存 vs 工作内存。happens-before：顺序、锁、volatile、线程启动/终止。volatile：可见+有序，不原子。synchronized/CAS/AQS：互斥与高并发原语。复习口诀：'先行发生规则定序，volatile 可见有序锁互斥'",
+      "answer": "",
+      "category": "JVM并发",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:07:54.025Z"
+    },
+    {
+      "id": "jvm_027",
+      "title": "synchronized 的实现原理和锁优化",
+      "content": "请详细解释synchronized关键字的底层实现机制和JVM对锁的各种优化策略。",
+      "hint": "对象头 Mark Word + Monitor → 偏向／轻量级／重量级三态 → JIT 锁消除／锁粗化 → 参数调优（偏向、自旋）",
+      "answer": "",
+      "category": "JVM并发",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:07:54.026Z"
+    },
+    {
+      "id": "jvm_028",
+      "title": "JVM 中的字符串常量池（String Constant Pool）及 intern() 机制是什么？它们对内存和 GC 有什么影响？",
+      "content": "请详细解释字符串常量池的实现机制、intern()方法的作用和对内存管理的影响。",
+      "hint": "字符串常量池：复用字面量和 intern 生成的字符串，节省内存。intern()：将字符串放入常量池，返回池中引用。GC 影响：JDK7+ 常量池在堆，未被引用的字符串可被 GC。频繁 intern 需防 OOM。口诀：'池中复用，intern 去重，堆上易回收，滥用会 OOM'",
+      "answer": "",
+      "category": "JVM内存管理",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:07:54.027Z"
+    },
+    {
+      "id": "jvm_029",
+      "title": "什么是 GC Roots？它们如何决定对象的可达性，进而影响垃圾回收？",
+      "content": "请详细解释GC Roots的概念、类型和在垃圾回收中的作用机制。",
+      "hint": "GC Roots：栈引用、静态属性、常量、JNI、活跃线程。可达性：从 Roots 出发的引用链标记算法。影响：只要可达就不回收 → 静态缓存/单例易泄漏。提示口诀：'栈、静、常、JNI、线程 五大 Root → 图搜标记可达 → 不可达即回收'",
+      "answer": "",
+      "category": "JVM垃圾回收",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:07:54.028Z"
+    },
+    {
+      "id": "jvm_030",
+      "title": "什么是 JVM 直接内存（Direct Memory）？它的原理、典型应用及对 GC/内存管理的影响是什么？",
+      "content": "请详细介绍JVM直接内存的概念、使用场景和对系统性能的影响。",
+      "hint": "直接内存：堆外本地内存，NIO/Netty/高性能场景常用。管理方式：GC 间接触发回收，受 MaxDirectMemorySize 限制。风险：大量分配或回收不及时会导致直接内存 OOM。口诀：'堆外直连高效IO，GC间接管生命周期，参数控量防 OOM'",
+      "answer": "",
+      "category": "JVM内存管理",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:07:54.029Z"
+    },
+    {
+      "id": "jvm_031",
+      "title": "JVM 中的 Finalizer（finalize 方法）和清理机制是什么？为什么不推荐使用？如何安全地管理对象资源？",
+      "content": "请详细分析finalize方法的工作机制、存在的问题和推荐的资源管理方案。",
+      "hint": "finalize()：资源清理，但不安全，易泄漏。不推荐：不可控、不可预测、性能差。推荐：AutoCloseable + try-with-resources，JDK9+ 用 Cleaner。口诀：'资源要手关，finalize 不可靠，try-with-resources 最安全'",
+      "answer": "",
+      "category": "JVM资源管理",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:07:54.030Z"
+    },
+    {
+      "id": "jvm_032",
+      "title": "JVM 中线程栈（Stack）溢出（StackOverflowError、OutOfMemoryError: unable to create new native thread）是怎么发生的？如何排查与优化？",
+      "content": "请详细分析线程栈溢出的各种情况、产生原因和解决方案。",
+      "hint": "线程栈溢出：单线程栈满 = StackOverflowError；系统线程数满 = unable to create new native thread。排查方法：递归/线程池/线程数量。优化手段：递归转迭代、合理分配线程池、控制线程数。口诀：'单栈爆栈是递归，线程数爆是池管，jstack定位，参数调优'",
+      "answer": "",
+      "category": "JVM故障排查",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:07:54.031Z"
+    },
+    {
+      "id": "jvm_033",
+      "title": "JVM 的方法区、永久代（PermGen）与元空间（Metaspace）有什么区别？各自的作用与常见问题是什么？",
+      "content": "请详细比较方法区在不同JDK版本中的实现差异和各自的特点。",
+      "hint": "方法区：存类元数据/常量池/静态变量。PermGen：JDK8-，JVM进程内，易OOM。Metaspace：JDK8+，本地内存，物理内存限制。口诀：'方法区元数据信息，PermGen易爆，Metaspace更大，一样可OOM'",
+      "answer": "",
+      "category": "JVM内存管理",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:07:54.032Z"
+    },
+    {
+      "id": "jvm_034",
+      "title": "JVM GC调优常见误区与优化建议",
+      "content": "请分析JVM GC调优过程中的常见误区，并提供正确的调优思路和方法。",
+      "hint": "GC调优误区：只调堆、不分代、参数混用、忽略非堆、只看次数、乱用Full GC。优化建议：结合业务场景，分析GC日志，合理分代与参数，关注非堆区域。口诀：'调优不迷信，参数看回收，日志细分析，场景定策略'",
+      "answer": "",
+      "category": "JVM调优",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:07:54.033Z"
+    },
+    {
+      "id": "jvm_035",
+      "title": "JVM 新生代（Young Generation）与老年代（Old Generation）是怎么划分的？对象在不同代的'晋升'与'回收'机制是什么？",
+      "content": "请详细解释JVM分代回收的设计原理、对象晋升机制和各代的回收策略。",
+      "hint": "新生代：Eden、S0、S1，短命对象多，Minor GC 频繁。老年代：长寿对象、缓存、晋升/大对象。晋升机制：年龄、空间不足、大对象。口诀：'朝生夕死新生代，历经磨难进老年，空间不足早晋升，大对象直接进老年'",
+      "answer": "",
+      "category": "JVM垃圾回收",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:07:54.034Z"
+    },
+    {
+      "id": "spring_001",
+      "title": "spring三级缓存解决循环依赖问题？",
+      "content": "请详细解释Spring三级缓存机制的工作原理，以及它是如何解决循环依赖问题的，包括每级缓存的作用和AOP代理的处理。",
+      "hint": "Spring 三级缓存机制通过提前暴露 Bean 的引用，使得循环依赖得以解决，同时保证 AOP 代理不丢失。",
+      "answer": "",
+      "category": "Spring IoC",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:19:17.000Z"
+    },
+    {
+      "id": "spring_002",
+      "title": "如何使用spring实现事务？【深问：事务传播模型有哪些】",
+      "content": "请详细介绍Spring中实现事务的方式，并深入解释各种事务传播行为的特点和使用场景。",
+      "hint": "编程式事务（TransactionTemplate）、声明式事务（@Transactional）",
+      "answer": "",
+      "category": "Spring事务",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:19:17.001Z"
+    },
+    {
+      "id": "spring_003",
+      "title": "springboot常用注解",
+      "content": "请详细介绍SpringBoot中的常用注解，包括它们的作用、使用场景和相互关系。",
+      "hint": "Bean相关的、依赖注入、读取配置、Web相关、其他注解",
+      "answer": "",
+      "category": "SpringBoot注解",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.002Z"
+    },
+    {
+      "id": "spring_004",
+      "title": "MyBatis，#和$有什么区别",
+      "content": "请详细解释MyBatis中#{}和${}的区别，包括它们的使用场景和安全性考虑。",
+      "hint": "主要是SQL注入的问题",
+      "answer": "",
+      "category": "MyBatis",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.003Z"
+    },
+    {
+      "id": "spring_005",
+      "title": "你说到了SQL注入，那你给我设计出一个SQL注入，具体说表中的字段，然后SQL语句是怎样的",
+      "content": "请设计一个具体的SQL注入攻击案例，包括表结构、攻击语句和防范措施。",
+      "hint": "SQL 注入主要是由于 拼接 SQL 语句 造成的，攻击者可以利用它来 绕过身份验证、窃取数据，甚至破坏数据库。最有效的防范方法是 使用参数化查询，避免直接拼接用户输入到 SQL 语句中。",
+      "answer": "",
+      "category": "数据库安全",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:19:17.004Z"
+    },
+    {
+      "id": "spring_006",
+      "title": "Bean 的生命周期",
+      "content": "请详细描述Spring Bean的完整生命周期，包括每个阶段的具体操作和扩展点。",
+      "hint": "8大步",
+      "answer": "",
+      "category": "Spring IoC",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:19:17.005Z"
+    },
+    {
+      "id": "spring_007",
+      "title": "Bean是否单例？",
+      "content": "请解释Spring中Bean的作用域，特别是单例模式的特点和应用场景。",
+      "hint": "Spring 中的 Bean 默认都是单例的。",
+      "answer": "",
+      "category": "Spring IoC",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:19:17.006Z"
+    },
+    {
+      "id": "spring_008",
+      "title": "Bean的单例和非单例，生命周期是否一样",
+      "content": "请比较单例Bean和原型Bean在生命周期管理上的差异，并解释Spring容器对它们的不同处理方式。",
+      "hint": "不一样的，Spring Bean 的生命周期完全由 IoC 容器控制。Spring 只帮我们管理单例模式 Bean 的完整生命周期，对于 prototype 的 Bean，Spring 在创建好交给使用者之后，则不会再管理后续的生命周期。",
+      "answer": "",
+      "category": "Spring IoC",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.007Z"
+    },
+    {
+      "id": "spring_009",
+      "title": "Spring容器里存的是什么？",
+      "content": "请详细解释Spring容器的内部结构，包括它存储的内容和管理机制。",
+      "hint": "在Spring容器中，存储的主要是Bean对象。Bean是Spring框架中的基本组件，用于表示应用程序中的各种对象。当应用程序启动时，Spring容器会根据配置文件或注解的方式创建和管理这些Bean对象。Spring容器会负责创建、初始化、注入依赖以及销毁Bean对象。",
+      "answer": "",
+      "category": "Spring IoC",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.008Z"
+    },
+    {
+      "id": "spring_010",
+      "title": "Bean注入和xml注入最终得到了相同的效果，它们在底层是怎样做的",
+      "content": "请详细分析注解注入和XML配置注入在底层实现上的异同点，包括它们的解析和处理机制。",
+      "hint": "最终实现效果相同：无论 XML 还是注解，最终都生成 BeanDefinition，通过 反射实例化 Bean 并注入依赖。区别在于解析方式：XML 方式使用 BeanFactory + setter 方法进行注入。@Autowired 注解使用 AutowiredAnnotationBeanPostProcessor，直接通过反射赋值，不会调用 setter。推荐使用注解方式：代码更加简洁，支持 Spring Boot 自动装配，XML 适用于 复杂 XML 配置管理（如 Spring Cloud 配置中心）。",
+      "answer": "",
+      "category": "Spring IoC",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:19:17.009Z"
+    },
+    {
+      "id": "spring_011",
+      "title": "spring 里@Autowired 和 @Resource 注解有什么区别？",
+      "content": "请详细比较@Autowired和@Resource注解的来源、使用方式、匹配策略和适用场景。",
+      "hint": "来源不同、注入方式、属性、依赖性、使用场景",
+      "answer": "",
+      "category": "Spring注解",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.010Z"
+    },
+    {
+      "id": "spring_012",
+      "title": "Spring的IOC介绍一下",
+      "content": "请详细介绍Spring IoC容器的概念、原理、核心功能和在应用开发中的作用。",
+      "hint": "IOC（控制反转） 是一种设计思想，用于管理对象的依赖关系。Spring 通过 IOC 容器 负责创建、管理和注入对象，而不是由代码手动创建对象。",
+      "answer": "",
+      "category": "Spring IoC",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.011Z"
+    },
+    {
+      "id": "spring_013",
+      "title": "为什么依赖注入不适合使用字段注入？",
+      "content": "请分析字段注入的缺点和潜在问题，并推荐更好的依赖注入方式。",
+      "hint": "字段注入可能引起的三个问题：对象的外部可见性; 可能导致循环依赖; 无法设置注入的对象为final，也无法注入静态变量",
+      "answer": "",
+      "category": "Spring最佳实践",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.012Z"
+    },
+    {
+      "id": "spring_014",
+      "title": "Spring的aop介绍一下",
+      "content": "请详细介绍Spring AOP的概念、实现原理、核心组件和实际应用场景。",
+      "hint": "切面编程、动态代理实现",
+      "answer": "",
+      "category": "Spring AOP",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.013Z"
+    },
+    {
+      "id": "spring_015",
+      "title": "Spring的事务，使用this调用是否生效？",
+      "content": "请解释Spring事务在使用this调用时的行为，分析其原理和解决方案。",
+      "hint": "不能生效。因为Spring事务是通过代理对象来控制的，只有通过代理对象的方法调用才会应用事务管理的相关规则。当使用this直接调用时，是绕过了Spring的代理机制，因此不会应用事务设置",
+      "answer": "",
+      "category": "Spring事务",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:19:17.014Z"
+    },
+    {
+      "id": "spring_016",
+      "title": "Spring MVC的工作流程描述一下",
+      "content": "请详细描述Spring MVC从接收请求到返回响应的完整工作流程，包括各个组件的作用。",
+      "hint": "7大步：请求进入、寻找控制器、执行控制器、返回模型数据、解析视图、渲染视图、响应返回",
+      "answer": "",
+      "category": "Spring MVC",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.015Z"
+    },
+    {
+      "id": "spring_017",
+      "title": "Spring 中的 BeanFactory 和 ApplicationContext 有什么区别？",
+      "content": "请详细比较BeanFactory和ApplicationContext的功能差异、使用场景和选择原则。",
+      "hint": "ApplicationContext = BeanFactory + 企业级特性（如国际化、事件等），开发中优先用 ApplicationContext，BeanFactory 适合底层或特殊场景。",
+      "answer": "",
+      "category": "Spring IoC",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.016Z"
+    },
+    {
+      "id": "spring_018",
+      "title": "Spring 中的单例 Bean 是线程安全的吗？为什么？",
+      "content": "请分析Spring单例Bean的线程安全性，包括无状态和有状态Bean的区别，以及保证线程安全的方法。",
+      "hint": "Spring 单例 Bean 并不保证线程安全；与线程安全无关，需开发者自行保证。无状态 Bean 通常安全，有状态需加锁或避免状态共享。",
+      "answer": "",
+      "category": "Spring并发",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.017Z"
+    },
+    {
+      "id": "spring_019",
+      "title": "Spring 中如何实现事件发布与监听机制？",
+      "content": "请详细介绍Spring事件机制的实现方式、核心组件和在应用解耦中的作用。",
+      "hint": "Spring 事件机制：发布-监听模式，解耦模块通信。发布用 ApplicationEventPublisher，监听用 @EventListener 或 ApplicationListener。常用于通知、日志、异步等场景。",
+      "answer": "",
+      "category": "Spring事件",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.018Z"
+    },
+    {
+      "id": "spring_020",
+      "title": "Spring 中的循环依赖是什么？Spring 是如何解决循环依赖的？",
+      "content": "请详细解释循环依赖的概念、产生场景和Spring三级缓存的解决机制。",
+      "hint": "Spring 循环依赖：A 依赖 B，B 又依赖 A。Spring 通过三级缓存（singletonObjects、earlySingletonObjects、singletonFactories）机制，提前暴露 Bean 引用，解决 setter/属性注入的循环依赖。构造器注入无法解决。",
+      "answer": "",
+      "category": "Spring IoC",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:19:17.019Z"
+    },
+    {
+      "id": "spring_021",
+      "title": "什么是 Spring 的依赖注入（DI）？有哪些常用的依赖注入方式？",
+      "content": "请详细介绍依赖注入的概念、好处和各种注入方式的特点及适用场景。",
+      "hint": "依赖注入（DI）：Spring IoC 核心。构造器注入优先，Setter 适合可选依赖，字段注入不推荐。DI 解耦代码，便于测试和维护。",
+      "answer": "",
+      "category": "Spring IoC",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.020Z"
+    },
+    {
+      "id": "spring_022",
+      "title": "Spring 的事务管理是如何实现的？声明式事务和编程式事务有何区别？",
+      "content": "请详细比较声明式事务和编程式事务的实现方式、优缺点和适用场景。",
+      "hint": "Spring 事务管理：声明式（@Transactional，推荐，自动控制）和编程式（TransactionTemplate，手动控制）。事务传播行为很重要。大多数业务用声明式，复杂场景用编程式。",
+      "answer": "",
+      "category": "Spring事务",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:19:17.021Z"
+    },
+    {
+      "id": "spring_023",
+      "title": "Spring 中的 @Component、@Service、@Repository、@Controller 注解有什么区别？",
+      "content": "请详细比较这四个注解的功能差异、语义含义和在分层架构中的作用。",
+      "hint": "@Component 通用组件，@Service 业务服务，@Repository DAO 持久层（异常转换），@Controller Web 控制器（Spring MVC）。本质一样，主要是语义和层次区分。",
+      "answer": "",
+      "category": "Spring注解",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:19:17.022Z"
+    },
+    {
+      "id": "spring_024",
+      "title": "Spring 中的 Bean 作用域（Scope）有哪些？它们的应用场景是什么？",
+      "content": "请详细介绍Spring Bean的各种作用域，包括它们的生命周期和使用场景。",
+      "hint": "Spring Bean 作用域：singleton（单例，默认），prototype（多例），request/session/application/websocket（Web 环境）。常用 singleton，原型适合有状态对象，Web 场景用 request、session。",
+      "answer": "",
+      "category": "Spring IoC",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.023Z"
+    },
+    {
+      "id": "spring_025",
+      "title": "Spring 的 AOP（面向切面编程）是什么？有哪些常用的应用场景？",
+      "content": "请详细介绍Spring AOP的概念、核心注解和在实际开发中的应用案例。",
+      "hint": "Spring AOP：面向切面编程，横切关注点（如日志、事务、安全）自动织入方法执行，提升复用和解耦。常见注解 @Aspect、@Before、@After、@Around。",
+      "answer": "",
+      "category": "Spring AOP",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.024Z"
+    },
+    {
+      "id": "spring_026",
+      "title": "Spring Boot 自动配置的原理是什么？如何自定义自动配置？",
+      "content": "请详细解释SpringBoot自动配置的实现机制和创建自定义自动配置的步骤。",
+      "hint": "Spring Boot 自动配置原理：@EnableAutoConfiguration + spring.factories + 条件注解。自定义自动配置需实现配置类并注册到 spring.factories。",
+      "answer": "",
+      "category": "SpringBoot自动配置",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:19:17.025Z"
+    },
+    {
+      "id": "spring_027",
+      "title": "Spring Boot 和 Spring Cloud 有什么区别？各自的主要功能是什么？",
+      "content": "请详细比较SpringBoot和SpringCloud的定位、功能和在微服务架构中的作用。",
+      "hint": "Spring Boot：简化开发，自动配置、内嵌服务器、Starter。Spring Cloud：微服务基础设施，服务注册发现、配置中心、网关、熔断等。Cloud 基于 Boot，用于云原生/微服务架构。",
+      "answer": "",
+      "category": "SpringBoot与SpringCloud",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.026Z"
+    },
+    {
+      "id": "spring_028",
+      "title": "Spring 中的条件注解（@Conditional）有什么作用？常见的条件注解有哪些？",
+      "content": "请详细介绍条件注解的工作原理、常用类型和在自动配置中的应用。",
+      "hint": "条件注解：控制 Bean 是否装配（如 @ConditionalOnClass、@ConditionalOnMissingBean、@ConditionalOnProperty），常用于自动配置和环境切换，可自定义条件。",
+      "answer": "",
+      "category": "Spring条件装配",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.027Z"
+    },
+    {
+      "id": "spring_029",
+      "title": "Spring 中的事件机制（ApplicationEvent）是什么？有哪些常见应用场景？",
+      "content": "请详细介绍Spring事件机制的组成、工作方式和在业务解耦中的应用。",
+      "hint": "Spring 事件机制（ApplicationEvent）：应用内异步/同步解耦通信，事件发布者 publish，监听器监听处理，常用于业务解耦、扩展、异步任务等场景。",
+      "answer": "",
+      "category": "Spring事件",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.028Z"
+    },
+    {
+      "id": "spring_030",
+      "title": "Spring 的配置文件有哪些常用方式？如何实现配置的动态刷新？",
+      "content": "请详细介绍Spring配置的各种方式和实现配置动态刷新的方法。",
+      "hint": "Spring 配置方式：properties、YAML、环境变量、配置中心。动态刷新常用 @RefreshScope + Spring Cloud Config/Nacos 等，支持不重启服务实时生效。",
+      "answer": "",
+      "category": "Spring配置",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.029Z"
+    },
+    {
+      "id": "spring_031",
+      "title": "Spring 如何实现多环境（多 profile）配置？如何切换环境？",
+      "content": "请详细介绍Spring多环境配置的实现方式和环境切换的各种方法。",
+      "hint": "多环境配置：多 profile 文件（如 application-dev.properties），用 spring.profiles.active 指定激活环境，也可用 @Profile 控制 Bean 加载。支持命令行、环境变量、YAML 多块等切换方式。",
+      "answer": "",
+      "category": "Spring配置",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:19:17.030Z"
+    },
+    {
+      "id": "spring_032",
+      "title": "如何在 Spring 中实现自定义注解？自定义注解一般有哪些使用场景？",
+      "content": "请详细介绍创建和使用自定义注解的步骤，以及自定义注解的常见应用场景。",
+      "hint": "自定义注解：@interface 定义 + @Target/@Retention + AOP/后处理配合使用。常用于统一日志、权限、参数校验、标记元数据等场景。",
+      "answer": "",
+      "category": "Spring扩展",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:19:17.031Z"
+    },
+    {
+      "id": "spring_033",
+      "title": "Spring 中的 BeanPostProcessor 有什么作用？常见的应用场景有哪些？",
+      "content": "请详细介绍BeanPostProcessor的工作原理、扩展点和在Spring框架中的重要应用。",
+      "hint": "BeanPostProcessor：对 Bean 初始化前后进行扩展增强，常用于 AOP 代理、自动注解处理、自定义注解逻辑、属性修改等，是 Spring 容器的重要扩展点。",
+      "answer": "",
+      "category": "Spring扩展",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:19:17.032Z"
+    },
+     {
+      "id": "os_001",
+      "title": "进程与线程的区别?",
+      "content": "请详细比较进程和线程的概念、特点和使用场景，包括它们在资源分配、调度、开销等方面的差异。",
+      "hint": "本质区别：进程是操作系统资源分配的基本单位，而线程是任务调度和执行的基本单位。开销方面、稳定性方面、内存分配方面、包含关系。",
+      "answer": "",
+      "category": "操作系统进程线程",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:17:28.000Z"
+    },
+    {
+      "id": "os_002",
+      "title": "补充 - 协程",
+      "content": "请详细介绍协程的概念、特点和与进程、线程的区别，包括协程的调度机制和应用场景。",
+      "hint": "协程是一种用户态的轻量级线程，其调度完全由用户程序控制，而不需要内核的参与。协程拥有自己的寄存器上下文和栈，但与其他协程共享堆内存。协程的切换开销非常小，因为只需要保存和恢复协程的上下文，而无需进行内核级的上下文切换。这使得协程在处理大量并发任务时具有非常高的效率。然而，协程需要程序员显式地进行调度和管理，相对于线程和进程来说，其编程模型更为复杂。",
+      "answer": "",
+      "category": "操作系统进程线程",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:17:28.001Z"
+    },
+    {
+      "id": "os_003",
+      "title": "为什么进程崩溃不会对其他进程产生很大影响?",
+      "content": "请解释操作系统中进程隔离的机制，以及为什么一个进程的崩溃通常不会影响其他进程的正常运行。",
+      "hint": "进程隔离性、进程独立性。",
+      "answer": "",
+      "category": "操作系统进程管理",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:17:28.002Z"
+    },
+    {
+      "id": "os_004",
+      "title": "有哪些进程调度算法 ?",
+      "content": "请详细介绍各种进程调度算法的原理、特点和适用场景。",
+      "hint": "先来先服务、短作业优先、最短剩余时间优先、时间片轮转、优先级调度、多级反馈队列",
+      "answer": "",
+      "category": "操作系统调度",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:17:28.003Z"
+    },
+    {
+      "id": "os_005",
+      "title": "死锁发生条件是什么？",
+      "content": "请详细解释死锁产生的四个必要条件，并分析每个条件的含义。",
+      "hint": "互斥条件、持有并等待条件、不可剥夺条件、环路等待条件",
+      "answer": "",
+      "category": "操作系统死锁",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:17:28.004Z"
+    },
+    {
+      "id": "os_006",
+      "title": "如何避免死锁？",
+      "content": "请详细介绍预防和避免死锁的各种方法，包括具体的实现策略。",
+      "hint": "避免死锁问题就只需要破环其中一个条件就可以，最常见的并且可行的就是使用资源有序分配法，来破环环路等待条件。",
+      "answer": "",
+      "category": "操作系统死锁",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:17:28.005Z"
+    },
+    {
+      "id": "os_007",
+      "title": "介绍一下操作系统内存管理",
+      "content": "请详细介绍操作系统的内存管理机制，包括虚拟内存、物理内存和内存分配策略。",
+      "hint": "操作系统设计了虚拟内存，每个进程都有自己的独立的虚拟内存，我们所写的程序不会直接与物理内打交道。",
+      "answer": "",
+      "category": "操作系统内存管理",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:17:28.006Z"
+    },
+    {
+      "id": "os_008",
+      "title": "介绍copy on write",
+      "content": "请详细解释写时复制（COW）技术的原理、实现机制和在操作系统中的应用。",
+      "hint": "写时复制，当多个进程或线程共享同一块数据时，只有在有写操作时才真正复制数据，否则大家共享同一份数据副本。",
+      "answer": "",
+      "category": "操作系统内存管理",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:17:28.007Z"
+    },
+    {
+      "id": "os_009",
+      "title": "Linux操作系统中哪个命令可以查看端口被哪个应用占用？",
+      "content": "请介绍在Linux系统中查看端口占用情况的命令和具体使用方法。",
+      "hint": "可以使用lsof命令或netstat命令查看端口被哪个应用占用。lsof -i :端口号 或则 netstat -tulnp | grep 端口号",
+      "answer": "",
+      "category": "Linux命令",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:17:28.008Z"
+    },
+    {
+      "id": "os_010",
+      "title": "如果服务应用部署在 Linux 上，CPU 打满后，想查看哪个进程导致的，用什么命令？",
+      "content": "请介绍在Linux系统中排查高CPU占用问题的方法和相关命令。",
+      "hint": "方式1：top 然后可以按 P 键来按 CPU 使用率排序，查看哪些进程占用了最多的 CPU 资源。方式2：htop。方式3：ps。",
+      "answer": "",
+      "category": "Linux性能监控",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:17:28.009Z"
+    },
+    {
+      "id": "os_011",
+      "title": "如果想查看是进程的哪个线程，用什么命令？",
+      "content": "请介绍在Linux系统中查看进程内具体线程状态和CPU占用的命令。",
+      "hint": "1、top -H -p <进程PID>; 2、ps -mp <进程PID> -o THREAD,tid,time; 3、ps -L -p <进程PID>",
+      "answer": "",
+      "category": "Linux性能监控",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:17:28.010Z"
+    },
+    {
+      "id": "os_012",
+      "title": "想查看代码中哪个位置导致的 CPU 高，该怎么做？Java 应用怎么排查 CPU 或内存占用率过高的问题？",
+      "content": "请详细介绍Java应用CPU和内存问题的完整排查流程，包括工具使用和分析方法。",
+      "hint": "Linux 层定位进程和线程，转换线程ID为16进制。用 jstack、arthas 等工具定位具体代码位置。内存问题用 jmap、MAT、VisualVM。线上强烈推荐使用 Arthas，简单高效。",
+      "answer": "",
+      "category": "Java性能调优",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:17:28.011Z"
+    },
+    {
+      "id": "os_013",
+      "title": "linux如何查看线程和进程状态",
+      "content": "请详细介绍在Linux系统中查看进程和线程状态的各种方法和命令。",
+      "hint": "Linux 查看进程和线程状态常用命令有：ps、top、pstree、以及通过 /proc 目录查看详细信息。",
+      "answer": "",
+      "category": "Linux系统管理",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:17:28.012Z"
+    },
+    {
+      "id": "os_014",
+      "title": "讲一下银行家算法",
+      "content": "请详细介绍银行家算法的原理、实现步骤和在死锁避免中的应用。",
+      "hint": "银行家算法通过安全性检查，动态决定资源分配，避免死锁，但实现较复杂，适合对资源需求可预知的系统。",
+      "answer": "",
+      "category": "操作系统死锁",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:17:28.013Z"
+    },
+    {
+      "id": "network_001",
+      "title": "HTTP 与 HTTPS 协议的区别？",
+      "content": "请详细比较HTTP和HTTPS协议在安全性、加密方式、证书认证等方面的差异，并分析它们各自的适用场景。",
+      "hint": "安全、端口、加密方式、证书、完整性、身份认证、SEO、适用场景",
+      "answer": "",
+      "category": "网络协议",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:21:56.000Z"
+    },
+    {
+      "id": "network_002",
+      "title": "HTTP原理是什么？",
+      "content": "请详细解释HTTP协议的工作原理，包括请求响应模式、无状态特性和数据传输机制。",
+      "hint": "HTTP（超文本传输协议）是应用层协议、HTTP 是基于 TCP 协议来实现的、一个完整的 HTTP 请求从请求行开始、HTTP 是一种无状态协议，这意味着每个请求都是独立的、HTTP 可以传输多种类型的数据，包括文本、图像、音频、视频等",
+      "answer": "",
+      "category": "网络协议",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:21:56.001Z"
+    },
+    {
+      "id": "network_003",
+      "title": "TCP和UDP区别是什么？",
+      "content": "请详细比较TCP和UDP协议的特点、适用场景和性能差异。",
+      "hint": "连接、服务对象、可靠性、拥塞控制、流量控制、首部开销、传输方式",
+      "answer": "",
+      "category": "网络协议",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:21:56.002Z"
+    },
+    {
+      "id": "network_004",
+      "title": "TCP协议里的TIME_WAIT状态是什么？",
+      "content": "请详细解释TCP连接中TIME_WAIT状态的作用、产生原因和持续时间。",
+      "hint": "TIME_WAIT 状态的存在是为了确保网络连接的可靠关闭。只有主动发起关闭连接的一方（即主动关闭方）才会有 TIME_WAIT 状态。",
+      "answer": "",
+      "category": "网络协议",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.003Z"
+    },
+    {
+      "id": "network_005",
+      "title": "UDP怎么保证可靠性？",
+      "content": "请详细介绍在UDP协议基础上实现可靠传输的各种方法和技术。",
+      "hint": "连接迁移、重传机制、前向纠错、拥塞控制",
+      "answer": "",
+      "category": "网络协议",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.004Z"
+    },
+    {
+      "id": "network_006",
+      "title": "网络有什么常用的通信协议？",
+      "content": "请详细介绍各层网络协议的特点和应用场景，包括应用层、传输层、网络层的主要协议。",
+      "hint": "HTTP：用于在Web浏览器和Web服务器之间传输超文本的协议，是目前最常见的应用层协议。HTTPS：在HTTP的基础上添加了SSL/TLS加密层，用于在不安全的网络上安全地传输数据。TCP：面向连接的传输层协议，提供可靠的数据传输服务，保证数据的顺序和完整性。UDP：无连接的传输层协议，提供了数据包传输的简单服务，适用于实时性要求高的应用。IP：网络层协议，用于在网络中传输数据包，定义了数据包的格式和传输规则。",
+      "answer": "",
+      "category": "网络协议",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:21:56.005Z"
+    },
+    {
+      "id": "network_007",
+      "title": "前后端交互用的是什么协议？",
+      "content": "请详细说明前后端通信中使用的协议类型，以及选择这些协议的原因。",
+      "hint": "用HTTP和HTTPS协议比较多。前端通过HTTP协议向服务器端发送请求，服务器端接收请求并返回相应的数据，实现了前后端的交互。HTTP协议简单、灵活，适用于各种类型的应用场景。",
+      "answer": "",
+      "category": "网络协议",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:21:56.006Z"
+    },
+    {
+      "id": "network_008",
+      "title": "HTTP 常见状态码有哪些？",
+      "content": "请详细介绍HTTP状态码的分类和常见状态码的含义及使用场景。",
+      "hint": "1XX：提示信息；2XX：成功；3XX：重定向；4XX：报文有误；5XX：服务器内部错误",
+      "answer": "",
+      "category": "网络协议",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:21:56.007Z"
+    },
+    {
+      "id": "network_009",
+      "title": "Java 线程池的核心参数有哪些？",
+      "content": "请详细介绍Java线程池的七个核心参数及其作用机制。",
+      "hint": "7个参数：corePoolSize（核心线程数量）、maximumPoolSize（线程池中最多可容纳的线程数量）、keepAliveTime（当线程池中线程的数量大于corePoolSize，并且某个线程的空闲时间超过了keepAliveTime，那么这个线程就会被销毁。）、unit（就是keepAliveTime时间的单位。）、workQueue（工作队列）、threadFactory（线程工厂）、handler（拒绝策略）",
+      "answer": "",
+      "category": "Java并发",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:21:56.008Z"
+    },
+    {
+      "id": "network_010",
+      "title": "Dns基于什么协议实现？udp 还是 tcp？",
+      "content": "请解释DNS协议的底层实现机制，分析为什么选择特定的传输协议。",
+      "hint": "DNS 基于UDP协议实现，DNS使用UDP协议进行域名解析和数据传输。",
+      "answer": "",
+      "category": "网络协议",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:21:56.009Z"
+    },
+    {
+      "id": "network_011",
+      "title": "为什么是udp？",
+      "content": "请分析DNS协议选择UDP而非TCP的技术原因和优势。",
+      "hint": "低延迟、简单快速、轻量级",
+      "answer": "",
+      "category": "网络协议",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:21:56.010Z"
+    },
+    {
+      "id": "network_012",
+      "title": "http的特点是什么？",
+      "content": "请详细介绍HTTP协议的主要特点和设计理念。",
+      "hint": "基于文本、可扩展性、灵活性、无状态",
+      "answer": "",
+      "category": "网络协议",
+      "difficulty": "简单",
+      "createdAt": "2025-06-17T02:21:56.011Z"
+    },
+    {
+      "id": "network_013",
+      "title": "http无状态体现在哪？",
+      "content": "请详细解释HTTP无状态特性的具体表现和影响。",
+      "hint": "HTTP的无状态体现在每个请求之间相互独立，服务器不会保留之前请求的状态信息。每次客户端向服务器发送请求时，服务器都会独立处理该请求，不会记住之前的请求信息或状态。",
+      "answer": "",
+      "category": "网络协议",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:21:56.012Z"
+    },
+    {
+      "id": "network_014",
+      "title": "Cookie和session的区别是什么？",
+      "content": "请详细比较Cookie和Session的工作机制、存储方式和安全性差异。",
+      "hint": "存储位置、安全性、存储容量",
+      "answer": "",
+      "category": "Web技术",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:21:56.013Z"
+    },
+    {
+      "id": "network_015",
+      "title": "服务器处理并发请求有哪几种方式？",
+      "content": "请详细介绍服务器处理并发请求的各种架构模式和实现方式。",
+      "hint": "单线程web服务器方式、多进程/多线程web服务器、I/O多路复用web服务器、多路复用多线程web服务器",
+      "answer": "",
+      "category": "服务器架构",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.014Z"
+    },
+    {
+      "id": "network_016",
+      "title": "说一下select，poll，epoll的区别？",
+      "content": "请详细比较这三种I/O多路复用机制的原理、性能特点和适用场景。",
+      "hint": "select、poll 和 epoll 都是 I/O 多路复用 机制，用于 同时监听多个文件描述符（FD），当某个 FD 可读/可写 时通知应用程序。select、poll 适用于小规模连接，O(N) 复杂度，随 FD 数量增加性能下降。现代 Linux 服务器推荐 epoll，性能最佳！🚀",
+      "answer": "",
+      "category": "系统编程",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.015Z"
+    },
+    {
+      "id": "network_017",
+      "title": "https是如何防范中间人的攻击？",
+      "content": "请详细解释HTTPS协议防范中间人攻击的机制和安全保障措施。",
+      "hint": "加密、身份校验机制",
+      "answer": "",
+      "category": "网络安全",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.016Z"
+    },
+    {
+      "id": "network_018",
+      "title": "描述一下打开百度首页后发生的网络过程",
+      "content": "请详细描述从输入URL到页面显示完成的完整网络通信过程。",
+      "hint": "解析URL、对域名进行dns解析、发起NNS查询、本地DNS服务器查询、根DNS服务器查询、顶级域名服务器查询、权威域名服务器查询、返回结果、建立TCP连接、三次握手、发送HTTP请求、服务器处理请求、发送HTTP响应、接收响应和渲染页面、关闭TCP连接",
+      "answer": "",
+      "category": "网络协议",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.017Z"
+    },
+    {
+      "id": "network_019",
+      "title": "什么是ddos攻击？怎么防范？",
+      "content": "请详细解释DDoS攻击的原理、类型和防护策略。",
+      "hint": "分布式拒绝服务（DDoS）攻击是通过大规模互联网流量淹没目标服务器或其周边基础设施，以破坏目标服务器、服务或网络正常流量的恶意行为。",
+      "answer": "",
+      "category": "网络安全",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:21:56.018Z"
+    },
+    {
+      "id": "network_020",
+      "title": "如何查看网络连接情况？",
+      "content": "请介绍在Linux系统中查看网络连接状态的各种命令和工具。",
+      "hint": "常用 netstat、ss、lsof、ifconfig、ip、ping 等命令，可快速查看 Linux 网络连接和状态。",
+      "answer": "",
+      "category": "Linux网络",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:21:56.019Z"
+    },
+    {
+      "id": "concurrent_001",
+      "title": "限流算法有哪些？",
+      "content": "请详细介绍各种限流算法的原理、实现方式和适用场景。",
+      "hint": "计数器、滑动窗口、令牌桶、漏桶、滑动窗口日志",
+      "answer": "",
+      "category": "高并发限流",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:21:56.020Z"
+    },
+    {
+      "id": "concurrent_002",
+      "title": "redis，nginx，netty 是依赖什么做的这么高性能？",
+      "content": "请分析Redis、Nginx、Netty实现高性能的核心技术和架构设计。",
+      "hint": "✅Redis：单线程但超快，因 epoll + 高效数据结构。✅ Nginx：epoll + sendfile 提供超高吞吐量，适合 Web 服务器。✅ Netty：epoll + ByteBuf 提供高并发网络通信，用于 RPC、微服务。",
+      "answer": "",
+      "category": "高并发架构",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.021Z"
+    },
+    {
+      "id": "concurrent_003",
+      "title": "如何实现高并发下的唯一订单号生成？",
+      "content": "请详细介绍在高并发场景下生成唯一订单号的各种方案和技术选型。",
+      "hint": "分布式唯一ID生成方案：数据库自增（易冲突）、UUID（不可读）、Redis自增（高并发）、雪花算法（趋势递增/高性能）高并发推荐：Redis自增或雪花算法，注意时钟回拨和高可用记忆口诀：自增易阻塞，UUID难查找，Redis快雪花妙，唯一有序最重要",
+      "answer": "",
+      "category": "高并发设计",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.022Z"
+    },
+    {
+      "id": "concurrent_004",
+      "title": "高并发场景下如何保证接口的幂等性？",
+      "content": "请详细介绍幂等性的概念、实现方案和在高并发场景下的最佳实践。",
+      "hint": "幂等性含义：同一操作多次执行结果相同场景：支付回调、订单创建、消息消费常用方案：唯一请求号（幂等号）、数据库唯一约束、token机制、乐观锁高并发建议：前端生成幂等号，后端Redis/DB去重，注意性能与存储清理",
+      "answer": "",
+      "category": "高并发设计",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.023Z"
+    },
+    {
+      "id": "concurrent_005",
+      "title": "高并发下如何实现分布式锁？常见方案和优缺点分析",
+      "content": "请详细分析各种分布式锁实现方案的优缺点和在高并发场景下的选择策略。",
+      "hint": "分布式锁方案：数据库锁（简单低效）、Redis锁（高性能高并发）、ZooKeeper锁（强一致性）高并发推荐：Redis锁+唯一标识+自动过期，或Redisson记忆口诀：数据库易瓶颈，Redis快需防误删，ZooKeeper强一致",
+      "answer": "",
+      "category": "高并发锁",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.024Z"
+    },
+    {
+      "id": "concurrent_006",
+      "title": "高并发场景下如何防止重复提交？",
+      "content": "请详细介绍防止重复提交的技术方案和在高并发环境下的实现策略。",
+      "hint": "防重提交方案：幂等Token、接口Token机制、数据库唯一约束、前端防抖/节流高并发推荐：幂等号+Redis存储，数据库唯一约束兜底记忆口诀：幂等号拦重复，Token校验防误触，DB唯一兜底忙",
+      "answer": "",
+      "category": "高并发设计",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:21:56.025Z"
+    },
+    {
+      "id": "concurrent_007",
+      "title": "高并发下如何进行限流？常见限流算法和场景分析",
+      "content": "请详细分析各种限流算法在高并发场景下的应用和选择策略。",
+      "hint": "限流算法：固定窗口、滑动窗口、漏桶、令牌桶高并发推荐：令牌桶适合突发，漏桶适合平滑，滑动窗口防突刺记忆口诀：窗口计数易突刺，漏桶平滑流量忙，令牌桶突发抗压强",
+      "answer": "",
+      "category": "高并发限流",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.026Z"
+    },
+    {
+      "id": "concurrent_008",
+      "title": "高并发下如何实现异步消息削峰填谷？",
+      "content": "请详细介绍消息队列削峰填谷的原理和在高并发场景下的实现方案。",
+      "hint": "削峰填谷原理：用消息队列缓冲高并发请求，慢慢消费常见模型：生产-消费模型 + 限流排队高并发建议：异步写队列+多消费者+幂等消费+死信队列记忆口诀：高峰进队列，后台慢处理，幂等防重复，死信防丢失",
+      "answer": "",
+      "category": "高并发消息",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.027Z"
+    },
+    {
+      "id": "concurrent_009",
+      "title": "高并发下如何保证数据一致性？常见一致性方案与适用场景",
+      "content": "请详细分析高并发场景下数据一致性的挑战和各种解决方案。",
+      "hint": "一致性模型：强一致性、最终一致性、弱一致性常用方案：分布式事务（2PC/TCC/SAGA）、消息中间件+补偿、乐观锁/悲观锁高并发建议：最终一致性+幂等+补偿，关键业务用强一致记忆口诀：强一致慢安全，最终一致高性能，幂等补偿保周全",
+      "answer": "",
+      "category": "高并发一致性",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.028Z"
+    },
+    {
+      "id": "concurrent_010",
+      "title": "高并发场景下如何合理利用多级缓存？",
+      "content": "请详细介绍多级缓存架构的设计原理和在高并发场景下的优化策略。",
+      "hint": "多级缓存架构：本地缓存（低延迟）+分布式缓存（高容量）+数据库（最终兜底）高并发建议：优先读本地，未命中再查分布式，再查数据库常见问题：一致性、容量、更新策略、缓存预热记忆口诀：本地快，分布广，分级兜底保高并，更新一致少烦恼",
+      "answer": "",
+      "category": "高并发缓存",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.029Z"
+    },
+    {
+      "id": "concurrent_011",
+      "title": "高并发下如何实现热点数据和热点Key的优化防护？",
+      "content": "请详细介绍热点数据识别、优化和防护的技术方案。",
+      "hint": "热点Key识别与优化：监控分析+分片分流+本地缓存+静态化+限流降级高并发建议：热点分片、本地预热、请求排队、静态内容、限流兜底记忆口诀：分片分流解热点，本地缓存降压力，静态限流兜底忙",
+      "answer": "",
+      "category": "高并发优化",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.030Z"
+    },
+    {
+      "id": "concurrent_012",
+      "title": "高并发下如何设计高可用与自动故障转移机制？",
+      "content": "请详细介绍高可用架构设计和自动故障转移的实现方案。",
+      "hint": "高可用目标：无单点、自动切换、弹性伸缩、持续服务常用方案：负载均衡+多实例、主从/主备切换、集群、副本、健康检查高并发建议：分层高可用（服务/缓存/数据库）、自动故障转移、监控告警记忆口诀：负载均衡分流忙，主备切换保不停，集群副本抗风险，健康自愈少故障",
+      "answer": "",
+      "category": "高并发高可用",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.031Z"
+    },
+    {
+      "id": "concurrent_013",
+      "title": "高并发系统下如何实现高效日志采集与追踪？",
+      "content": "请详细介绍高并发系统中日志采集、链路追踪的技术方案和实现策略。",
+      "hint": "日志采集目标：高性能、集中分析、全链路追踪、高可用常用架构：ELK/EFK、Kafka、SkyWalking/Jaeger高并发建议：异步采集、批量入库、traceId贯穿、降采样、索引优化记忆口诀：采集异步快，链路trace全，ELK集中看，Kafka削峰难",
+      "answer": "",
+      "category": "高并发监控",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.032Z"
+    },
+    {
+      "id": "concurrent_014",
+      "title": "分布式系统中如何保证消息的可靠投递？",
+      "content": "请详细介绍分布式消息系统中保证消息可靠性的技术方案和实现机制。",
+      "hint": "存消息要持久，发确认要等全，消费记得要幂等，异常补偿别放松！",
+      "answer": "",
+      "category": "分布式消息",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.033Z"
+    },
+    {
+      "id": "concurrent_015",
+      "title": "如何应对高并发下的数据库事务一致性问题？",
+      "content": "请详细分析高并发场景下数据库事务一致性的挑战和解决方案。",
+      "hint": "",
+      "answer": "",
+      "category": "高并发数据库",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.034Z"
+    },
+    {
+      "id": "concurrent_016",
+      "title": "如何排查和解决Java线上系统的内存泄漏问题？",
+      "content": "请详细介绍Java系统内存泄漏的排查方法、分析工具和解决策略。",
+      "hint": "",
+      "answer": "",
+      "category": "Java性能调优",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.035Z"
+    },
+    {
+      "id": "middleware_001",
+      "title": "中间件基础知识总结",
+      "content": "请详细介绍中间件的概念、分类和在分布式系统中的重要作用。",
+      "hint": "中间件是'系统粘合剂'，帮助各模块解耦协作、提升扩展性和可维护性。常见类型：Web服务器、消息队列、缓存、数据库中间件、服务注册与发现。作用关键词：解耦、复用、扩展、高可用、分布式协作。",
+      "answer": "",
+      "category": "中间件基础",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:21:56.036Z"
+    },
+    {
+      "id": "middleware_002",
+      "title": "如何设计一个支持'限流（Rate Limiting）'功能的中间件？为什么在分布式系统中限流如此重要？",
+      "content": "请详细设计限流中间件的架构和实现方案，并分析其在分布式系统中的重要性。",
+      "hint": "限流的作用：防止系统过载，保障服务可用性和公平性。常见算法：固定窗口、滑动窗口、令牌桶、漏桶。分布式难点：状态一致性、性能瓶颈、数据同步。场景记忆法：把限流理解为'超市排队+中央排号机'。",
+      "answer": "",
+      "category": "中间件设计",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.037Z"
+    },
+    {
+      "id": "middleware_003",
+      "title": "如何实现'服务的健康检查（Health Check）'中间件？它在微服务架构中有何意义？",
+      "content": "请详细设计健康检查中间件的实现方案，并分析其在微服务架构中的价值。",
+      "hint": "健康检查的作用：提升系统稳定性、自动容错与流量管理。常见类型：Liveness、Readiness、自定义业务检查。微服务意义：防止流量打到异常实例，辅助自动恢复，提升可观测性。记忆法：'航班起飞前的安全检查'——活着≠准备好了。",
+      "answer": "",
+      "category": "中间件设计",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.038Z"
+    },
+    {
+      "id": "middleware_004",
+      "title": "在中间件中如何实现'请求追踪（Request Tracing）'？它为何是分布式系统开发的关键？",
+      "content": "请详细介绍请求追踪中间件的设计和实现，并分析其在分布式系统中的关键作用。",
+      "hint": "作用：请求追踪帮助定位分布式系统中的性能瓶颈与故障。关键点：生成唯一Trace ID，全链路传递，日志聚合。常见工具：OpenTelemetry、Jaeger、Zipkin。场景记忆法：快递单号追踪包裹轨迹。",
+      "answer": "",
+      "category": "中间件设计",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.039Z"
+    },
+    {
+      "id": "design_001",
+      "title": "设计模式总结",
+      "content": "请详细介绍常用设计模式的分类、特点和应用场景。",
+      "hint": "",
+      "answer": "",
+      "category": "设计模式",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:21:56.040Z"
+    },
+    {
+      "id": "design_002",
+      "title": "工厂方法模式与抽象工厂模式的区别",
+      "content": "请详细比较工厂方法模式和抽象工厂模式的设计思想、实现方式和适用场景。",
+      "hint": "",
+      "answer": "",
+      "category": "设计模式",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:21:56.041Z"
+    },
+    {
+      "id": "other_001",
+      "title": "给定a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url",
+      "content": "请设计算法解决大数据文件处理问题，在内存限制条件下找出两个大文件的共同元素。",
+      "hint": "分治 + hashmap",
+      "answer": "",
+      "category": "算法设计",
+      "difficulty": "困难",
+      "createdAt": "2025-06-17T02:21:56.042Z"
+    },
+    {
+      "id": "other_002",
+      "title": "介绍一下cap理论",
+      "content": "请详细介绍CAP理论的概念、三个要素的含义和在分布式系统设计中的应用。",
+      "hint": "CAP 原则又称 CAP 定理, 指的是在一个分布式系统中, Consistency（一致性）、 Availability（可用性）、Partition tolerance（分区容错性）, 三者不可得兼",
+      "answer": "",
+      "category": "分布式理论",
+      "difficulty": "中等",
+      "createdAt": "2025-06-17T02:21:56.043Z"
+    }
+  ]
+}
