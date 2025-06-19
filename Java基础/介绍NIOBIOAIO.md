@@ -12,7 +12,7 @@
 
 ### **示例**
 
-```
+```java
 ServerSocket serverSocket = new ServerSocket(8080);
 while (true) {
     Socket socket = serverSocket.accept(); // 阻塞等待连接
@@ -43,7 +43,7 @@ while (true) {
 
 ### **示例**
 
-```
+```java
 Selector selector = Selector.open();
 ServerSocketChannel serverChannel = ServerSocketChannel.open();
 serverChannel.bind(new InetSocketAddress(8080));
@@ -87,7 +87,7 @@ while (true) {
 
 ### **示例**
 
-```
+```java
 AsynchronousServerSocketChannel server = AsynchronousServerSocketChannel.open()
     .bind(new InetSocketAddress(8080));
 
