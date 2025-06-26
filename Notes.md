@@ -2,6 +2,7 @@
 
 | Problems                                                     | Hints                                                        | Solution                                                     |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| SQL 学习指南：从入门到精通                                   |                                                              | [Editorial](./MySQL/SQL 学习指南：从入门到精通.md)           |
 | 事务隔离级别有哪些？                                         | 四种隔离级别：读未提交、读已提交、可重复读、串行化           | [Editorial](./MySQL/事务隔离级别有哪些？.md)                 |
 | 脏读和幻读的区别？                                           | **脏读**：一个事务读到了「未提交事务修改过的数据」**幻读**：在一个事务内多次查询某个符合查询条件的「记录数量」，如果前后两次查询到的记录数量不一样。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/aliyun.html#%E5%B9%BB%E8%AF%BB%E5%92%8C%E8%84%8F%E8%AF%BB%E7%9A%84%E5%8C%BA%E5%88%AB) |
 | 如何防止幻读？                                               | **针对快照读**（普通 select 语句），是通过 MVCC 方式解决了幻读；  **针对当前读**（select ... for update等语句），是通过 `next-key lock`（记录锁+间隙锁） | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/aliyun.html#%E5%A6%82%E4%BD%95%E9%98%B2%E6%AD%A2%E5%B9%BB%E8%AF%BB) |
@@ -95,7 +96,7 @@
 ## 【Java基础】
 
 | Problems                                                     | Hints                                                        | Solution                                                     |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| :----------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | 双亲委派机制是什么？                                         | 是Java类加载器（ClassLoader）中的一种工作原理。  主要用于**解决类加载过程中的安全和避免重复加载的问题**。 | [Editorial](./Java基础/双亲委派机制.md)                      |
 | 什么是类加载器？如何实现自定义类加载器？                     | **类加载器类型、双亲委派流程、定制场景和实现方式**要熟记。  记得举例：Tomcat 热部署、SPI 插件机制、加密 class 加载等。  刷题口诀：   类加载三类清  双亲委派防篡改  自定义 loader 灵活用 | [Editorial](./Java基础/什么是类加载器？如何实现自定义类加载器？.md) |
 | 介绍一下类加载器                                             | 加载、验证、准备、解析、初始化                               | [Editorial](./Java基础/类加载器.md)                          |
@@ -103,7 +104,6 @@
 | Java面试基础知识笔记1                                        |                                                              | [Editorial](./Java基础/Java面试基础知识笔记1.md)             |
 | 动态数组的实现有哪些？                                       | ArrayList和Vector都支持动态扩容，都属于动态数组。    **线程安全性**：Vector是线程安全的，ArrayList不是线程安全的。  **扩容策略**：ArrayList在底层数组不够用时在原来的基础上扩展0.5倍，Vector是扩展1倍。 |                                                              |
 | HashMap 的扩容条件是什么？                                   | Java7扩容需要满足两个条件：   1、当前数据存储的数量（即size()）大小必须大于等于阈值 ；2、当前加入的数据是否发生了hash冲突。    Java8只需要满足**条件1**。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/tencent.html#hashmap-%E7%9A%84%E6%89%A9%E5%AE%B9%E6%9D%A1%E4%BB%B6%E6%98%AF%E4%BB%80%E4%B9%88) |
-| 多线程进阶200题                                              |                                                              | [Editorial](./Java基础/多线程进阶200题.md)                   |
 | OS线程是什么？                                               | 操作系统线程                                                 | [Editorial](./Java基础/OS线程是什么.md)                      |
 | Java 里面线程有哪些状态?                                     | new、Runnable、blocked、waiting、timed_waiting、terminated； | [Editorial](./Java基础/Java里面的线程状态.md)                |
 | wait 状态下的线程如何进行恢复到 running 状态?                | 等待的线程**被其他线程对象唤醒**，`notify()`和`notifyAll()`。  如果线程**没有获取到锁**则会直接进入 Waiting 状态，其实这种本质上它就是执行了 LockSupport.park() 方法进入了Waiting 状态，那么解锁的时候会执行`LockSupport.unpark(Thread)`，与上面park方法对应，给出许可证，**解除等待状态**。 |                                                              |
@@ -124,7 +124,7 @@
 | 讲下HashMap？                                                | 从JDK1.7【数组+链表】与JDK1.8【小于8使用链表，超过8使用红黑树】回答 | [Editorial](./Java基础/讲下HashMap？.md)                     |
 | 讲下ConcurrentHashMap？                                      | JDK1.7【数组+链表】JDK1.8【 数组 + 链表/红黑树 】            | [Editorial](./Java基础/讲下ConcurrentHashMap？.md)           |
 | 讲下阻塞队列？                                               | 阻塞队列（BlockingQueue）是一种支持**阻塞插入和阻塞获取**的队列，它可以在 **生产者-消费者模型** 中高效地实现**线程安全的数据交换**。 | [Editorial](./Java基础/阻塞队列.md)                          |
-| 讲下线程安全的List？                                         | 常见的线程安全的List实现包括 `Collections.synchronizedList` 和 `CopyOnWriteArrayList` 【适合频繁读写】。 | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#%E8%AE%B2%E4%B8%8B%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84list) |
+| 讲下线程安全的List？                                         | 常见的线程安全的List实现包括 `Collections.synchronizedList` 和 `CopyOnWriteArrayList` 【适合频繁读写】。补充一个`vector` | [Editorial](./Java基础/讲下线程安全的List？.md)              |
 | Java类加载过程                                               | 加载、验证、准备、解析、初始化                               | [Editorial](./Java基础/类加载过程.md)                        |
 | 实际中类加载会遇到哪些问题？                                 | **类找不到（ClassNotFoundException）** 、   **类定义冲突（NoClassDefFoundError）** 、   **类版本不匹配（UnsupportedClassVersionError）** 、   **类加载死锁** 、   **双亲委派模型导致的类加载问题** 、   **热部署、类卸载失败** 、   **不同 ClassLoader 加载同一类** | [Editorial](./Java基础/实际中类加载会遇到哪些问题.md)        |
 | Java中有哪些常用的锁，在什么场景下使用？                     | ` synchronized 、 ReentrantLock 、 ReentrantReadWriteLock 、 StampedLock 、 Semaphore、CountDownLatch、CyclicBarrier ` | [Editorial](./Java基础/Java中有哪些常用的锁，在什么场景下使用？.md) |
@@ -163,6 +163,7 @@
 | 什么是AQS的原理、应用及常见实现有哪些？                      | AQS 用 state + 队列统一管理同步器，实现锁/信号量/闭锁等并发工具 - 原理：CAS修改state，失败则排队阻塞，唤醒后重试 - 常用同步器（ReentrantLock、Semaphore、CountDownLatch 等）都基于AQS - 面试重点：AQS的队列原理、独占与共享模式、模板方法设计 | [Editorial](./Java基础/什么是AQS（AbstractQueuedSynchronizer）？AQS的原理、应用及常见实现有哪些？.md) |
 | AQS的底层原理细节与面试要点                                  | 用简明语言描述AQS的结构（state+队列），说明其支持的两种模式； - 能举出常见实现类，并解释其底层原理； - 强调AQS模板方法思想，子类只需实现资源获取/释放逻辑。 | [Editorial](./Java基础/AQS的底层原理细节与面试要点.md)       |
 | AQS常见面试追问与补充                                        | AQS是JUC包下锁和同步器的基础框架，核心思想是用CAS保证state原子性，用FIFO队列管理等待线程，通过模板方法支持独占与共享两种模式。常见实现有ReentrantLock、Semaphore、CountDownLatch等。AQS通过高效挂起/唤醒和公平/非公平策略，兼顾了性能和灵活性，是Java并发编程的基石。 | [Editorial](./Java基础/AQS常见面试追问与补充.md)             |
+| 多线程深度面试200连环深挖题                                  |                                                              | [Editorial](./Java基础/多线程进阶200题.md)                   |
 
 ## 【JVM】
 
