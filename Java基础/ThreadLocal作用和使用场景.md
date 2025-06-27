@@ -79,3 +79,83 @@ public class ThreadLocalExample {
 ---
 
 **是否需要我帮你总结成一张思维导图或图解 ThreadLocal 底层原理？** 😊
+
+当然，以下是面试中关于 `ThreadLocal` 常见的追问及其简明答案，适用于Java开发岗：
+
+---
+
+### 1. ThreadLocal是什么？主要作用是什么？
+
+**答**：  
+`ThreadLocal` 是Java提供的线程本地变量，每个线程都拥有独立的变量副本。它最常用于为每个线程提供独立的存储空间，避免多线程间的数据竞争，常见于用户会话、数据库连接、事务管理等场景。
+
+---
+
+### 2. ThreadLocal的原理是什么？
+
+**答**：  
+每个Thread对象内部有一个ThreadLocalMap（类似HashMap），`ThreadLocal` 对象作为key，实际存储的值为value。每个线程操作自己的ThreadLocalMap，互不影响。
+
+---
+
+### 3. ThreadLocal会造成内存泄漏吗？为什么？
+
+**答**：  
+是的，可能会。ThreadLocalMap中的key为ThreadLocal的弱引用，value为强引用。如果ThreadLocal实例被回收但线程还在运行，value对象不会被及时回收，造成内存泄漏（尤其在线程池环境下）。
+
+---
+
+### 4. ThreadLocal的典型使用场景有哪些？
+
+**答**：  
+- 数据库连接/Session管理（如Hibernate、MyBatis）
+- 用户身份信息存储
+- 日期格式化（如SimpleDateFormat非线程安全对象）
+- 事务管理
+- 日志跟踪（如traceId存储）
+
+---
+
+### 5. ThreadLocal如何正确使用和清理？
+
+**答**：  
+用完后要调用 `ThreadLocal.remove()` 方法，及时清理数据，防止内存泄漏，尤其在线程池等长生命周期线程中使用时。
+
+---
+
+### 6. ThreadLocal和Synchronized有何区别？
+
+**答**：  
+ThreadLocal是为每个线程提供独立变量，无需同步，避免竞争；而synchronized用于多线程间共享变量的互斥访问。
+
+---
+
+### 7. ThreadLocal的set和get方法是怎么实现的？
+
+**答**：  
+`set()` 方法将值存入当前线程的ThreadLocalMap中，以当前ThreadLocal对象为key；`get()` 方法从当前线程的ThreadLocalMap获取以当前ThreadLocal对象为key的值。
+
+---
+
+### 8. InheritableThreadLocal 和 ThreadLocal 有什么区别？
+
+**答**：  
+`InheritableThreadLocal` 允许子线程继承父线程的ThreadLocal变量值；普通的ThreadLocal不会传递变量到子线程。
+
+---
+
+### 9. ThreadLocal适用于哪些场景？何时不适用？
+
+**答**：  
+适用于每个线程都需独立变量副本且不会跨线程共享数据的场景。不适合变量需要在线程间共享或需要线程安全共享的场景。
+
+---
+
+### 10. ThreadLocal的默认值是怎么设置的？
+
+**答**：  
+可以通过重写 `initialValue()` 方法（或使用 Java 8 的 `withInitial(Supplier)` 静态工厂方法）为ThreadLocal指定默认值。
+
+---
+
+如果需要代码案例或更深入的原理分析，也可以继续提问！
