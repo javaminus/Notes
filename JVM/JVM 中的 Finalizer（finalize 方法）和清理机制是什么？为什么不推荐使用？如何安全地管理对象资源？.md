@@ -52,3 +52,37 @@ try (FileInputStream in = new FileInputStream("file.txt")) {
 - **不推荐**：不可控、不可预测、性能差
 - **推荐**：AutoCloseable + try-with-resources，JDK9+ 用 Cleaner
 - **口诀**：`“资源要手关，finalize 不可靠，try-with-resources 最安全”`
+
+
+
+## 7. 面试官可能追问与参考答案
+
+### Q1：为什么 finalize() 不可靠？和 C++ 的析构函数有何不同？
+**答：**  
+finalize() 调用时机由 JVM 和 GC 决定，无法保证及时或一定执行（如程序崩溃/强退时不会执行），且存在性能与复活风险。C++ 析构函数是对象生命周期结束时立即自动调用，有 deterministic（确定性）销毁特性，Java 的 finalize 不具备。
+
+---
+
+### Q2：finalize() 还能用吗？JDK 后续如何处理？
+**答：**  
+JDK9 开始已标记为“过时”，JDK18+ 计划废弃，JDK21 彻底移除。实际开发应避免使用 finalize()，采用 try-with-resources、Cleaner 等替代方案。
+
+---
+
+### Q3：Cleaner 和 Finalizer 有什么区别？
+**答：**  
+Cleaner 不允许对象复活，回收更高效，且异常会被捕获和日志记录。Cleaner 作为兜底措施，而不是主流资源管理手段，主流还是靠显式关闭。
+
+---
+
+### Q4：如果手动管理资源很繁琐，有没有更好的办法？
+**答：**  
+推荐让资源类实现 AutoCloseable，配合 try-with-resources 自动管理，代码简洁安全。
+
+---
+
+### Q5：有哪些日常开发场景会误用 finalize()？如何规避？
+**答：**  
+如数据库连接、文件流、Socket等资源如果只依赖 finalize()，会导致资源迟迟不释放。应始终显式 close()，不要将资源释放逻辑放在 finalize() 或随 GC 处理。
+
+---
