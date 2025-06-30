@@ -40,3 +40,33 @@
 - 典型触发：GC、线程Dump、类卸载、Deoptimization等。
 - 停顿长原因：线程长时间无Safepoint（常见于大循环）。
 - 复习提示：**“Safepoint=全线程暂停点，保障GC等全局操作安全”**
+
+## 8. 面试官常见追问与参考答案
+
+### Q1: 为什么Safepoint不能在任意位置？
+**答**：不是所有字节码执行点都能安全暂停线程，只有在方法调用、循环边界、异常处理等特定“安全点”暂停，才不会破坏JVM内部数据结构的完整性。
+
+---
+
+### Q2: 为什么大循环会导致Safepoint停顿时间变长？
+**答**：如果循环里没有方法调用或异常检查，JVM线程长时间不会检查Safepoint标志。Safepoint请求后，需要等所有线程到达下一个安全点才能暂停。如果某线程长时间不遇到Safepoint，整个JVM就会等待，导致停顿时间变长。
+
+---
+
+### Q3: 如何定位或排查Safepoint停顿慢？
+**答**：可加参数`-XX:+PrintSafepointStatistics`，分析`vmop: xxx time`和`time to safepoint`。若`time to safepoint`异常变长，可通过线程栈分析是否有大循环或死循环阻塞。
+
+---
+
+### Q4: 有哪些手段可以减少Safepoint等待时间？
+**答**：优化热点代码，避免大循环无方法调用；必要时主动在循环中插入方法调用、加断点等，让线程更快“响应”Safepoint请求。
+
+---
+
+### Q5: Safepoint和Safe Region有什么区别？
+**答**：Safepoint是所有线程都能安全暂停的点；Safe Region指部分线程（如等待锁、IO阻塞）当前不可达Safepoint，但它们声明自己“安全”，无需特别操作即可被认为已到达Safepoint状态。
+
+---
+
+### Q6: JVM如何唤醒Safepoint暂停的线程？
+**答**：Safepoint操作（如GC）完成后，JVM会通知所有挂起线程恢复执行，线程从暂停点继续运行。

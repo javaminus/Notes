@@ -109,3 +109,98 @@ Spring **不会调用 setter 方法**，而是**直接修改字段值**。
 
 💡 **总结：**
 Spring 通过 **`BeanDefinition`** 统一管理 Bean，**XML 和注解本质上只是不同的解析方式**，最终都通过 **反射 + 依赖注入** 生成 Bean。
+
+# Spring Bean 注入底层原理 面试官常见追问与参考答案
+
+---
+
+## 1. XML 注入和注解注入的本质区别是什么？
+
+**答：**  
+- 本质区别在于“Bean 定义的来源不同”：XML 注入通过解析 beans.xml 文件，注解注入通过扫描类的注解（如 @Component）；
+- 但底层流程相同：都生成 BeanDefinition，注册到 BeanFactory，最终实例化和依赖注入。
+- 注解方式依赖于 BeanPostProcessor（如 AutowiredAnnotationBeanPostProcessor）实现自动装配，XML 方式主要依靠 setter 或构造方法。
+
+---
+
+## 2. @Autowired 注入和 XML <property> 注入在底层的区别？
+
+**答：**  
+- XML 注入依赖 setter 方法，Spring 通过反射调用 setXxx 方法完成依赖注入。
+- @Autowired 注入底层由 AutowiredAnnotationBeanPostProcessor 处理，直接通过反射赋值字段（即使是 private 字段），不依赖 setter。
+- 所以用 @Autowired 时可以不用写 setter 方法。
+
+---
+
+## 3. BeanDefinition 在整个流程中的作用？
+
+**答：**  
+- BeanDefinition 是 Spring 管理 Bean 的核心数据结构，包含了 Bean 的类名、作用域、依赖关系、初始化方法等元数据。
+- 不论是 XML 还是注解，最终都要被解析成 BeanDefinition 注册到 BeanDefinitionRegistry，后续实例化和依赖注入都以此为基础。
+
+---
+
+## 4. AutowiredAnnotationBeanPostProcessor 的作用是什么？
+
+**答：**  
+- 它是 Spring 容器中的一个 BeanPostProcessor，专门处理 @Autowired、@Value、@Inject 注解；
+- 在 Bean 实例化后、初始化前，反射解析对象中的这些注解，并完成依赖注入。
+
+---
+
+## 5. 注解方式能否控制依赖注入的顺序？如何处理循环依赖？
+
+**答：**  
+- 依赖注入顺序可以通过 @DependsOn 注解或调整 bean 的依赖关系控制；
+- Spring 能处理大多数的单例循环依赖（通过三级缓存：singletonObjects、earlySingletonObjects、singletonFactories）；
+- 构造器循环依赖无法解决，字段/Setter 循环依赖可以自动解决。
+
+---
+
+## 6. @Autowired 注解能注入集合、Map 等特殊类型吗？
+
+**答：**  
+- 可以。@Autowired 可以注入 List、Map 等类型，Spring 会自动将容器中所有匹配类型的 Bean 注入集合中（如 List<UserService> 会注入所有 UserService 实例）。
+
+---
+
+## 7. XML 注入和注解注入能否混用？常见场景？
+
+**答：**  
+- 可以混用。例如老项目用 XML 配置，新增模块可以用注解方式，Spring 能自动融合两种 Bean 定义；
+- 常见于逐步从 XML 迁移到注解或 Spring Boot 场景。
+
+---
+
+## 8. @Autowired 注入失败时默认行为是什么？如何避免异常？
+
+**答：**  
+- 默认情况下，被 @Autowired 标注的依赖如果容器中没有对应 Bean，会抛出异常（NoSuchBeanDefinitionException）；
+- 若希望依赖可选，可设置 `@Autowired(required = false)` 或用 `@Nullable` 注解。(为了让依赖项变为“可选”，即：即使容器中没有对应 Bean 也不会报错、而是注入 null，可以通过以下两种方式实现：)
+
+---
+
+## 9. Spring 注解注入和 JSR-330/JSR-250 标准注解有什么区别？
+
+**答：**  
+- Spring 支持标准注解如 @Resource（JSR-250）、@Inject（JSR-330），也有自家的 @Autowired；
+- @Autowired 按类型注入，@Resource 按名称优先，@Inject 类似于 @Autowired。
+- 推荐优先用 Spring 注解，保证兼容性和扩展性。
+
+---
+
+## 10. 如何自定义注解实现 Bean 注入？
+
+**答：**  
+- 可以自定义注解并实现对应的 BeanPostProcessor（如基于 TypeAnnotationBeanPostProcessor）来扩展注解注入逻辑；
+- 例如自定义 @MyAutowired 注解，然后扩展 BeanPostProcessor 实现注入逻辑。
+
+---
+
+## 面试总结小结
+
+- 关注“BeanDefinition 的统一管理思想”，明白 XML 和注解只是配置入口不同；
+- 理解 AutowiredAnnotationBeanPostProcessor 的处理流程和反射注入原理；
+- 熟悉常见异常、循环依赖、混合配置等实际场景问题。
+
+---

@@ -39,3 +39,4 @@ Spring 的条件注解（`@Conditional` 及其扩展注解）能让 Spring 根�
 #### 总结性回答（复习提示词）
 
 > 条件注解：控制 Bean 是否装配（如 @ConditionalOnClass、@ConditionalOnMissingBean、@ConditionalOnProperty），常用于自动配置和环境切换，可自定义条件。
+

@@ -223,3 +223,145 @@ class A {
 5. **Spring 通过 @PostConstruct 和 @PreDestroy 管理 Bean 生命周期**。
 
 🔥 **理解 IOC，才能更好地掌握 Spring AOP、事务管理、Spring Boot！**
+
+
+
+# Spring IOC（控制反转）相关面试常见追问及参考答案
+
+---
+
+## 1. IOC 和 DI 的区别与联系？
+
+**答：**  
+- IOC（Inversion of Control，控制反转）是一种设计思想，指对象的创建与依赖由容器负责。
+- DI（Dependency Injection，依赖注入）是实现 IOC 的主要方式，即将依赖“注入”而不是“查找”。
+- 关系：IOC 是目标，DI 是实现手段。
+
+---
+
+## 2. Spring 支持哪些依赖注入方式？各自优缺点？
+
+**答：**  
+- 构造函数注入：依赖不可变，适合“必须依赖”，利于单元测试。
+- Setter 注入：依赖可选，灵活性高，适合后续可变更依赖。
+- 字段注入：代码简洁但不利于测试和扩展（不推荐于严谨项目）。
+
+---
+
+## 3. BeanFactory 和 ApplicationContext 有哪些核心区别？
+
+**答：**  
+- BeanFactory 只提供基础 IOC 容器功能，延迟加载，适合底层或资源受限场景。
+- ApplicationContext 功能更全，支持事件、AOP、国际化等，实际开发中几乎都用 ApplicationContext。
+
+---
+
+## 4. Spring IOC 容器的启动流程是什么？
+
+**答：**  
+1. 读取配置（XML/注解/JavaConfig）
+2. 解析为 BeanDefinition
+3. 实例化 Bean（根据作用域）
+4. 依赖注入
+5. 初始化回调
+6. Bean 可用
+7. 容器关闭时执行销毁回调
+
+---
+
+## 5. @Autowired、@Resource、@Inject 有什么区别？
+
+**答：**  
+- @Autowired（Spring）：按类型注入，支持 required=false，可与 @Qualifier 配合按名称。
+- @Resource（JDK标准）：默认按名称，找不到再按类型。
+- @Inject（JSR-330）：功能类似 @Autowired，但无 required 属性。
+
+---
+
+## 6. Bean 作用域有哪些？如何自定义作用域？
+
+**答：**  
+- 常见作用域：singleton、prototype、request、session、application、websocket。
+- 自定义作用域：实现 org.springframework.beans.factory.config.Scope 接口，并注册到容器。
+
+---
+
+## 7. Spring 如何管理 Bean 的生命周期？有哪些扩展点？
+
+**答：**  
+- 生命周期包括：实例化、依赖注入、初始化、销毁。
+- 扩展点：@PostConstruct/@PreDestroy、InitializingBean/DisposableBean、BeanPostProcessor、BeanFactoryPostProcessor。
+
+---
+
+## 8. 依赖注入时如何处理循环依赖？
+
+**答：**  
+- 单例 Bean 的 setter/属性注入循环依赖，Spring 通过三级缓存机制解决。
+- 构造器注入和 prototype Bean 的循环依赖无法自动解决。
+
+---
+
+## 9. 如何在 IOC 容器中获取 Bean？有哪些方式？
+
+**答：**  
+- 推荐依赖注入（@Autowired、@Resource）。
+- 也可通过 ApplicationContext#getBean(Class/Name) 获取，但耦合度较高。
+
+---
+
+## 10. Spring IOC 容器能否管理非 Spring 创建的对象？如何处理？
+
+**答：**  
+- 不能自动管理。若需管理，需要用 @Bean/@Component 或手动注册到容器。
+- 可通过 ApplicationContextAware 或 BeanFactoryAware 获取容器引用，动态注册 Bean。
+
+---
+
+## 11. @ComponentScan 的原理和作用是什么？
+
+**答：**  
+- 用于扫描包下的 @Component、@Service、@Repository、@Controller 等注解 Bean，自动注册到容器。
+- 底层通过类路径扫描机制实现。
+
+---
+
+## 12. 如何在单元测试中注入 IOC 容器的 Bean？
+
+**答：**  
+- 可用 @RunWith(SpringRunner.class) + @SpringBootTest/@ContextConfiguration
+- 也可用 @Autowired 注入测试类成员变量。
+
+---
+
+## 13. Bean 的懒加载（@Lazy）有什么作用？适用场景？
+
+**答：**  
+- @Lazy 延迟 Bean 的实例化，首次使用时才创建。
+- 适用于重量级资源、启动优化、解决部分循环依赖等。
+
+---
+
+## 14. Spring Bean 的默认作用域是什么？如何修改？
+
+**答：**  
+- 默认是 singleton。
+- 可用 @Scope("prototype") 等注解或 XML 配置修改。
+
+---
+
+## 15. Spring IOC 容器如何支持配置文件（如 application.properties）中的属性注入？
+
+**答：**  
+- 通过 @Value、@ConfigurationProperties 等注解，将配置文件属性注入 Bean 字段或方法。
+
+---
+
+## 面试总结提示
+
+- 理解 IOC/DI 的思想与实现方式
+- 熟悉容器类型、Bean 管理流程、生命周期、作用域
+- 掌握依赖注入、配置、Bean 扩展点和常见注解用法
+- 能回答实际开发中 IOC 使用与原理细节
+
+---

@@ -41,3 +41,4 @@
 #### 总结性回答（复习提示词）
 
 > ApplicationContext = BeanFactory + 企业级特性（如国际化、事件等），开发中优先用 ApplicationContext，BeanFactory 适合底层或特殊场景。
+
