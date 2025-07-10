@@ -66,7 +66,7 @@ MySQL 的三大日志分别为 **redo log（重做日志）**、**binlog（二�
 
 ### 1. Redo log和binlog的区别与关系？
 **答：**
-- redo log是物理日志，只记录InnoDB存储的数据页变化；binlog是逻辑日志，记录SQL/行变化，属于MySQL Server层。
+- redo log是**物理日志**，只记录InnoDB存储的数据页变化；binlog是**逻辑日志**，记录SQL/行变化，属于MySQL Server层。
 - redo log用于崩溃恢复，binlog用于主从复制和归档。
 - 二者配合实现MySQL的高可靠和可恢复性，事务提交时需先写redo log，再写binlog（两阶段提交）。
 

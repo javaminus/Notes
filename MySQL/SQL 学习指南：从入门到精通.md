@@ -165,10 +165,11 @@ JOIN 用于根据两个或多个表中的相关列组合行。
 * **查询每个员工及其所在的部门名称**
     ```sql
     SELECT
-        e.name AS employee_name,
-        d.name AS department_name
-    FROM employees AS e
-    INNER JOIN departments AS d ON e.department_id = d.id;
+        e.name AS employee_name,          -- 员工姓名
+        d.name AS department_name         -- 部门名称
+    FROM employees AS e                   -- 从员工表（employees）取别名为 e
+    INNER JOIN departments AS d           -- 内连接部门表（departments），取别名为 d
+        ON e.department_id = d.id;        -- 连接条件：员工的 department_id 等于部门的 id
     ```
 
 #### LEFT JOIN：左连接
