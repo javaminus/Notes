@@ -4,15 +4,15 @@ OSI七层模型（OSI七层参考模型，全称Open System Interconnection Refe
 
 ## OSI七层模型结构及功能
 
-| 层次          | 英文名称     | 主要功能                     | 典型设备/协议        |
-| ------------- | ------------ | ---------------------------- | -------------------- |
-| 7. 应用层     | Application  | 为应用程序提供网络服务       | HTTP, FTP, SMTP, DNS |
-| 6. 表示层     | Presentation | 数据格式转换、加密解密、压缩 | SSL, JPEG, GIF       |
-| 5. 会话层     | Session      | 建立/管理/终止会话           | RPC, NetBIOS         |
-| 4. 传输层     | Transport    | 端到端传输，可靠性、流量控制 | TCP, UDP             |
-| 3. 网络层     | Network      | 路由选择、逻辑寻址           | IP, ICMP, IPX        |
-| 2. 数据链路层 | Data Link    | 物理寻址、差错检测           | MAC, PPP, 交换机     |
-| 1. 物理层     | Physical     | 比特流传输，物理媒介         | 网线、光纤、集线器   |
+| 层次          | 英文名称     | 主要功能                     | 典型设备/协议                        |
+| ------------- | ------------ | ---------------------------- | ------------------------------------ |
+| 7. 应用层     | Application  | 为应用程序提供网络服务       | HTTP, FTP, SMTP, DNS                 |
+| 6. 表示层     | Presentation | 数据格式转换、加密解密、压缩 | SSL, JPEG, GIF                       |
+| 5. 会话层     | Session      | 建立/管理/终止会话           | RPC(调用远程的函数：dubbo), NetBIOS  |
+| 4. 传输层     | Transport    | 端到端传输，可靠性、流量控制 | TCP, UDP  防护墙                     |
+| 3. 网络层     | Network      | 路由选择、逻辑寻址           | IP, ICMP, IPX   路由器  防火墙       |
+| 2. 数据链路层 | Data Link    | 物理寻址、差错检测           | MAC, PPP, 交换机( 4G、WiFi、以太网 ) |
+| 1. 物理层     | Physical     | 比特流传输，物理媒介         | 网线、光纤、集线器                   |
 
 ---
 

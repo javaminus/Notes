@@ -182,6 +182,130 @@ public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
 - 熟悉线程池配置、异常处理、事务和线程安全等细节
 - 能结合实际业务场景举例说明
 
+
+
+# 使用@Async不自定义线程池的影响
+
+如果在Spring应用中使用`@Async`注解但没有自定义线程池配置，系统会出现以下情况：
+
+## 默认行为
+
+1. Spring会使用默认的异步任务执行器 - `SimpleAsyncTaskExecutor`
+
+2. **重要特性**：这不是一个真正的线程池！它会为每个异步调用创建一个新线程
+
+## 潜在问题
+
+1. **性能开销**：频繁创建和销毁线程会导致显著的系统开销
+
+2. **资源耗尽**：在高负载情况下，可能创建大量线程，导致:
+   - 内存溢出
+   - 系统资源耗尽
+   - 线程上下文切换开销增加
+
+3. **没有队列缓冲**：请求直接创建新线程，没有排队机制
+
+4. **没有线程数限制**：理论上可以无限创建线程，直到系统资源耗尽
+
+5. **适用性有限**：仅适合开发环境或并发请求极少的场景
+
+## 生产环境推荐方案
+
+为避免上述问题，应该自定义线程池：
+
+```java
+@Configuration
+@EnableAsync
+public class AsyncConfig implements AsyncConfigurer {
+
+    @Override
+    public Executor getAsyncExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(5);         // 核心线程数
+        executor.setMaxPoolSize(10);         // 最大线程数
+        executor.setQueueCapacity(25);       // 队列容量
+        executor.setThreadNamePrefix("MyAsync-");
+        executor.initialize();
+        return executor;
+    }
+    
+    @Override
+    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+        return new SimpleAsyncUncaughtExceptionHandler();
+    }
+}
+```
+
+## 总结
+
+不配置自定义线程池使用@Async是一个常见的"隐形陷阱"：
+- 在开发环境可能工作良好
+- 在生产环境可能导致系统稳定性问题和性能瓶颈
+- 几乎所有生产级应用都应该为@Async配置适当的线程池
+
+
+
+# 如果配置了线程池，是不是就会默认调用线程池里面的线程 
+
+## 是的，配置线程池后，@Async会默认使用线程池中的线程
+
+当您在Spring应用中配置自定义线程池并启用@Async功能时，所有使用@Async注解的方法都会通过配置的线程池来执行，而不是每次都创建新线程。
+
+## 执行流程
+
+1. 方法被@Async标记
+2. Spring拦截该方法调用
+3. Spring将任务提交到配置的线程池
+4. 线程池根据其策略分配线程执行任务:
+   - 如果有空闲的核心线程，立即执行
+   - 如果核心线程都忙，任务进入队列
+   - 如果队列满了，创建新线程（不超过最大线程数）
+   - 如果达到最大线程数且队列满了，触发拒绝策略
+
+## 配置示例
+
+```java
+@Configuration
+@EnableAsync
+public class AsyncConfig implements AsyncConfigurer {
+
+    @Override
+    public Executor getAsyncExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(5);        // 保持活跃的线程数
+        executor.setMaxPoolSize(10);        // 最大线程数 
+        executor.setQueueCapacity(25);      // 队列容量
+        executor.setThreadNamePrefix("MyApp-Async-");
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        executor.initialize();
+        return executor;
+    }
+}
+```
+
+## 与不配置线程池的区别
+
+| 方面     | 配置线程池                   | 不配置线程池(默认SimpleAsyncTaskExecutor) |
+| -------- | ---------------------------- | ----------------------------------------- |
+| 线程重用 | 是                           | 否(每次创建新线程)                        |
+| 资源消耗 | 可控                         | 不可控(可能导致资源耗尽)                  |
+| 任务排队 | 支持                         | 不支持                                    |
+| 可配置性 | 高(线程数、队列、拒绝策略等) | 低                                        |
+| 适用场景 | 生产环境                     | 开发/测试环境                             |
+
+## 多线程池配置
+
+您还可以配置多个不同的线程池，并指定方法使用特定的线程池:
+
+```java
+@Async("specificExecutor")  // 指定使用名为specificExecutor的线程池
+public void processTask() {
+    // 方法实现
+}
+```
+
+这样可以为不同类型的异步任务分配不同的资源配置。
+
 ---
 
 ---

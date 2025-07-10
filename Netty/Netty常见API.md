@@ -61,10 +61,117 @@
 
 ### Bootstrap/ServerBootstrap
 - `group()`：设置EventLoopGroup
+
 - `channel()`：设置通道类型
+
 - `handler()` / `childHandler()`：设置初始化器
+
 - `option()` / `childOption()`：设置通道参数
+
+  - > Netty 的 `option` 参数用于设置 Channel 的底层属性（底层 socket 选项），常用于 `ServerBootstrap` 或 `Bootstrap` 的配置阶段。不同类型的 Channel 支持的 `option` 可能不同，主要分为服务端（`NioServerSocketChannel`）和客户端（`NioSocketChannel`）。
+    >
+    > 下面列举常用的 Netty `option` 参数及其含义：
+    >
+    > ---
+    >
+    > ## 1. 常用的 ServerBootstrap `option`
+    >
+    > 这些一般用于 `ServerBootstrap.option()`（用于服务端 ServerSocketChannel）：
+    >
+    > | 选项名                     | 说明                                                         |
+    > | -------------------------- | ------------------------------------------------------------ |
+    > | ChannelOption.SO_BACKLOG   | 服务端可连接队列长度（backlog），全称是 socket backlog。默认 128。 |
+    > | ChannelOption.SO_REUSEADDR | 是否允许地址重用。默认 true。                                |
+    >
+    > **示例：**
+    > ```java
+    > serverBootstrap.option(ChannelOption.SO_BACKLOG, 1024);
+    > serverBootstrap.option(ChannelOption.SO_REUSEADDR, true);
+    > ```
+    >
+    > ---
+    >
+    > ## 2. 常用的 childOption（作用于每个新建立的 SocketChannel）
+    >
+    > 这些一般用于 `ServerBootstrap.childOption()` 或 `Bootstrap.option()`，针对每个客户端连接：
+    >
+    > | 选项名                               | 说明                                                       |
+    > | ------------------------------------ | ---------------------------------------------------------- |
+    > | ChannelOption.SO_KEEPALIVE           | 是否开启 TCP keepalive，检测死连接。默认 false。           |
+    > | ChannelOption.TCP_NODELAY            | 是否禁用 Nagle 算法，低延迟通信建议设为 true。默认 false。 |
+    > | ChannelOption.SO_RCVBUF              | TCP 接收缓冲区大小（字节）。                               |
+    > | ChannelOption.SO_SNDBUF              | TCP 发送缓冲区大小（字节）。                               |
+    > | ChannelOption.SO_LINGER              | 设置关闭时的延迟时间（秒），0 立即关闭。                   |
+    > | ChannelOption.SO_REUSEADDR           | 地址重用。                                                 |
+    > | ChannelOption.IP_TOS                 | IP 层的服务类型。                                          |
+    > | ChannelOption.ALLOW_HALF_CLOSURE     | 是否允许半关闭连接。                                       |
+    > | ChannelOption.CONNECT_TIMEOUT_MILLIS | 连接超时时间（毫秒）。                                     |
+    > | ChannelOption.AUTO_READ              | 是否自动读取数据。                                         |
+    >
+    > **示例：**
+    > ```java
+    > serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
+    > serverBootstrap.childOption(ChannelOption.TCP_NODELAY, true);
+    > serverBootstrap.childOption(ChannelOption.SO_RCVBUF, 1024 * 64);
+    > serverBootstrap.childOption(ChannelOption.SO_SNDBUF, 1024 * 64);
+    > ```
+    >
+    > ---
+    >
+    > ## 3. 其它常用 Option（通用）
+    >
+    > | 选项名                                     | 说明                         |
+    > | ------------------------------------------ | ---------------------------- |
+    > | ChannelOption.WRITE_BUFFER_HIGH_WATER_MARK | 写缓冲区高水位线。用于流控。 |
+    > | ChannelOption.WRITE_BUFFER_LOW_WATER_MARK  | 写缓冲区低水位线。用于流控。 |
+    > | ChannelOption.MESSAGE_SIZE_ESTIMATOR       | 消息大小估算器。             |
+    > | ChannelOption.MAX_MESSAGES_PER_READ        | 每次读操作读取的最大消息数。 |
+    >
+    > ---
+    >
+    > ## 4. 示例代码
+    >
+    > ```java
+    > ServerBootstrap b = new ServerBootstrap();
+    > b.group(bossGroup, workerGroup)
+    >  .channel(NioServerSocketChannel.class)
+    >  .option(ChannelOption.SO_BACKLOG, 128)
+    >  .option(ChannelOption.SO_REUSEADDR, true)
+    >  .childOption(ChannelOption.SO_KEEPALIVE, true)
+    >  .childOption(ChannelOption.TCP_NODELAY, true)
+    >  .childOption(ChannelOption.SO_RCVBUF, 32 * 1024)
+    >  .childOption(ChannelOption.SO_SNDBUF, 32 * 1024);
+    > ```
+    >
+    > ---
+    >
+    > ## 5. ChannelOption 常量类说明
+    >
+    > 所有可用的参数都定义在 `io.netty.channel.ChannelOption` 类中，可以查看 [ChannelOption 源码](https://netty.io/4.1/api/io/netty/channel/ChannelOption.html) 或直接在 IDE 输入 `ChannelOption.` 查看自动补全。
+    >
+    > ---
+    >
+    > ## 6. 总结
+    >
+    > 常用的 Netty option 有：
+    >
+    > - SO_BACKLOG
+    > - SO_REUSEADDR
+    > - SO_KEEPALIVE
+    > - TCP_NODELAY
+    > - SO_RCVBUF / SO_SNDBUF
+    > - SO_LINGER
+    > - CONNECT_TIMEOUT_MILLIS
+    > - AUTO_READ
+    > - WRITE_BUFFER_HIGH_WATER_MARK/LOW_WATER_MARK
+    > - ALLOW_HALF_CLOSURE
+    >
+    > 根据实际业务需求灵活组合设置即可。
+    >
+    > 如果需要完整列表或某个参数详细说明，可以继续追问！
+
 - `bind()`：绑定端口启动服务（服务端）
+
 - `connect()`：连接服务器（客户端）
 
 ### ChannelPipeline

@@ -184,7 +184,7 @@
 | JVM中对象的生命周期和引用类型有哪些？如何影响垃圾回收？      | 对象生命周期：创建→使用→不可达→等待回收→被回收  四种引用类型：强、软、弱、虚  引用强度影响GC回收时机  典型应用：缓存（软引用）、ThreadLocal（弱引用）、回收通知（虚引用）  复习提示：**“强软弱虚四种引用，引用越弱越易被GC”** | [Editorial](./JVM/JVM中对象的生命周期和引用类型有哪些？如何影响垃圾回收？.md) |
 | 垃圾回收 cms和g1的区别是什么？                               | 回收策略、垃圾收集目标、内存划分、STW停顿时间、回收过程、吞吐量、适用场景、废弃情况 | [Editorial](./JVM/垃圾回收 cms和g1的区别是什么.md)           |
 | 讲下JVM内存区域？                                            | **方法区**：存储类元数据，JDK 8 之后使用 **元空间（Metaspace）**。  **堆**：存储对象，GC 主要管理区域，分 **新生代 & 老年代**。  **虚拟机栈**：存储局部变量表、方法调用信息，递归深会导致 **StackOverflowError**。  **本地方法栈**：服务于 JNI 调用，溢出也会抛出 **StackOverflowError**。  **程序计数器**：记录当前线程执行的 **字节码指令地址**。 | [Editorial](./JVM/JVM内存区域.md)                            |
-| 你知道哪些 JVM 的 GC 机制？                                  | Serial收集器（复制算法) 、 ParNew收集器 (复制算法) 、 Parallel Scavenge收集器 (复制算法) 、 Serial Old收集器 (标记-整理算法) 、 Parallel Old收集器 (标记-整理算法) 、 CMS(Concurrent Mark Sweep)收集器（标记-清除算法） 、 G1(Garbage First)收集器 (标记-整理算法) | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/meituan.html#%E4%BD%A0%E7%9F%A5%E9%81%93%E5%93%AA%E4%BA%9B-jvm-%E7%9A%84-gc-%E6%9C%BA%E5%88%B6) |
+| 你知道哪些 JVM 的 GC 机制？                                  | Serial收集器（复制算法) 、 ParNew收集器 (复制算法) 、 Parallel Scavenge收集器 (复制算法) 、 Serial Old收集器 (标记-整理算法) 、 Parallel Old收集器 (标记-整理算法) 、 CMS(Concurrent Mark Sweep)收集器（标记-清除算法） 、 G1(Garbage First)收集器 (标记-整理算法) | [Editorial](https://download.csdn.net/blog/column/12681557/141176456) |
 | 什么是逃逸分析？它是如何优化对象分配和同步的？               | 逃逸分析：判断对象作用域，决定对象分配位置和优化锁  优化点：栈上分配、标量替换、同步消除  典型例子：方法内临时对象、同步块优化  相关JVM参数：`-XX:+DoEscapeAnalysis`  复习提示：**“判断对象是否只在方法内使用，能否避免堆分配和无用同步”** | [Editorial](./JVM/什么是逃逸分析？它是如何优化对象分配和同步的？.md) |
 | 什么是JVM内存溢出（OOM）和内存泄漏？如何定位和解决？         | OOM：JVM分配内存失败，常见于堆、元空间、栈  内存泄漏：无用对象仍被引用，无法回收  排查思路：分析日志、heap dump、监控曲线、代码审查  解决方法：优化代码、合理配置参数、用工具分析  复习提示：**“OOM看异常类型，heap dump查根因，注意静态变量和大对象引用”** | [Editorial](./JVM/什么是JVM内存溢出（OOM）和内存泄漏？如何定位和解决？.md) |
 | JVM中有哪些常见的性能监控与排查工具？各自适用哪些场景？      | JDK自带工具：jps、jstack、jmap、jstat、jinfo、VisualVM、JConsole  生产/复杂场景：JMC、MAT、Arthas、YourKit/JProfiler  典型用途：查线程死锁（jstack）、查内存泄漏（jmap+MAT）、实时GC监控（jstat/VisualVM）、线上低开销采集（JMC）  复习提示：**“jps找进程、jstack查线程、jmap导内存、VisualVM/JMC图形化分析”** | [Editorial](./JVM/JVM中有哪些常见的性能监控与排查工具？各自适用哪些场景？.md) |
@@ -222,12 +222,15 @@
 
 | Problems                                                     | Hints                                                        | Solution                                                     |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Spring的aop介绍一下                                          | 切面编程、动态代理实现                                       | [Editorial](./Spring/Spring的aop介绍一下.md)                 |
+| 定义注解实现切面编程                                         | 场景：日志记录、权限校验、参数校验、缓存处理、接口幂等性、事务控制、审计与埋点、限流与防刷；  Editorial有具体的案例； | [Editorial](./Spring/定义注解实现切面编程.md)                |
+| 详细介绍一下：ProceedingJoinPoint                            | 是 AspectJ（和 Spring AOP）中用于**“环绕通知”**（@Around advice）的一个接口。它代表了连接点（JoinPoint），即你的切面（Aspect）所拦截的**方法调用**，并且允许你通过它来访问方法的信息、参数，甚至可以控制方法的执行（如是否继续执行原方法、改变参数、获取返回值等）。 | [Editorial](./Spring/详细介绍一下ProceedingJoinPoint.md)     |
 | spring三级缓存解决循环依赖问题？                             | **Spring 三级缓存机制通过提前暴露 Bean 的引用，使得循环依赖得以解决，同时保证 AOP 代理不丢失**。 | [Editorial](./Spring/spring三级缓存解决循环依赖问题.md)      |
 | 如何使用spring实现事务？【深问：事务传播模型有哪些】         | 编程式事务（`TransactionTemplate`）、声明式事务（`@Transactional`） | [Editorial](./Spring/如何使用spring实现事务 )                |
 | 介绍一下@Async                                               | `@Async` 是 Spring 提供的异步方法执行注解。  它允许你将某个方法变成**异步方法**，即调用该方法时不会阻塞当前线程，而是交由 Spring 的线程池异步执行，提升应用的并发能力和响应速度。 | [Editorial](./Spring/介绍一下@Async.md)                      |
-| 分布式事务详解与面试高频问题梳理                             | 一次业务操作会跨越多个数据库、服务、系统或消息队列。例如：订单服务写订单库，库存服务扣库存库，支付服务调支付网关。**如果这些操作不能保证"要么全部成功，要么全部失败"，就会出现数据不一致问题。** https://blog.csdn.net/XQ_898878888/article/details/140407125 | [Editorial](./Spring/分布式事务详解)                         |
+| 分布式事务详解与面试高频问题梳理                             | 一次业务操作会跨越多个数据库、服务、系统或消息队列。例如：订单服务写订单库，库存服务扣库存库，支付服务调支付网关。**如果这些操作不能保证"要么全部成功，要么全部失败"，就会出现数据不一致问题。** | [Editorial](./Spring/分布式事务详解)                         |
 | springboot常用注解                                           | Bean相关的、依赖注入、读取配置、Web相关、其他注解            | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/aliyun.html#springboot%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3%E6%9C%89%E5%93%AA%E4%BA%9B) |
-| MyBatis，#和$有什么区别                                      | **主要是SQL注入的问题**                                      | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mayi.html#%E6%88%91%E7%9C%8B%E4%BD%A0%E5%86%99%E5%88%B0%E4%BA%86mybatis-%E5%92%8C-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB-%E4%B8%BB%E8%A6%81%E6%98%AFsql%E6%B3%A8%E5%85%A5%E7%9A%84%E9%97%AE%E9%A2%98) |
+| MyBatis，#和$有什么区别                                      | **主要是SQL注入的问题**                                      | [Editorial](./Spring/MyBatis，#和$有什么区别.md)             |
 | 你说到了SQL注入，那你给我设计出一个SQL注入，具体说表中的字段，然后SQL语句是怎样的 | SQL 注入主要是由于 **拼接 SQL 语句** 造成的，攻击者可以利用它来 **绕过身份验证、窃取数据，甚至破坏数据库**。最有效的防范方法是 **使用参数化查询**，避免直接拼接用户输入到 SQL 语句中。 | [Editorial](./MySQL/SQL注入例子.md)                          |
 | Bean 的生命周期                                              | 8大步                                                        | [Editorial](./Spring/Bean的生命周期.md)                      |
 | Bean是否单例？                                               | Spring 中的 Bean 默认都是单例的。                            | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/mayi.html#bean%E6%98%AF%E5%90%A6%E5%8D%95%E4%BE%8B) |
@@ -237,7 +240,6 @@
 | spring 里@Autowired 和 @Resource 注解有什么区别？            | 来源不同、注入方式、属性、依赖性、使用场景                   | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/elme.html#spring-%E9%87%8C-autowired-%E5%92%8C-resource-%E6%B3%A8%E8%A7%A3%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB) |
 | Spring的IOC介绍一下                                          | **IOC（控制反转）** 是一种**设计思想**，用于管理对象的依赖关系。Spring 通过 **IOC 容器** 负责创建、管理和注入对象，而不是由代码手动创建对象。 | [Editorial](./Spring/Spring的IOC介绍一下.md)                 |
 | 为什么依赖注入不适合使用字段注入？                           | 字段注入可能引起的三个问题：**对象的外部可见性**;  **可能导致循环依赖**;  **无法设置注入的对象为final，也无法注入静态变量** | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/kuaishou.html#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E4%B8%8D%E9%80%82%E5%90%88%E4%BD%BF%E7%94%A8%E5%AD%97%E6%AE%B5%E6%B3%A8%E5%85%A5) |
-| Spring的aop介绍一下                                          | 切面编程、动态代理实现                                       | [Editorial](https://www.xiaolincoding.com/backend_interview/internet_giants/kuaishou.html#spring%E7%9A%84aop%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8B) |
 | Spring的事务，使用this调用是否生效？                         | 不能生效。因为Spring事务是通过代理对象来控制的，只有通过代理对象的方法调用才会应用事务管理的相关规则。当使用`this`直接调用时，是绕过了Spring的代理机制，因此不会应用事务设置 |                                                              |
 | Spring MVC的工作流程描述一下                                 | 7大步：请求进入、寻找控制器、执行控制器、返回模型数据、解析视图、渲染视图、响应返回 | [Editorial](./Spring/Spring MVC的工作流程描述一下.md)        |
 | Spring 中的 BeanFactory 和 ApplicationContext 有什么区别？   | ApplicationContext = BeanFactory + 企业级特性（如国际化、事件等），开发中优先用 ApplicationContext，BeanFactory 适合底层或特殊场景。 | [Editorial](./Spring/Spring 中的 BeanFactory 和 ApplicationContext 有什么区别？.md) |
@@ -263,13 +265,14 @@
 | Problems                                                     | Hints                                                        | Solution                                                     |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | Linux系统                                                    |                                                              | [Editorial](./Linux.md)                                      |
-| 进程与线程的区别?                                            | 本质区别：进程是操作系统资源分配的基本单位，而线程是任务调度和执行的基本单位 。  开销方面、稳定性方面、内存分配方面、包含关系。 | [Editorial](./操作系统/进程与线程的区别.md)                  |
+| 进程与线程的区别?                                            | 本质区别：进程是操作系统资源分配的基本单位，而线程是任务调度和执行的基本单位 。  定义、资源占用、通信方式、稳定性、应用场景 | [Editorial](./操作系统/进程与线程的区别.md)                  |
+| 介绍一下Java里面的Future/Promise                             | CompletableFuture                                            | [Editorial](./操作系统/介绍一下Java里面的Future.md)          |
 | 补充 - 协程                                                  | 协程是一种`用户态`的`轻量级线程`，其调度`完全由用户程序控制`，而不需要`内核`的参与。协程拥有自己的`寄存器上下文和栈`，但与其他协程`共享堆内存`。协程的切换开销非常小，因为只需要保存和恢复协程的上下文，而无需进行内核级的上下文切换。这使得协程在处理大量并发任务时具有非常高的效率。然而，协程需要程序员显式地进行调度和管理，相对于线程和进程来说，`其编程模型更为复杂`。 |                                                              |
 | 为什么进程崩溃不会对其他进程产生很大影响?                    | 进程隔离性、进程独立性。                                     | [Editorial](./操作系统/为什么进程崩溃不会对其他进程产生很大影响.md) |
 | 有哪些进程调度算法 ?                                         | 先来先服务 、短作业优先、最短剩余时间优先、时间片轮转、优先级调度、多级反馈队列 | [Editorial](./操作系统/有哪些进程调度算法.md)                |
 | 死锁发生条件是什么？                                         | 互斥条件 、 持有并等待条件 、 不可剥夺条件 、 环路等待条件   |                                                              |
 | 如何避免死锁？                                               | 避免死锁问题就只需要破环其中一个条件就可以，最常见的并且可行的就是**使用资源有序分配法，来破环环路等待条件**。 | [Editorial](./操作系统/如何避免死锁.md)                      |
-| 介绍一下操作系统内存管理                                     | 操作系统设计了虚拟内存，每个进程都有自己的独立的虚拟内存，我们所写的程序不会直接与物理内打交道。 |                                                              |
+| 介绍一下操作系统内存管理                                     | 操作系统设计了虚拟内存，每个进程都有自己的独立的虚拟内存，我们所写的程序不会直接与物理内打交道。**内存管理单元（MMU）** |                                                              |
 | 介绍copy on write                                            | 写时复制，当多个进程或线程共享同一块数据时，**只有在有写操作时才真正复制数据**，否则大家共享同一份数据副本。 | [Editorial](./操作系统/介绍copy on write.md)                 |
 | Linux操作系统中哪个命令可以**查看端口**被哪个应用占用？      | 可以使用`lsof`命令或`netstat`命令查看端口被哪个应用占用。` lsof -i :端口号` 或则 `netstat -tulnp | grep 端口号` |                                                              |
 | 如果服务应用部署在 Linux 上，**CPU 打满后**，想查看哪个进程导致的，用什么命令？ | 方式1：$top$  然后可以按 `P` 键来按 CPU 使用率排序，查看哪些进程占用了最多的 CPU 资源。  方式2：$htop$。 方式3：$ps$。 | [Editorial](./操作系统/如果服务应用部署在 Linux 上，CPU 打满后，想查看哪个进程导致的，用什么命令.md) |
@@ -294,7 +297,7 @@
 | 网络有什么常用的通信协议？           | **HTTP**：用于在**Web浏览器**和**Web服务器**之间传输超文本的协议，是目前最常见的**应用层**协议。  **HTTPS**：在HTTP的基础上添加了**SSL/TLS**加密层，用于在不安全的网络上安全地传输数据。  **TCP**：面向连接的**传输层**协议，提供可靠的数据传输服务，保证数据的顺序和完整性。  **UDP**：无连接的**传输层**协议，提供了数据包传输的简单服务，适用于实时性要求高的应用。  **IP**：**网络层**协议，用于在网络中传输数据包，定义了数据包的格式和传输规则。 |                                                              |
 | 前后端交互用的是什么协议？           | 用HTTP和HTTPS协议比较多。前端通过HTTP协议向服务器端发送请求，服务器端接收请求并返回相应的数据，实现了前后端的交互。HTTP协议简单、灵活，适用于各种类型的应用场景。 |                                                              |
 | HTTP 常见状态码有哪些？              | 1XX：提示信息；2XX：成功；3XX：重定向；4XX：报文有误；5XX：服务器内部错误 | [Editorial](./计算机网络/HTTP 常见状态码有哪些？.md)         |
-| Dns基于什么协议实现？udp 还是 tcp？  | DNS 基于UDP协议实现，DNS使用UDP协议进行域名解析和数据传输。  |                                                              |
+| Dns基于什么协议实现？udp 还是 tcp？  | DNS(域名系统) 基于UDP协议实现，DNS使用UDP协议进行域名解析和数据传输。 |                                                              |
 | 为什么是udp？                        | **低延迟** 、**简单快速**、**轻量级**                        |                                                              |
 | http的特点是什么？                   | 基于文本、可扩展性、灵活性、无状态                           | [Editorial](./计算机网络/http的特点是什么.md)                |
 | http无状态体现在哪？                 | HTTP的无状态体现在每个请求之间**相互独立**，服务器不会保留之前请求的状态信息。每次客户端向服务器发送请求时，服务器都会独立处理该请求，不会记住之前的请求信息或状态。 | [Editorial](./计算机网络/http无状态体现在哪.md)              |

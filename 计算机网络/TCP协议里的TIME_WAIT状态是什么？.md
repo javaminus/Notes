@@ -4,7 +4,7 @@
 
 ### 1. TIME_WAIT 状态是什么？
 
-TIME_WAIT 是 TCP 连接关闭时，主动关闭方（发送最后一个 ACK 的一方）进入的一个特殊状态。也称为“2MSL（Maximum Segment Lifetime）等待状态”，通常持续 2 倍最大报文生存时间。
+TIME_WAIT 是 TCP 连接关闭时，主动关闭方（发送最后一个 ACK 的一方）进入的一个特殊状态。也称为“2MSL（Maximum Segment Lifetime）等待状态”，通常持续 **2 倍最大报文生存时间**。
 
 ---
 
