@@ -58,6 +58,8 @@
 
 | Problems                                                     | Hints                                                        | Solution                                                     |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Jedis学习笔记                                                |                                                              | [Editorial](./Redis/Jedis学习笔记.md)                        |
+| Redission学习笔记                                            |                                                              | [Editorial](./Redis/Redission学习笔记.md)                    |
 | Redis是AP还是CP？                                            | 单机的Redis连P都没有，不讨论；分布式的Redis是AP，因为Redis通过异步的主从同步保证系统的高可用（A），那么这个时候的数据一致性得不到保证（C）; |                                                              |
 | Redis 使用什么协议进行通信?                                  | Redis 使用自己设计的一种文本协议进行客户端与服务端之间的通信——**RESP**（REdis Serialization Protocol），这种协议简单、高效，易于解析，被广泛使用。  RESP 协议基于 **TCP** 协议，采用请求/响应模式，每条请求由多个参数组成，以命令名称作为第一个参数。请求和响应都以行结束符（\r\n）作为分隔符. |                                                              |
 | Redis高级数据结构的使用场景                                  | 常见的有五种数据类型：String（字符串），Hash（哈希），List（列表），Set（集合）、Zset（有序集合）。 BitMap、HyperLogLog、GEO、Stream。 | [Editorial](./Redis/Redis高级数据结构的使用场景.md)          |
@@ -104,6 +106,11 @@
 | Redis 持久化与主从复制、集群机制的关系是什么？各自如何影响数据安全和高可用？ | **持久化**保障单机数据不丢，**主从复制**实现数据冗余，**哨兵/集群**保障服务不中断。 - 生产环境要结合持久化、主从复制、自动故障转移机制，才能既高可用又高安全。 | [Editorial](./Redis/Redis 持久化与主从复制、集群机制的关系是什么？各自如何影响数据安全和高可用？.md) |
 | Redis 的慢查询如何监控与分析？常见慢查询场景如何优化？       | Redis 用 SLOWLOG 监控慢查询，重点关注大 Key 和全量操作，建议用 SCAN 代替 KEYS，定期分析慢查询日志，优化数据结构和命令使用，保障高性能。 | [Editorial](./Redis/Redis 的慢查询如何监控与分析？常见慢查询场景如何优化？.md) |
 | Redis 的事务机制是怎样的？能否保证原子性和隔离性？常见的事务相关命令有哪些？ | Redis 事务通过 `MULTI-EXEC` 保证命令批量有序执行，支持原子性但不支持回滚。可用 `WATCH` 实现`乐观锁`防止并发冲突，适合需要简单事务控制的场景。 | [Editorial](./Redis/Redis 的事务机制是怎样的？能否保证原子性和隔离性？常见的事务相关命令有哪些？.md) |
+| Redis如何实现延迟消息？                                      | Redis过期消息 、`zset`、redisson的 `RDelayedQueue `          | [Editorial](./Redis/Redis如何实现延迟消息？.md)              |
+| Redis除了缓存，还可以做什么？                                | 消息队列（不推荐）、延迟队列（不推荐）、排行榜、计数器、分布式ID、分布式锁、地理位置应用、分布式限流、分布式Session、布隆过滤器、状态统计、共同关注、推荐关注 | [Editorial](./Redis/redis除了缓存，还可以做什么)             |
+| 对于 Redis 的操作，有哪些推荐的 Best Practices？             |                                                              | [Editorial](./Redis/对于 Redis 的操作，有哪些推荐的 Best Practices？.md) |
+| Redis中hash结构比string的好处有哪些？                        |                                                              | [Editorial](./Redis/Redis中hash结构比string的好处有哪些.md)  |
+| ZSet为什么在数据量少的时候用ZipList，而在数据量大的时候转成SkipList？ | ZipList的存储更**节省空间**，而SkipList的**操作性能**会更好。  所以，对于少量数据，ZipList更好，因为它的内存开销很小，而且性能也可以接受（N越小，logN和N的差别更小）。但是当数据量大到一定程度时，SkipList的 O(log N) 性能会显著优于ZipList 的 O(N) 性能，尤其是涉及到范围查询和顺序遍历时。  所以，默认情况下，当元素数量少于128，每个元素的长度都小于64字节的时候，ZSet使用ZipList（ListPack），否则，使用SkipList！ |                                                              |
 
 ## 【Java基础】
 
