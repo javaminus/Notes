@@ -152,11 +152,11 @@
 - **代码示例：**
   ```java
   import java.util.concurrent.locks.StampedLock;
-
+  
   public class StampedLockDemo {
       private final StampedLock stampedLock = new StampedLock();
       private int value = 0;
-
+  
       public int read() {
           long stamp = stampedLock.tryOptimisticRead();
           int result = value;
@@ -170,7 +170,7 @@
           }
           return result;
       }
-
+  
       public void write(int v) {
           long stamp = stampedLock.writeLock();
           try {
@@ -243,27 +243,83 @@
   - 主线程等待子线程结果，分布式任务协作。
 - **原理补充：**
   - 内部维护一个计数器，await() 阻塞，countDown() 计数减一。
-- **代码示例：**
-  ```java
-  import java.util.concurrent.CountDownLatch;
 
-  public class CountDownLatchDemo {
-      public void example() throws InterruptedException {
-          CountDownLatch latch = new CountDownLatch(2);
-
-          Runnable worker = () -> {
-              System.out.println(Thread.currentThread().getName() + " working");
-              latch.countDown();
-          };
-
-          new Thread(worker).start();
-          new Thread(worker).start();
-
-          latch.await();
-          System.out.println("All workers finished.");
-      }
-  }
-  ```
+  > `CountDownLatch` 是 Java 并发包（`java.util.concurrent`）中的一个同步辅助工具类，常用于以下典型场景：
+  >
+  > ---
+  >
+  > ## 1. **等待多个任务完成后再继续执行**
+  > 假设有多个子任务（线程）需要并行处理，主线程需要等所有子任务都完成后再继续，比如批量计算、资源加载等。
+  > ```java
+  > CountDownLatch latch = new CountDownLatch(3);
+  > 
+  > for (int i = 0; i < 3; i++) {
+  >     new Thread(() -> {
+  >         // 子任务处理
+  >         latch.countDown(); // 每个任务完成后调用
+  >     }).start();
+  > }
+  > 
+  > latch.await(); // 主线程阻塞，直到count为0
+  > // 所有子任务完成后，主线程继续
+  > ```
+  > **应用场景：**
+  > - 并行计算多个结果，最后汇总
+  > - 多个服务启动完成后再继续主流程
+  > - 批量数据处理，等所有子任务完成后通知
+  >
+  > ---
+  >
+  > ## 2. **让一组线程等待“起跑令”一起开始**
+  > 可以用 CountDownLatch 让一组线程在某个时刻同时开始执行，比如并发测试、模拟并发场景。
+  > ```java
+  > CountDownLatch startSignal = new CountDownLatch(1);
+  > 
+  > for (int i = 0; i < 5; i++) {
+  >     new Thread(() -> {
+  >         try {
+  >             startSignal.await(); // 等待起跑令
+  >             // 执行任务
+  >         } catch (InterruptedException e) {}
+  >     }).start();
+  > }
+  > 
+  > // 预备好后，统一放行
+  > startSignal.countDown();
+  > ```
+  > **应用场景：**
+  > - 压力测试：多个线程同时开始
+  > - 比赛/竞赛模拟
+  >
+  > ---
+  >
+  > ## 3. **控制线程初始化顺序**
+  > 比如系统启动时，某个线程要等其他线程完成初始化后再执行。
+  > ```java
+  > CountDownLatch initLatch = new CountDownLatch(N); // N个子系统初始化
+  > 
+  > for (int i = 0; i < N; i++) {
+  >     new Thread(() -> {
+  >         // 初始化工作
+  >         initLatch.countDown();
+  >     }).start();
+  > }
+  > 
+  > initLatch.await(); // 等所有初始化完成
+  > // 继续执行
+  > ```
+  > **应用场景：**
+  > - 等待资源、服务、模块初始化完毕后再启动主流程
+  >
+  > ---
+  >
+  > ## 总结
+  > `CountDownLatch` 适合以下场景：
+  > 1. 等待一组任务/线程完成后继续执行（主线程等待子线程）
+  > 2. 一组线程“同时”开始执行（统一起跑令）
+  > 3. 控制模块/服务初始化顺序
+  >
+  > 如果你有具体的业务场景，可以告诉我，我可以帮你更细致地设计代码！
 - **面试追问与答案：**
   - **CountDownLatch 的实现原理？一次性还是可复用？**  
     基于 AQS 实现。内部计数器为零时唤醒 await 线程。一次性用，用完不能重置。
