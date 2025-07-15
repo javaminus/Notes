@@ -64,9 +64,21 @@ jstack -l <pid> > threaddump_$(date +%Y%m%d_%H%M%S).log
 ### Q1: jstack得到的线程状态有哪些？含义是什么？
 **答**：主要有：
 - `RUNNABLE`：正在运行或准备运行
+
 - `WAITING`/`TIMED_WAITING`：在等待某条件或超时等待
+
+  > **WAITING**和**TIMED_WAITING**都是Java线程的阻塞状态，区别在于是否有时间限制：
+  >
+  > - **WAITING**：线程无限期等待被唤醒，比如`Object.wait()`、`Thread.join()`没有超时参数。线程只能靠其他线程唤醒。
+  > - **TIMED_WAITING**：线程等待有时间限制，比如`Thread.sleep(ms)`、`Object.wait(ms)`、`Thread.join(ms)`。超时后自动唤醒，也可以被其他线程提前唤醒。
+  >
+  > 一句话记忆：  
+  > > WAITING是无限等待，TIMED_WAITING是带时间的等待。
+
 - `BLOCKED`：等待获取锁
+
 - `NEW`：新建未启动
+
 - `TERMINATED`：已结束
 
 ---
