@@ -1,3 +1,70 @@
+> ## 循环依赖案例展示：
+>
+> 下面通过一个简单的代码示例，说明Spring中**Bean的循环依赖**问题。
+>
+> ---
+>
+> ## 1. 什么是循环依赖？
+>
+> **循环依赖**指的是：A依赖B，B又依赖A，导致Spring在创建Bean时出现依赖注入的死循环。
+>
+> ---
+>
+> ## 2. 示例代码
+>
+> 假设我们有两个类：`A` 和 `B`，它们互相依赖：
+>
+> ```java
+> @Component
+> public class A {
+>     @Autowired
+>     private B b;
+> }
+> 
+> @Component
+> public class B {
+>     @Autowired
+>     private A a;
+> }
+> ```
+>
+> 或者使用构造器注入时：
+>
+> ```java
+> @Component
+> public class A {
+>     private final B b;
+>     @Autowired
+>     public A(B b) {
+>         this.b = b;
+>     }
+> }
+> 
+> @Component
+> public class B {
+>     private final A a;
+>     @Autowired
+>     public B(A a) {
+>         this.a = a;
+>     }
+> }
+> ```
+>
+> ---
+>
+> ## 3. 结果分析
+>
+> - **属性注入（setter、字段注入）**：Spring 默认可以解决单例Bean的循环依赖。因为Spring会先实例化bean（无参构造），然后填充属性。
+> - **构造器注入**：Spring无法解决循环依赖，会报`BeanCurrentlyInCreationException`异常，因为A和B都要等对方构造完才能继续。
+>
+> ---
+>
+> ## 4. 结论
+>
+> - **循环依赖**会导致Spring容器在注入Bean时出错，尤其是构造器注入时。
+> - 推荐避免设计上出现循环依赖，如拆分服务、引入中间层等。
+>
+
 Spring 通过 **三级缓存** 解决循环依赖问题，核心思想是 **提前暴露对象的引用**，允许依赖对象在完整初始化前先获取到一个早期的对象引用。具体来说，Spring 的三级缓存包括：
 
 1. **singletonObjects（一缓存）**：  

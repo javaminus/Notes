@@ -1,5 +1,9 @@
 # 线程Dump（jstack）详解
 
+- **线程dump**是一个现象（输出内容），**jstack**是获取线程dump的常用工具之一。
+- 除了jstack外，还有其它方法（如kill信号、JVisualVM等）也可获取线程dump。
+- 通常建议优先用jstack，功能更丰富；而在生产环境没法用jstack时，用kill -3信号也能得到线程dump。
+
 ---
 
 ## 1. 什么是线程Dump（Thread Dump）？
@@ -29,7 +33,9 @@ jstack <pid>
 ### 导出到文件（推荐）
 
 ```bash
-jstack -l <pid> > threaddump_$(date +%Y%m%d_%H%M%S).log
+假设 Java 进程 PID 为 12345，可以使用如下命令导出 dump 日志：
+
+jstack -l 12345 > jstack_dump.log
 ```
 
 ### 线上诊断建议
@@ -56,6 +62,25 @@ jstack -l <pid> > threaddump_$(date +%Y%m%d_%H%M%S).log
 - **线程阻塞/等待**：可看到线程因锁竞争或资源等待而停留在synchronized、wait、IO等方法
 - **CPU飙高**：查找RUNNABLE且堆栈反复出现在同一方法的线程
 - **线程数量异常**：Dump中线程数过多，排查是否有线程泄漏
+
+------
+
+**假设 jstack dump 片段如下：**
+
+Code
+
+```
+"Thread-1" #12 prio=5 os_prio=31 tid=0x00007f9e1000b800 nid=0x4e07 waiting for monitor entry [0x0000700000a8d000]
+   java.lang.Thread.State: BLOCKED (on object monitor)
+        at com.example.DemoClass.method(DemoClass.java:10)
+        - waiting to lock <0x00000000cafe1234> (a java.lang.Object)
+        - locked <0x00000000cafe5678> (a java.lang.Object)
+```
+
+分析：
+
+- Thread-1 处于 BLOCKED 状态，正在等待获取 `0x00000000cafe1234` 的锁。
+- 查看哪个线程持有该锁，找到阻塞源头。
 
 ---
 
