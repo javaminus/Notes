@@ -49,7 +49,7 @@ Java 对 `Future` 的增强版，既是 `Future`，又是 `CompletionStage`，�
 
 #### ✅ 创建异步任务
 
-```
+```java
 CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
     return "Hello, world!";
 });
@@ -57,7 +57,7 @@ CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
 
 #### ✅ 注册回调（非阻塞）
 
-```
+```java
 future.thenAccept(result -> {
     System.out.println("结果是：" + result);
 });
@@ -65,7 +65,7 @@ future.thenAccept(result -> {
 
 #### ✅ 链式操作
 
-```
+```java
 CompletableFuture<String> result = CompletableFuture.supplyAsync(() -> "Java")
     .thenApply(str -> str + " Future")
     .thenApply(str -> str.toUpperCase());
@@ -75,7 +75,7 @@ System.out.println(result.get());  // JAVA FUTURE
 
 #### ✅ 组合多个任务
 
-```
+```java
 CompletableFuture<String> f1 = CompletableFuture.supplyAsync(() -> "A");
 CompletableFuture<String> f2 = CompletableFuture.supplyAsync(() -> "B");
 
@@ -87,7 +87,7 @@ combined.join(); // 阻塞等待所有完成
 
 ### 🟡 手动完成（Promise-like）
 
-```
+```java
 CompletableFuture<String> promise = new CompletableFuture<>();
 
 // 在线程中手动完成
