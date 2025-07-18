@@ -2,7 +2,7 @@
 
 ## 1. MyBatis 简介
 
-MyBatis 是一款优秀的持久层框架，它支持自定义 SQL、存储过程以及高级映射。MyBatis 消除了几乎所有的 JDBC 代码和参数的手动设置以及结果集的检索。MyBatis 可以通过简单的 XML 或注解来配置和映射原始类型、接口和 Java POJO（Plain Old Java Objects）为数据库中的记录。
+MyBatis 是一款优秀的持久层框架，它支持**自定义 SQL、存储过程以及高级映射**。MyBatis 消除了几乎所有的 JDBC 代码和参数的手动设置以及结果集的检索。MyBatis 可以通过简单的 XML 或注解来配置和映射原始类型、接口和 Java POJO（Plain Old Java Objects）为数据库中的记录。
 
 ## 2. 核心组件
 
@@ -105,7 +105,7 @@ MyBatis 是一款优秀的持久层框架，它支持自定义 SQL、存储过�
 
 ## 5. 动态代理实现
 
-MyBatis 通过 JDK 动态代理为 Mapper 接口生成代理对象：
+MyBatis 通过 **JDK 动态代理**为 Mapper 接口生成代理对象：
 
 1. **代理创建**：
    ```java
