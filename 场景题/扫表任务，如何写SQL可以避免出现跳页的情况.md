@@ -1,51 +1,90 @@
-# 扫表任务如何写SQL避免跳页问题？
-
-在定时任务批量扫描表数据（如状态为 INIT 的任务）时，常规分页（OFFSET/LIMIT）方式会导致**跳页**问题：  
-- 因为每处理一批数据就会更新其状态（如从 INIT → SUCCESS），下次分页时数据总数发生变化，OFFSET 就会错位，导致部分数据被遗漏（跳页）。
+你的疑惑很常见，**下面以你给的例子详细解释“分页跳页”的原理**：
 
 ---
 
-## 跳页的错误分页SQL
+## 1. 正常分页场景（不修改数据时）
+
+假设有5条数据，状态都为`INIT`，id从1到5。
+
+| id   | state |
+| ---- | ----- |
+| 1    | INIT  |
+| 2    | INIT  |
+| 3    | INIT  |
+| 4    | INIT  |
+| 5    | INIT  |
+
+- **第一页**：`LIMIT 0, 2`，查出id=1,2
+- **第二页**：`LIMIT 2, 2`，查出id=3,4
+
+**没有问题**。
+
+---
+
+## 2. 分页过程中数据被处理并更新（状态变更）
+
+假如你用分页批量处理，每处理一批数据就把`state`从`INIT`改为`SUCCESS`。
+
+### 步骤一：查第一页
 
 ```sql
--- 第一页
-SELECT * FROM table WHERE state = 'INIT' ORDER BY id LIMIT 0, 100;
-
--- 第二页
-SELECT * FROM table WHERE state = 'INIT' ORDER BY id LIMIT 100, 100;
+SELECT * FROM table WHERE state = 'INIT' ORDER BY id LIMIT 0, 2;
 ```
-- 如果第一页的某些数据被处理后状态变更，第二页的 OFFSET 就会跳过未处理的数据。
+查出来id=1,2。处理后，状态变为`SUCCESS`。
 
----
+此时数据库变为：
 
-## 正确写法：基于游标（ID）方式分页
+| id   | state   |
+| ---- | ------- |
+| 1    | SUCCESS |
+| 2    | SUCCESS |
+| 3    | INIT    |
+| 4    | INIT    |
+| 5    | INIT    |
 
-**核心思想**：每次记录上一批的最大ID，下次从该ID之后继续查，保证数据不重复不遗漏。  
-适合自增ID或有唯一递增字段的场景。
-
-### 示例SQL
+### 步骤二：查第二页
 
 ```sql
--- 第一次查询（假设last_max_id=0）
-SELECT * FROM table 
-WHERE state = 'INIT' AND id > 0 
-ORDER BY id ASC 
-LIMIT 100;
-
--- 假设查到的最大ID为 12345，下一次查询
-SELECT * FROM table 
-WHERE state = 'INIT' AND id > 12345 
-ORDER BY id ASC 
-LIMIT 100;
+SELECT * FROM table WHERE state = 'INIT' ORDER BY id LIMIT 2, 2;
 ```
-- 每次处理前一批数据后，记录本批次最大ID。
-- 下次以 `id > last_max_id` 为条件查新数据。
+**这句SQL的意思是：**  
+先查出所有`state=INIT`的记录，排序后**跳过前2条，取第3、4条**。
+
+- 现在`state=INIT`的只有id=3,4,5。
+- 排序后为3,4,5。
+
+**LIMIT 2, 2**，会跳过前2条（即id=3,4），选第3、4条（但这里只剩id=5了）。
+
+**所以查出来只有id=5，id=3和id=4被跳过了！**
 
 ---
 
-## 总结
+## 3. 总结为什么会跳页
 
-- **不用 OFFSET/LIMIT**，避免因数据变动导致的“跳页”或“漏查”。
-- 用**游标分页**（如自增ID、时间戳等唯一递增字段）+ LIMIT，保证数据不重不漏、处理高效。
+- OFFSET/LIMIT分页是**基于当前的结果集计算的**。
+- 你每处理一批数据，会把一些数据的状态从`INIT`改成`SUCCESS`，下次分页时，这些数据就**从结果集消失了**。
+- OFFSET的**“偏移”是基于最新的结果集**，而不是基于原始的数据。
+- 所以实际查第二页时，**OFFSET导致你跳过了还没处理的数据**（因为前面的数据已经“消失”了，偏移量不准了）。
 
-> 💡 **一句话总结：扫表任务分页时用“游标分页”而不是OFFSET/LIMIT，条件形如 `id > last_max_id order by id limit N`，可彻底避免跳页问题。**
+---
+
+## 4. 解决方案
+
+**不要用OFFSET/LIMIT分页处理会变更自身状态的数据。**  
+常用的稳妥做法是**基于唯一主键（如id）做游标分页**：
+
+```sql
+-- 取大于上次最大id的数据
+SELECT * FROM table WHERE state = 'INIT' AND id > 上次最大id ORDER BY id LIMIT 100;
+```
+每次记住已处理的最大id，下一次从这个id往后查，不会跳页、不会漏数据。
+
+---
+
+## 5. 结论
+
+> 跳页的根本原因是：分页批处理时，处理过的数据被状态变更，下次分页OFFSET偏移错位，导致部分数据被跳过、遗漏。
+
+---
+
+如果还有疑问或者想要代码/流程图例子，可以继续追问！

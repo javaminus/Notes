@@ -9,12 +9,17 @@ TCC（Try-Confirm-Cancel）是分布式事务的经典解决方案，将每个�
 ### 1. Try阶段（资源预留）
 
 - **目的**：校验库存并“冻结”要扣减的库存，防止超卖。
+
 - **典型SQL**:
+
+  - `frozen_inventory`是库存表的一个字段
+
   ```sql
   UPDATE inventory_table
   SET frozen_inventory = frozen_inventory + #{count}
   WHERE id = #{skuId} AND (saleable_inventory - frozen_inventory) >= #{count};
   ```
+
 - **说明**：只修改冻结库存，不实际扣减，外部用户不可见。
 
 ---
