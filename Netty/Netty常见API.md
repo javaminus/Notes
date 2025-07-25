@@ -1,5 +1,7 @@
 # Netty 常用 API、核心类与方法总结
 
+![img](assets/df29f83b5dbbfb8581f0dca1bcf1f0de.png) 
+
 ---
 
 ## 1. 常用 API 总览
