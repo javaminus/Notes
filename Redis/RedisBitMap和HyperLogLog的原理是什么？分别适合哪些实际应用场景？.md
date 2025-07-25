@@ -38,3 +38,85 @@ HyperLogLog 是一种基于概率算法的数据结构，用于近似统计海�
 - **HyperLogLog 适合大规模去重计数（如UV统计），空间极小但有一定误差。**
 - **二者都是 Redis 的“以空间换效率”的典型高阶数据结构，适用于高并发大数据量的统计场景。**
 
+Redis 的 bitmap 和 HyperLogLog 都属于特殊的数据结构，各自有一些常用的操作方法（命令）。下面分别介绍：
+
+---
+
+## 1. Bitmap 常用方法
+
+**Bitmap** 实际上是用字符串类型（String）来按位存储数据，可以高效实现布尔类型的集合（如签到、活跃统计等）。
+
+### 常用命令
+
+- `SETBIT key offset value`  
+  设置指定 key 的某一位（offset）为 0 或 1。
+  ```shell
+  SETBIT usersign 1001 1   # 设置第1001位为1
+  ```
+
+- `GETBIT key offset`  
+  获取指定 key 的某一位的值（0或1）。
+  ```shell
+  GETBIT usersign 1001
+  ```
+
+- `BITCOUNT key [start end]`  
+  统计 key 中值为 1 的 bit 数（可选范围）。
+  ```shell
+  BITCOUNT usersign
+  ```
+
+- `BITOP operation destkey key1 [key2 ...]`  
+  对一个或多个 bitmap 做位运算（AND, OR, XOR, NOT）。
+  ```shell
+  BITOP OR allusersign usersign1 usersign2
+  ```
+
+- `BITPOS key bit [start] [end]`  
+  返回第一个等于指定 bit（0或1）的位置。
+  ```shell
+  BITPOS usersign 1
+  ```
+
+---
+
+## 2. HyperLogLog 常用方法
+
+**HyperLogLog** 是一种概率数据结构，用于基数（去重计数）统计，能高效统计不同元素的数量，占用内存极小。
+
+### 常用命令
+
+- `PFADD key element [element ...]`  
+  向 HyperLogLog 添加元素。
+  ```shell
+  PFADD uv:20250723 user1 user2 user3
+  ```
+
+- `PFCOUNT key [key ...]`  
+  返回 HyperLogLog 估算的不同元素数量（基数）。
+  ```shell
+  PFCOUNT uv:20250723
+  ```
+
+- `PFMERGE destkey sourcekey [sourcekey ...]`  
+  合并多个 HyperLogLog，结果存到 destkey。
+  ```shell
+  PFMERGE uv:total uv:20250723 uv:20250724
+  ```
+
+---
+
+## 总结表
+
+| 数据结构    | 常用命令      | 作用                  |
+| ----------- | ------------- | --------------------- |
+| Bitmap      | SETBIT/GETBIT | 设置/获取某一位       |
+|             | BITCOUNT      | 统计 1 的个数         |
+|             | BITOP         | 位运算                |
+|             | BITPOS        | 查找第一个 0/1 的位置 |
+| HyperLogLog | PFADD         | 添加元素              |
+|             | PFCOUNT       | 统计去重后元素数量    |
+|             | PFMERGE       | 合并多个 HyperLogLog  |
+
+如需具体用法示例或者实际场景，可以继续提问！
+

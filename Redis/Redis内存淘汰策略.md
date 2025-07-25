@@ -19,9 +19,9 @@
 | **volatile-lru**           | 仅在设置了过期时间的键中，淘汰最近最少使用的键                    |
 | **allkeys-random**         | 所有键中，随机淘汰一个键                                        |
 | **volatile-random**        | 仅在设置了过期时间的键中，随机淘汰一个键                         |
-| **volatile-ttl**           | 仅在设置了过期时间的键中，优先淘汰剩余 TTL 最短的键               |
-| **allkeys-lfu**            | 所有键中，优先淘汰最少频繁使用的键（LFU = Least Frequently Used）|
-| **volatile-lfu**           | 仅在设置过期时间的键中，淘汰最少频繁使用的键                      |
+| **volatile-ttl**           | 仅在设置了过期时间的键中，优先淘汰剩余 TTL 最短的键（Time To Live** 的缩写，意思是“生存时间”或“存活时间” ） |
+| **allkeys-lfu**            | 所有键中，优先淘汰最不常用（LFU = Least Frequently Used） |
+| **volatile-lfu**           | 仅在设置过期时间的键中，淘汰最不常用的键                  |
 
 ---
 
@@ -31,9 +31,9 @@
 |------------|----------------------------|-------------------------------------------------|
 | 不淘汰       | `noeviction`                 | 超出内存限制时直接报错                            |
 | LRU         | `allkeys-lru`、`volatile-lru` | 最近最少使用淘汰，适合大多数缓存场景                  |
-| LFU         | `allkeys-lfu`、`volatile-lfu` | 最少使用频率淘汰，适合热点数据较稳定的场景              |
+| LFU         | `allkeys-lfu`、`volatile-lfu` | 淘汰最不常用的键，适合热点数据较稳定的场景      |
 | 随机淘汰     | `allkeys-random`、`volatile-random` | 效率高，但不智能                                  |
-| TTL 淘汰    | `volatile-ttl`                | 适合需要依赖过期时间控制的业务                       |
+| TTL 淘汰    | `volatile-ttl`                | 优先淘汰剩余存活时间最短的键，适合需要依赖过期时间控制的业务 |
 
 ---
 
