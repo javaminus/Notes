@@ -104,12 +104,13 @@ try (
 ---
 
 ### Q2：try-with-resources 如何处理关闭资源时抛出的异常？
+
 **答：** 主异常作为主异常返回，close() 抛出的异常被作为 Suppressed Exception 附加到主异常上（可通过 `Throwable.getSuppressed()` 获取）。这样不会丢失异常信息。
 
 ---
 
 ### Q3：多个资源时，关闭顺序如何？
-**答：** 关闭顺序与声明顺序相反（后声明的先关闭），确保嵌套资源依赖能正确释放。
+**答：** try-with-resources关闭顺序与声明顺序相反（后声明的先关闭），确保嵌套资源依赖能正确释放。try-catch-finally和我们书写顺序相同。
 
 ---
 

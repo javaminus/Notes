@@ -8,4 +8,4 @@
   * [Github地址](https://github.com/javaminus)
   * [知乎地址]()
   * [掘金地址]()
-  * [leetcode](https://leetcode.cn/u/create-heart/)
+  * [LeetCode](https://leetcode.cn/u/create-heart/)
