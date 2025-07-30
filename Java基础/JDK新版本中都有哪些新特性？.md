@@ -162,7 +162,8 @@ static String formatter(Object o) {
 
 ## JDK 21
 
-### 协程（虚拟线程/Project Loom）
+### 虚拟线程（虚拟线程/Project Loom）
+
 让高并发代码更简单，虚拟线程比传统线程更轻量、易用。
 
 **示例：**

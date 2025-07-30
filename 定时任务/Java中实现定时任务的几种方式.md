@@ -36,6 +36,31 @@
 - 绝大多数需要高并发、高可靠性的定时任务场景。
 - 业务系统定时调度、周期性执行任务、定时检查等。
 
+```java
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+public class ScheduledTaskExample {
+    public static void main(String[] args) {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+        Runnable task = () -> {
+            // 你的任务逻辑
+            System.out.println("任务执行：" + System.currentTimeMillis());
+        };
+
+        // 延迟0秒开始，每隔20分钟执行一次
+        scheduler.scheduleAtFixedRate(task, 0, 20, TimeUnit.MINUTES);
+
+        // 如果你想让主线程一直不退出，可以阻塞等待
+        // new CountDownLatch(1).await();
+    }
+}
+```
+
+
+
 ---
 
 ### 3. DelayQueue

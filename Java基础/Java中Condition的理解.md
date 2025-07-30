@@ -10,7 +10,7 @@
 
 ### 1. 什么是 Condition？
 
-**Condition** 是 `java.util.concurrent.locks` 包中的一个接口，配合 `Lock`（比如 `ReentrantLock`）使用，用于实现比 `Object.wait()`/`notify()` 更加灵活的线程协作机制。
+**Condition** 是 `java.util.concurrent.locks` 包中的一个**接口**，配合 `Lock`（比如 `ReentrantLock`）使用，用于实现比 `Object.wait()`/`notify()` 更加灵活的线程协作机制。
 
 > 通俗理解：Condition 就像是一个“等待队列”，线程可以在这里等待某个条件成立，被合适的时机唤醒。
 

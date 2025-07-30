@@ -89,7 +89,7 @@ mailService.sendMail("test@example.com"); // 立即返回，邮件在后台线�
 
 **答：**  
 - @Async 方法可以返回 void、Future<T>、CompletableFuture<T> 或 ListenableFuture<T>。
-- 如果返回 Future/CompletableFuture，可以在主线程通过 get() 方法获取异步结果或异常（注意 get() 会阻塞）。
+- 如果返回 Future/CompletableFuture，可以在主线程通过 get() 方法获取异步结果或异常（注意 get() 会阻塞，就是变成同步）。
 
 ---
 
@@ -247,7 +247,7 @@ public class AsyncConfig implements AsyncConfigurer {
 
 # 如果配置了线程池，是不是就会默认调用线程池里面的线程 
 
-## 是的，配置线程池后，@Async会默认使用线程池中的线程
+## 是的，配置线程池后，@Async会默认使用线程池中的线程【但是需要在注解里面添加线程池的名称】
 
 当您在Spring应用中配置自定义线程池并启用@Async功能时，所有使用@Async注解的方法都会通过配置的线程池来执行，而不是每次都创建新线程。
 

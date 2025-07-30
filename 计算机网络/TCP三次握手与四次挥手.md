@@ -159,13 +159,13 @@
 ### 过程详解
 
 1. **第一次握手（SYN）**
-   - 客户端发送SYN包（SYN=1, seq=x）到服务器，进入SYN_SEND状态，表示希望建立连接。
+   - 客户端发送SYN包（SYN=1, **seq=x**）到服务器，进入SYN_SEND状态，表示希望建立连接。
 
 2. **第二次握手（SYN-ACK）**
-   - 服务器收到SYN后，回复SYN+ACK包（SYN=1, ACK=1, seq=y, ack=x+1），进入SYN_RCVD状态。
+   - 服务器收到SYN后，回复SYN+ACK包（SYN=1, ACK=1, **seq=y, ack=x+1**），进入SYN_RCVD状态。
 
 3. **第三次握手（ACK）**
-   - 客户端收到SYN+ACK后，回复ACK包（ACK=1, seq=x+1, ack=y+1），进入ESTABLISHED状态，服务器收到ACK后也进入ESTABLISHED状态，连接建立成功。
+   - 客户端收到SYN+ACK后，回复ACK包（ACK=1, **seq=x+1, ack=y+1**），进入ESTABLISHED状态，服务器收到ACK后也进入ESTABLISHED状态，连接建立成功。
 
 ```
 客户端                       服务器

@@ -89,7 +89,7 @@ System.out.println(a == c.intern()); // true，c.intern()返回池中引用
 
 ### Q2：JDK6 和 JDK7 的字符串常量池实现有何区别？
 **答：**  
-JDK6 常量池在 PermGen 区，容量有限且不易 GC；JDK7+ 移到堆上，空间大且可 GC，但池中对象生命周期依然较长。
+JDK6 常量池在 PermGen 区（方法区），容量有限且不易 GC；JDK7+ 移到堆上，空间大且可 GC，但池中对象生命周期依然较长。
 
 ---
 

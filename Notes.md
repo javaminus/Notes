@@ -63,6 +63,7 @@
 | innoDB是一个数据页存储一行数据吗？那么如果一行数据超出16kb怎么办？ |                                                              | [Editorial](./MySQL/innoDB是一个数据页存储一行数据吗？那么如果一行数据超出16kb怎么办.md) |
 | 既然一个数据页里面存储多行数据，那么如何保证在数据页里面快速查找？时间复杂度是多少？ | 如果有索引，二分查找，也是log级别                            | [Editorial](./MySQL/既然一个数据页里面存储多行数据，那么如何保证在数据页里面快速查找？时间复杂度是多少.md) |
 | innodb的B+树2000万的数据一般有多少个数据页                   | B+树不是红黑树！                                             | [Editorial](./MySQL/innodb的B+树2000万的数据一般有多少个数据页.md) |
+| 介绍一下mysql的in和exists                                    | **IN** 用于判断某字段是否在一个集合中，适合集合较小或主键列表查询；**EXISTS** 用于判断子查询是否有数据返回，通常在大表关联或只需判断“是否存在”时更高效。在 MySQL 中，IN 更关注具体值的匹配，EXISTS 更关注关联关系和存在性检测，选择哪种方式应根据数据规模和查询场景灵活取舍。 | [Editorial](./MySQL/介绍一下mysql的in和exists.md)            |
 
 ## 【Redis】
 
@@ -132,7 +133,8 @@
 | Problems                                                     | Hints                                                        | Solution                                                     |
 | :----------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | 现在JDK的最新版本是什么？                                    | 半年一个版本：每年3月和9月发行；最近是2025年3月JDK24发布，预计下一个2025年9月JDK25发布； 最近的LTS（ Long Term Support ）版本是JDK 21 |                                                              |
-| JDK新版本中都有哪些新特性？                                  | JDK 8中推出了Lambda表达式、Stream、Optional、新的日期API等； JDK 9中推出了模块化 ；JDK 10中推出了本地变量类型推断； JDK 12中增加了switch表达式； JDK 13中增加了text block； JDK 14中增加了Records JDK 14中增加了instance模式匹配； JDK 15中增加了封闭类 JDK； 17中扩展了switch模式匹配； JDK 21中增加了协程 ; | [Editorial](./Java基础/JDK新版本中都有哪些新特性？.md)       |
+| JDK新版本中都有哪些新特性？                                  | JDK 8中推出了Lambda表达式、Stream、Optional、新的日期API等； JDK 9中推出了模块化 ；JDK 10中推出了本地变量类型推断； JDK 12中增加了switch表达式； JDK 13中增加了text block； JDK 14中增加了Records JDK 14中增加了instance模式匹配； JDK 15中增加了封闭类 JDK； 17中扩展了switch模式匹配； JDK 21中增加了虚拟线程；【目前Java还没有引入协程】 | [Editorial](./Java基础/JDK新版本中都有哪些新特性？.md)       |
+| 虚拟线程与协程对比                                           | 协程是一种比线程更轻量的并发模型。它支持**挂起**和**恢复**，让程序可以在任意位置中断并恢复执行。 | [Editorial](./Java基础/虚拟线程与协程对比.md)                |
 | 双亲委派机制是什么？                                         | 是Java类加载器（ClassLoader）中的一种工作原理。  主要用于**解决类加载过程中的安全和避免重复加载的问题**。 | [Editorial](./Java基础/双亲委派机制.md)                      |
 | .class文件是JVM编译的吗？                                    | 不是，是javac将`.java`文件编译成`.class`文件，JVM只负责执行`.class`文件 |                                                              |
 | 什么是类加载器？如何实现自定义类加载器？                     | **类加载器类型、双亲委派流程、定制场景和实现方式**要熟记。  记得举例：Tomcat 热部署、SPI 插件机制、加密 class 加载等。  刷题口诀：   类加载三类清  双亲委派防篡改  自定义 loader 灵活用 | [Editorial](./Java基础/什么是类加载器？如何实现自定义类加载器？.md) |
@@ -163,6 +165,8 @@
 | Java 中 try-with-resources 与 try-catch-finally 详细讲解     | try-with-resources只适合实现了`AutoCloseable`接口的对象，并且资源关闭顺序与声明顺序相反（也很好理解，类似出栈操作） | [Editorial](./Java基础/Java中try-with-resources与try-catch-finally详细讲解.md) |
 | 动态数组的实现有哪些？                                       | ArrayList和Vector都支持动态扩容，都属于动态数组。 **都是在元素数量超过当前容量时自动扩容**。    **线程安全性**：Vector是线程安全的，ArrayList不是线程安全的。  **扩容策略**：ArrayList在底层数组不够用时在原来的基础上扩展0.5倍，Vector是扩展1倍。 |                                                              |
 | HashMap 的扩容条件是什么？                                   | Java7扩容需要满足两个条件：   1、当前数据存储的数量（即size()）大小必须大于等于阈值 ；2、当前加入的数据是否发生了hash冲突。    Java8只需要满足**条件1**。 | [Editorial](./Java基础/HashMap的扩容条件是什么.md)           |
+| ArrayList 扩容机制                                           | 初始为10，每次扩容为原来的1.5倍，LinkedList不扩容            | [Editorial](./Java基础/ArrayList扩容机制.md)                 |
+| HashMap与ConcurrentHashMap扩容注意事项                       | 建议构造时自定义容量                                         | [Editorial](./Java基础/HashMap与ConcurrentHashMap扩容注意事项.md) |
 | OS线程是什么？                                               | **操作系统线程**； 操作系统线程（内核线程）是由操作系统直接管理的，能真正实现多核并发； 用户线程是在用户程序层面管理的，比如由JVM或协程库调度，操作系统只看到进程而不直接管理线程，切换开销更小，但不能真正利用多核并发。 简单说，**内核线程更强大，用户线程更轻量。** | [Editorial](./Java基础/OS线程是什么.md)                      |
 | 谈谈你对线程池的理解                                         | **7个参数**：corePoolSize（核心线程数量）、 **maximumPoolSize** （ 线程池中最多可容纳的线程数量 ）、 **keepAliveTime** （ 当线程池中线程的数量大于corePoolSize，并且某个线程的空闲时间超过了keepAliveTime，那么这个线程就会被销毁。 ）、 **unit** （ 就是keepAliveTime时间的单位。 ） 、**workQueue** （工作队列）、 **threadFactory **（线程工厂，一般自定义） 、**handler**（拒绝策略） | [Editorial](./Java基础/谈谈你对线程池的理解.md)              |
 | 线程池为什么要构建空任务的**非核心线程**                     | **线程池会暂时保留空闲的非核心线程，是为了应对突发任务，减少线程频繁创建和销毁的开销，提高系统响应性能。** | [Editorial](./Java基础/线程池为什么要构建空任务的非核心线程.md) |
@@ -195,7 +199,10 @@
 | 解释一下什么是可重入锁                                       | **同一个线程可以对同一把锁进行重复加锁**                     | [Editorial](./Java基础/解释一下什么是可重入锁.md)            |
 | Java中有哪些常用的锁，在什么场景下使用？                     | ` synchronized 、 ReentrantLock 、 ReentrantReadWriteLock 、 StampedLock 、 Semaphore、CountDownLatch、CyclicBarrier `     **Semaphore（信号量）** 是一种计数信号量，用来控制同时访问某个资源的线程数量。它可以用来实现限流，比如只允许最多N个线程同时访问某个临界区。常用于连接池、限流等场景。 **CountDownLatch**  允许一个或多个线程等待，直到其他线程完成一组操作。它内部有一个计数器，调用 `countDown()` 会使计数减一，直到为0时，等待的线程才能继续执行。常用于主线程等待多个子任务完成再继续。 **CyclicBarrier** 用于让一组线程到达一个屏障点时被阻塞，直到所有线程都到达后一起继续执行。它可以循环使用，适合多线程分阶段协作，比如多线程分段计算，然后统一汇总结果。【分治】 | [Editorial](./Java基础/Java中有哪些常用的锁，在什么场景下使用？.md) |
 | 什么是反射？有哪些使用场景？                                 | Java 反射机制是在**运行状态中**，对于**任意一个类**，都能够知道这个类中的**所有属性和方法**，对于任意一个**对象**，都能够调用它的任意一个**方法和属性**；这种动态获取的信息以及动态调用对象的方法的功能称为 Java 语言的反射机制。 常用于框架、工具库、JDBC、插件机制等场景。 | [Editorial](./Java基础/什么是反射，有哪些使用场景.md)        |
-| ThreadLocal的作用和使用场景？                                | **ThreadLocal 主要用于在每个线程内部存储和隔离变量副本，实现线程间变量独立，避免多线程共享变量导致的并发问题。** | [Editorial](./Java基础/ThreadLocal作用和使用场景.md)         |
+| ThreadLocal的作用和使用场景？                                | `ThreadLocal` 是Java提供的**线程本地变量**，每个线程都拥有独立的变量副本。它最常用于为每个线程提供独立的存储空间，避免多线程间的数据竞争，常见于用户会话、数据库连接、事务管理等场景。  自定义ThreadLocal初始化：重写 initialValue 或用 withInitial | [Editorial](./Java基础/ThreadLocal作用和使用场景.md)         |
+| ThreadLocal、Thread、ThreadLocalMap之间的联系                | ThreadLocal就是**保险柜的**钥匙，Thread就是房间，ThreadLocalMap就是保险柜（每个Thread里面都有一个ThreadLocalMap）；                                                             **get()操作：**首先我们会根据**当前的线程**走到对应的房间，然后用ThreadLocal这个钥匙打开ThreadLocalMap保险柜取出我们想要的。                                                              **set()操作：**首先我们会根据**当前的线程**走到对应的房间，然后用ThreadLocal这个钥匙打开ThreadLocalMap保险柜，将我们需要存放的数据放进去。                                              **每个房间（线程）都有自己的保险柜（ThreadLocalMap），保险柜里可以用不同钥匙（ThreadLocal对象）开不同的格子，每个格子存的是本线程的数据。                         **  **钥匙（ThreadLocal）在不同房间能开出不同的数据，互不干扰。**                                                **保险柜的设计让每个线程可以存很多种类型的数据（用不同的钥匙），而且可以自动管理和清理失效的数据（用弱引用防止内存泄漏）。** |                                                              |
+| ThreadLocal会造成内存泄漏吗？为什么？                        | 是的，可能会。ThreadLocalMap中的key为ThreadLocal的弱引用，value为强引用。**如果ThreadLocal实例被回收但线程还在运行，value对象不会被及时回收**，造成内存泄漏（尤其在线程池环境下）。但是当线程结束，还是会被回收，这里的value会变成不可达对象。 |                                                              |
+| ThreadLocal 为什么把key设计成弱引用，value设计成强引用；为什么key设为弱引用就不怕提前回收？如果把threadLocal设为静态变量还会有这个问题吗？ |                                                              | [Editorial](./Java基础/ThreadLocal追问.md)                   |
 | 调用 interrupt 是如何让线程抛出异常的?                       | 每个线程都有一个初始值为 `false` 的中断状态，`interrupt()` 会更新该状态。  若线程在 `sleep()`、`join()`、`wait()` 等可中断方法中，会抛出 `InterruptedException` 并解除阻塞；否则，仅设置中断状态，线程可轮询决定是否停止。 |                                                              |
 | 如果是靠变量来停止线程，缺点是什么?                          | 缺点是中断可能不够及时，循环判断时会到下一个循环才能判断出来。 |                                                              |
 | 什么是不可变对象（Immutable Object）？Java中如何实现不可变对象？ | 不可变对象：final类 + final字段 + 无setter + 深拷贝引用类型字段，线程安全、可作哈希键、设计简单。 | [Editorial](./Java基础/什么是不可变对象（ImmutableObject）？Java中如何实现不可变对象？.md) |
@@ -271,18 +278,19 @@
 | 如何实现无锁化编程？                                         | **无锁化编程并非完全不使用锁**，而是指通过原子操作保证线程之间的数据一致性和操作的原子性，而不需要显式的加锁和解锁操作。原子操作是指对某个共享变量的操作（如加法、减法、比较等）是不可分割的，不会被中断。    在Java中，无锁化编程通常依赖于 **原子操作** 和 **CAS机制** 。 Java 提供了一些支持原子操作的类，位于 java.util.concurrent.atomic 包下，如： ● AtomicInteger ● AtomicLong ● AtomicReference ● AtomicBoolean ● AtomicStampedReference ● AtomicMarkableReference |                                                              |
 | 介绍一下动态线程池                                           |                                                              | [Editorial](./Java基础/动态线程池.md)                        |
 | 如何使用springtask做异步处理                                 | 线程池配置类开启异步`@EnableAsync`，`@Async("taskExecutor")` **taskExecutor**是线程池的名称 | [Editorial](./Java基础/如何使用springtask做异步处理.md)      |
+| 日志重点打印的位置                                           | 我使用的是springboot自带的logpack                            | [Editorial](./Java基础/日志重点打印的位置.md)                |
 | 多线程深度面试200连环深挖题                                  |                                                              | [Editorial](./Java基础/多线程进阶200题.md)                   |
 
 ## 【JVM】
 
 | Problems                                                     | Hints                                                        | Solution                                                     |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| JVM 入门到进阶全解析                                         |                                                              | [Editorial](./JVM/JVM入门到进阶全解析.md)                   |
+| JVM 入门到进阶全解析                                         |                                                              | [Editorial](./JVM/JVM入门到进阶全解析.md)                    |
 | JIT编译器                                                    | JIT编译器（即时编译器）是Java虚拟机中的一种运行时优化技术，它会在程序运行时将频繁执行的热点字节码编译为本地机器码，从而提升代码执行效率。这样，Java程序既能保持跨平台性，又能获得接近本地代码的高性能，是JVM实现高效运行的重要机制之一。 |                                                              |
 | JVM中对象的生命周期和引用类型有哪些？如何影响垃圾回收？      | 对象生命周期：创建→使用→不可达→等待回收→被回收  四种引用类型：强、软、弱、虚  引用强度影响GC回收时机  典型应用：缓存（软引用）、ThreadLocal（弱引用）、回收通知（虚引用）  复习提示：**“强软弱虚四种引用，引用越弱越易被GC”** | [Editorial](./JVM/JVM中对象的生命周期和引用类型有哪些？如何影响垃圾回收？.md) |
-| 垃圾回收 cms和g1的区别是什么？                               | 回收策略、垃圾收集目标、内存划分、STW停顿时间、回收过程、吞吐量、适用场景、废弃情况 | [Editorial](./JVM/垃圾回收cms和g1的区别是什么.md)           |
+| 垃圾回收 cms和g1的区别是什么？                               | 回收策略、垃圾收集目标、内存划分、STW停顿时间、回收过程、吞吐量、适用场景、废弃情况 | [Editorial](./JVM/垃圾回收cms和g1的区别是什么.md)            |
 | 讲下JVM内存区域？                                            | **方法区**：存储类元数据，JDK 8 之后使用 **元空间（Metaspace）**。  **堆**：存储对象，GC 主要管理区域，分 **新生代 & 老年代**。  **虚拟机栈**：存储局部变量表、方法调用信息，递归深会导致 **StackOverflowError**。  **本地方法栈**：服务于 JNI 调用，溢出也会抛出 **StackOverflowError**。  **程序计数器**：记录当前线程执行的 **字节码指令地址**。 | [Editorial](./JVM/JVM内存区域.md)                            |
-| JVM如何判断对象是否存活？                                    | **引用计数法**、**可达性分析算法**                           | [Editorial](./JVM/JVM如何判断对象是否存活？.md)             |
+| JVM如何判断对象是否存活？                                    | **引用计数法**、**可达性分析算法**                           | [Editorial](./JVM/JVM如何判断对象是否存活？.md)              |
 | 什么是三色标记算法？                                         | 三色标记法是一种垃圾回收标记算法，将所有对象分为白、灰、黑三种颜色： **白色表示未访问的对象**，可能是垃圾。 **灰色表示已访问但其引用对象还未扫描的对象**。 **黑色表示已访问且其引用对象也都扫描过的对象**。 GC时，初始所有对象为白色，GC Roots为灰色，然后不断扫描灰色对象，把它们变黑，并把它们引用的白色对象变成灰色，直到没有灰色对象为止。**最终白色对象就是可以回收的垃圾对象**。三色标记法可以支持并发标记，减少GC停顿时间，是CMS和G1等现代垃圾回收器常用的算法。 |                                                              |
 | 并发标记中的写屏障与三色标记法的多标/漏标问题                |                                                              | [Editorial](./JVM/并发标记中的写屏障与三色标记法的多标漏标问题.md) |
 | 新生代如果只有一个Eden+一个Survivor可以吗？                  | 新生代采用标记-复制算法，因此需要一个Eden区和两个Survivor区，垃圾回收时存活对象从Eden和一个Survivor区复制到另一个空的Survivor区，保证有一块区域始终为空用于安全复制；如果只有两个区域，使用标记整理算法，就会存在碎片和效率等问题。 |                                                              |
@@ -290,7 +298,7 @@
 | 什么是STW                                                    | Java中Stop-The-World机制简称STW，是在执行垃圾收集算法时，Java应用程序的其他所有线程都被挂起。这是Java中一种全局暂停现象，全局停顿，所有Java代码停止，native代码可以执行，但不能与JVM交互。 | [Editorial](./JVM/什么是STW.md)                              |
 | 垃圾回收算法                                                 | ● 单纯的从时间长短上面来看：标记-清除 < 标记-复制【新生代】 < 标记-整理【老年代】。   ● 单纯从结果来看：标记-整理 > 标记-复制 >= 标记-清除 |                                                              |
 | ★ 你知道哪些 JVM 的 GC 机制？                                | Serial收集器（复制算法) 、 ParNew收集器 (复制算法) 、 Parallel Scavenge收集器 (复制算法) 、 Serial Old收集器 (标记-整理算法) 、 Parallel Old收集器 (标记-整理算法) 、 CMS(Concurrent Mark Sweep)收集器（标记-清除算法） 、 G1(Garbage First)收集器 (标记-整理算法) | [Editorial](https://download.csdn.net/blog/column/12681557/141176456) |
-| JDK 11中新出的ZGC有什么特点？                                | 低延迟、高吞吐，但是平台兼容性较差，由于不分代，部分短生命周期对象可能回收效率略低。 | [Editorial](./JVM/JDK11中新出的ZGC有什么特点.md)            |
+| JDK 11中新出的ZGC有什么特点？                                | 低延迟、高吞吐，但是平台兼容性较差，由于不分代，部分短生命周期对象可能回收效率略低。 | [Editorial](./JVM/JDK11中新出的ZGC有什么特点.md)             |
 | Java 8 和 Java 11 的GC有什么区别？                           | Java 8 和 Java 11都是LTS版本的JDK，所以会有人经常问他们之间的区别。特别是在GC上面的差别。  首先，在垃圾收集器上面，Java 8 中默认的**Parallel Scavenge GC+Parallel Old GC**的，分别用来做新生代和老年代的垃圾回收。而在Java 11中默认采用的是**G1**进行整堆回收的（Java 9中就是默认的了）。  另外，Java 11中还新增了一种垃圾收集器，那就是**ZGC**，他可以在保证高吞吐量的同时保证最短的暂停时间。 |                                                              |
 | 什么是逃逸分析？它是如何优化对象分配和同步的？               | 逃逸分析：判断对象作用域，决定对象分配位置和优化锁  优化点：栈上分配、标量替换、同步消除  典型例子：方法内临时对象、同步块优化  相关JVM参数：`-XX:+DoEscapeAnalysis`  复习提示：**“判断对象是否只在方法内使用，能否避免堆分配和无用同步”** | [Editorial](./JVM/什么是逃逸分析？它是如何优化对象分配和同步的？.md) |
 | Java中的对象一定在堆上分配内存吗？                           | 不一定，在HotSpot虚拟机中，存在JIT优化的机制，JIT优化中可能会进行**逃逸分析**，当经过逃逸分析发现某一个**局部对象没有逃逸到线程和方法外**的话，那么这个对象就可能不会在堆上分配内存，而是进行**栈**上分配。 |                                                              |
@@ -309,8 +317,8 @@
 | 如何解读GC日志？常见GC日志参数有哪些？                       | - **开启日志**：`-XX:+PrintGCDetails`／`-Xlog:gc*`   - **解析要点**：时间戳、GC类型、空间变化、停顿时长   - **算法差异**：Parallel、CMS、G1 日志标签与阶段   - **调优指标**：频率、停顿、吞吐、年龄分布   - 复习口诀：     “看日志先识类型 → 空间前后对比 → 停顿时长 → 调参（代大小+算法+线程）” | [Editorial](./JVM/如何解读GC日志？常见GC日志参数有哪些？.md) |
 | JVM如何保证类与字节码的安全性？类加载安全机制有哪些？        | - **验证**：魔数→版本→常量池→数据/控制流   - **委派**：先父后子，保核心不被篡改   - **ProtectionDomain** + **SecurityManager**：代码来源→权限检查   - **JAR 签名**：完整性验证   - **JPMS**：模块封装与可见性控制   - **隔离**：自定义加载器沙箱   - 复习口诀：     “验字节→委加载→域限权→签可信→模块封→隔离沙” | [Editorial](./JVM/JVM如何保证类与字节码的安全性？类加载安全机制有哪些？.md) |
 | Java 内存模型（JMM）与 volatile 的可见性保证                 | JMM：主内存 vs 工作内存    happens-before：顺序、锁、volatile、线程启动/终止    volatile：可见+有序，不原子    synchronized/CAS/AQS：互斥与高并发原语    复习口诀：“先行发生规则定序，volatile 可见有序锁互斥” | [Editorial](./JVM/Java内存模型（JMM）与volatile的可见性保证.md) |
-| synchronized 的实现原理和锁优化                              | “对象头 Mark Word + Monitor → 偏向／轻量级／重量级三态 → JIT 锁消除／锁粗化 → 参数调优（偏向、自旋）” | [Editorial](./JVM/synchronized的实现原理和锁优化.md)        |
-| JVM 中的字符串常量池（String Constant Pool）及 `intern()` 机制是什么？它们对内存和 GC 有什么影响？ | **字符串常量池**：复用字面量和 intern 生成的字符串，节省内存。  **intern()**：将字符串放入常量池，返回池中引用。  **GC 影响**：JDK7+ 常量池在堆，未被引用的字符串可被 GC。频繁 intern 需防 OOM。  **口诀**：`“池中复用，intern 去重，堆上易回收，滥用会 OOM”` | [Editorial](./JVM/JVM 中的字符串常量池（String Constant Pool）及 `intern()` 机制是什么？它们对内存和 GC 有什么影响？.md) |
+| synchronized 的实现原理和锁优化                              | “对象头 Mark Word + Monitor → 偏向／轻量级／重量级三态 → JIT 锁消除／锁粗化 → 参数调优（偏向、自旋）” | [Editorial](./JVM/synchronized的实现原理和锁优化.md)         |
+| JVM 中的字符串常量池（String Constant Pool）及 `intern()` 机制是什么？它们对内存和 GC 有什么影响？ | **字符串常量池**：复用字面量和 intern 生成的字符串，节省内存。  **intern()**：将字符串放入常量池，返回池中引用。  **GC 影响**：JDK7+ 常量池在堆，未被引用的字符串可被 GC。频繁 intern 需防 OOM。  **口诀**：`“池中复用，intern 去重，堆上易回收，滥用会 OOM”` | [Editorial](./JVM/JVM中的字符串常量池及intern()机制是什么它们对内存和GC 有什么影响.md) |
 | 什么是 GC Roots？它们如何决定对象的可达性，进而影响垃圾回收？ | **GC Roots**：栈引用、静态属性、常量、JNI、活跃线程    **可达性**：从 Roots 出发的引用链标记算法    **影响**：只要可达就不回收 → 静态缓存/单例易泄漏    **提示口诀**：  `“栈、静、常、JNI、线程 五大 Root → 图搜标记可达 → 不可达即回收”` | [Editorial](./JVM/什么是GCRoots？它们如何决定对象的可达性，进而影响垃圾回收？.md) |
 | 什么是 JVM 直接内存（Direct Memory）？它的原理、典型应用及对 GC/内存管理的影响是什么？ | **直接内存**：堆外本地内存，NIO/Netty/高性能场景常用。  **管理方式**：GC 间接触发回收，受 MaxDirectMemorySize 限制。  **风险**：大量分配或回收不及时会导致直接内存 OOM。  **口诀**：`“堆外直连高效IO，GC间接管生命周期，参数控量防 OOM”` | [Editorial](./JVM/什么是JVM直接内存（DirectMemory）？它的原理典型应用及对GC内存管理的影响是什么？.md) |
 | JVM 中的 Finalizer（finalize 方法）和清理机制是什么？为什么不推荐使用？如何安全地管理对象资源？ | **finalize()**：资源清理，但不安全，易泄漏  **不推荐**：不可控、不可预测、性能差  **推荐**：AutoCloseable + try-with-resources，JDK9+ 用 Cleaner  **口诀**：`“资源要手关，finalize 不可靠，try-with-resources 最安全”` | [Editorial](./JVM/JVM中的Finalizer（finalize方法）和清理机制是什么？为什么不推荐使用？如何安全地管理对象资源？.md) |
@@ -325,9 +333,9 @@
 | 哪些语言有GC机制                                             | 很多编程语言都有垃圾回收（GC）机制，其中包括：  1、Java 2、C# 3、Python 4、Ruby 5、JavaScript 6、Kotlin 7、Swift 8、Go 9、R 10、Lua |                                                              |
 | 一个对象的结构是什么样的？                                   |                                                              | [Editorial](./JVM/一个对象的结构是什么样的.md)               |
 | JVM是如何创建对象的？                                        |                                                              | [Editorial](./JVM/JVM是如何创建对象的？.md)                  |
-| 运行时常量池和字符串常量池的区别                             |                                                              | [Editorial](./JVM/运行时常量池和字符串常量池的区别.md)     |
-| 什么是堆外内存？如何使用堆外内存？                           |                                                              | [Editorial](./JVM/什么是堆外内存？如何使用堆外内存？.md)   |
-| FullGC多久一次算正常？                                       | 一般来说，日常情况，FullGC不应该超过一周一次的这个频率。     | [Editorial](./JVM/FullGC多久一次算正常？.md)                |
+| 运行时常量池和字符串常量池的区别                             |                                                              | [Editorial](./JVM/运行时常量池和字符串常量池的区别.md)       |
+| 什么是堆外内存？如何使用堆外内存？                           |                                                              | [Editorial](./JVM/什么是堆外内存？如何使用堆外内存？.md)     |
+| FullGC多久一次算正常？                                       | 一般来说，日常情况，FullGC不应该超过一周一次的这个频率。     | [Editorial](./JVM/FullGC多久一次算正常？.md)                 |
 | 内存泄漏和内存溢出的区别                                     | **内存泄漏**：内存“被浪费”，还被引用，回收不了;   **内存溢出**：内存“不够用”，分配失败，直接报错 | [Editorial](./JVM/内存泄漏和内存溢出的区别.md)               |
 | 破坏双亲委派之后，能重写String类吗？                         | 破坏双亲委派机制后，理论上可以让自定义类加载器加载自己的 `java.lang.String` 类，但实际上无法真正重写JDK中的 String 类，因为JVM对核心类（如 String）有特殊保护，总是优先使用系统自带的实现，即使自定义了同名类也无法影响JVM内部和JDK API对 String 的使用。 |                                                              |
 | 什么是Class常量池，和运行时常量池关系是什么？                | Class常量池是指Java类文件中用于存储各种字面量（如字符串、数值）和符号引用（如类、方法、字段等）的数据区，类加载后这些内容会被放入JVM的运行时常量池，运行时常量池是Class常量池在内存中的映射，支持类解析和动态链接，两者本质上是编译期和运行期的对应关系。 |                                                              |
@@ -349,12 +357,15 @@
 | 依赖注入的意思是将Bean加入容器吗？                           | 不是！千万别搞混了。依赖注入是**当某个 Bean 需要用到其他 Bean 时，Spring 自动把需要的 Bean 注入（赋值）给它**，而不是让你自己手动创建依赖对象。  Bean加入容器（Bean的注册） 你通过`@Component`、`@Service`、`@Repository`、`@Controller`、`@Bean`等注解（或XML配置），把一个类的实例交给 Spring 容器管理，成为一个“Bean”。 | [Editorial](./Spring/依赖注入的意思是将Bean加入容器吗？.md)  |
 | Bean和静态对象对比                                           | Spring Bean 由容器统一管理，支持依赖注入、生命周期控制和灵活配置，适合复杂业务和解耦；静态对象则是全局唯一、无法注入和扩展，适合简单工具和常量，但灵活性和可维护性较差，线程安全需要额外注意。 | [Editorial](./Spring/Bean和静态对象对比.md)                  |
 | Spring的aop介绍一下                                          | 切面编程、动态代理实现                                       | [Editorial](./Spring/Spring的aop介绍一下.md)                 |
+| 介绍一下AOP动态代理                                          | AOP动态代理是面向切面编程（AOP）的一种实现方式，**通过在运行时为目标对象创建代理对象**，以拦截方法调用并织入增强（如事务、日志、安全等）。这种代理是在程序运行时动态生成的，因此称为“动态代理”。 | [Editorial](./Spring/介绍一下AOP动态代理.md)                 |
 | 定义注解实现切面编程                                         | 场景：日志记录、权限校验、参数校验、缓存处理、接口幂等性、事务控制、审计与埋点、限流与防刷；  Editorial有具体的案例； | [Editorial](./Spring/定义注解实现切面编程.md)                |
 | 详细介绍一下：ProceedingJoinPoint                            | 是 AspectJ（和 Spring AOP）中用于**“环绕通知”**（@Around advice）的一个接口。它代表了连接点（JoinPoint），即你的切面（Aspect）所拦截的**方法调用**，并且允许你通过它来访问方法的信息、参数，甚至可以控制方法的执行（如是否继续执行原方法、改变参数、获取返回值等）。 | [Editorial](./Spring/详细介绍一下ProceedingJoinPoint.md)     |
 | Spring的AOP在什么场景下会失效？                              | 主要失效场景是**自调用**、**private/static/final 方法**、**非 Spring 管理对象**和**AOP 配置问题**。如果遇到 AOP 不生效，建议检查调用方式和代理配置。 | [Editorial](./Spring/Spring的AOP在什么场景下会失效.md)       |
 | spring三级缓存解决循环依赖问题？                             | **Spring 三级缓存机制通过提前暴露 Bean 的引用，使得循环依赖得以解决，同时保证 AOP 代理不丢失**。 | [Editorial](./Spring/spring三级缓存解决循环依赖问题.md)      |
 | 如何使用spring实现事务？【深问：事务传播模型有哪些】         | 编程式事务（`TransactionTemplate`）、声明式事务（`@Transactional`） | [Editorial](./Spring/如何使用spring实现事务 )                |
-| 介绍一下@Async                                               | `@Async` 是 Spring 提供的异步方法执行注解。  它允许你将某个方法变成**异步方法**，即调用该方法时不会阻塞当前线程，而是交由 Spring 的线程池异步执行，提升应用的并发能力和响应速度。 | [Editorial](./Spring/介绍一下@Async.md)                      |
+| 什么时候事务会失效                                           | Spring 事务失效常见原因包括：方法不是 public、同类内部直接调用、对象未被 Spring 管理、异常类型不符合回滚规则、数据库不支持事务、传播属性设置不当、多线程或异步执行、未正确配置事务管理器，以及使用了错误的代理方式。 | [Editorial](./Spring/什么时候事务会失效.md)                  |
+| 事务失效与AOP代理失效                                        |                                                              | [Editorial](./Spring/事务失效与AOP代理失效.md)               |
+| 介绍一下@Async      **[ˈeɪˌsɪŋk]**                           | `@Async` 是 Spring 提供的异步方法执行注解。  它允许你将某个方法变成**异步方法**，即调用该方法时不会阻塞当前线程，而是交由 Spring 的线程池异步执行，提升应用的并发能力和响应速度。 | [Editorial](./Spring/介绍一下@Async.md)                      |
 | 为什么有的任务要丢给mq去执行，而不是直接用@sync开个异步执行呢？ | 将任务交给消息队列（MQ）执行，而不是直接用@Async开异步线程，主要是为了提升系统的**可靠性**和**解耦能力**。@Async只是本地线程池异步，服务重启或线程池满时任务**容易丢失**，不适合需要保证可靠处理和**跨服务协作**的场景；而MQ具备**消息持久化**、**消费确认**、**失败重试**等机制，能够确保任务即便出现服务故障也不会丢失，更适合关键业务的异步处理和解耦，所以在实际生产中更推荐用MQ来承载重要的异步任务。 | [Editorial](./Spring/为什么有的任务要丢给mq去执行而不是直接用sync开个异步执行呢.md) |
 | 为什么不建议直接使用Spring的@Async                           |                                                              | [Editorial](./Spring/为什么不建议直接使用Spring的@Async.md)  |
 | 分布式事务详解与面试高频问题梳理                             | 一次业务操作会跨越多个数据库、服务、系统或消息队列。例如：订单服务写订单库，库存服务扣库存库，支付服务调支付网关。**如果这些操作不能保证"要么全部成功，要么全部失败"，就会出现数据不一致问题。** | [Editorial](./Spring/分布式事务详解)                         |
@@ -362,7 +373,7 @@
 | MyBatis，#和$有什么区别                                      | **主要是SQL注入的问题**                                      | [Editorial](./Spring/MyBatis，#和$有什么区别.md)             |
 | 你说到了SQL注入，那你给我设计出一个SQL注入，具体说表中的字段，然后SQL语句是怎样的 | SQL 注入主要是由于 **拼接 SQL 语句** 造成的，攻击者可以利用它来 **绕过身份验证、窃取数据，甚至破坏数据库**。最有效的防范方法是 **使用参数化查询**，避免直接拼接用户输入到 SQL 语句中。 | [Editorial](./MySQL/SQL注入例子.md)                          |
 | Bean 的生命周期                                              | 8大步                                                        | [Editorial](./Spring/Bean的生命周期.md)                      |
-| Bean初始化                                                   | @PostConstruct->afterPropertiesSet->init-method              | [Editorial](./Spring/Bean初始化.md)                          |
+| Bean初始化                                                   | 记住**执行带有`@PostConstruct` 注解的方法**就可以了          |                                                              |
 | Bean是否单例？                                               | Bean默认是单例的（singleton）。  只有显式设置@Scope("prototype")或scope="prototype"时，才会变成多例。 |                                                              |
 | Bean的单例和非单例，生命周期是否一样                         | 不一样的，Spring Bean 的生命周期完全由 IoC 容器控制。Spring 只帮我们管理单例模式 Bean 的完整生命周期，对于 `prototype` 的 Bean，Spring 在创建好交给使用者之后，则不会再管理后续的生命周期。 |                                                              |
 | Spring容器里存的是什么？                                     | 在Spring容器中，存储的**主要是Bean对象**。 Bean是Spring框架中的基本组件，用于表示应用程序中的各种对象。当应用程序启动时，Spring容器会根据配置文件或注解的方式创建和管理这些Bean对象。Spring容器会负责创建、初始化、注入依赖以及销毁Bean对象。 |                                                              |
@@ -394,9 +405,7 @@
 | spring用到了哪些设计模式                                     | 工厂模式、单例模式、代理模式、模板方法模式、观察者模式、策略模式、适配器模式、装饰者模式、责任链模式、建造者模式 | [Editorial](./Spring/Spring用到了哪些设计模式.md)            |
 | Spring事务失效可能是哪些原因                                 | Spring事务失效主要是AOP代理机制未生效、异常未正确抛出、方法修饰符不对、自调用、数据库原因等导致的。 | [Editorial](./Spring/Spring事务失效可能是哪些原因.md)        |
 | Spring Boot 如何让你的 bean 在其他 bean 之前加载             | 直接依赖某Bean ,也可以使用`@DependsOn("Bean")`；特别注意：Order只能控制同一个Bean类型中集合的顺序，不能控制不同Bean的初始化顺序 |                                                              |
-| Springboot是如何实现自动配置的？                             |                                                              | [Editorial](./Spring/Springboot是如何实现自动配置的.md)      |
 | SpringBoot是如何实现main方法启动Web项目的？                  | Spring Boot 通过在 main 方法中调用 `SpringApplication.run`，自动完成了 Spring 容器初始化、嵌入tomcat启动和应用准备工作，无需传统的 web.xml 或外部容器部署，实现了“一键启动”Web 项目。 | [Editorial](./Spring/SpringBoot是如何实现main方法启动Web项目的？.md) |
-| SpringBoot的启动流程是怎么样的？                             |                                                              | [Editorial](./Spring/SpringBoot的启动流程是怎么样的.md)      |
 | Spring中shutdownhook作用是什么？                             | Spring 中的 shutdown hook 主要用于保证**应用优雅关闭、资源正确释放**，避免资源泄漏和不完整的退出流程。对于长期运行的服务（如Web服务、微服务）尤其重要。 | [Editorial](./Spring/Spring中shutdownhook作用是什么.md)      |
 | SpringBoot如何做优雅停机？                                   | 在 application.properties文件中添加一行代码：  `server.shutdown=graceful ` |                                                              |
 | 缓存预热的作用                                               | 在系统启动或上线前提前将热点数据加载到缓存中，避免系统刚开始运行时大量请求直接访问数据库或后端服务，防止出现缓存穿透和后端压力骤增，从而提升系统的响应速度和稳定性，保障用户体验。 |                                                              |
@@ -412,8 +421,9 @@
 | 知道Spring Task吗，和XXL-JOB有啥区别？                       | Spring Task 是 Spring 框架自带的本地定时任务调度工具，适合简单周期任务，依赖于应用自身，功能有限。而 XXL-JOB 是分布式任务调度平台，支持任务统一管理、分布式执行、监控和重试，适用于企业级和复杂场景。实际选型要根据业务规模和需求决定。 | [Editorial](./Spring/知道SpringTask吗，和XXL-JOB有啥区别.md) |
 | SpringBoot和传统的双亲委派有什么不一样吗？                   | 在 Spring Boot 中，使用 Maven 或 Gradle 构建项目时，lib/ 目录中的第三方依赖是**以 JAR 形式打包进主 JAR 内部，默认会生成一个包含所有依赖项的 fat jar**。 传统的 Application ClassLoader **只能从 外部 classpath 加载类**，**无法直接加载 JAR 包内嵌的其他 JAR（fat jar）**。 因此 Spring Boot 需要自定义类加载器。 为了支持 Fat JAR 运行模式，Spring Boot 使用 `LaunchedURLClassLoader` 替代 `AppClassLoader`，打破双亲委派机制，核心做法是： ● 先加载 **BOOT-INF/classes** 目录下的应用类（优先于 JDK 类）。 ● 再加载 **BOOT-INF/lib/** 目录下的依赖 JAR（传统 AppClassLoader 无法加载嵌套 JAR）。 ● 最后才交给父类加载器（即 JDK 提供的 AppClassLoader）。 |                                                              |
 | 什么是fat jar？                                              | 在 Spring Boot 中，使用 Maven 或 Gradle 构建项目时，默认会生成一个包含所有依赖项的 fat jar。这种做法简化了应用的部署和运行，但也会导致 jar 文件过大，不利于网络传输和存储。 |                                                              |
-| 如何在Spring中做缓存预热                                     |                                                              | [Editorial](./Spring/如何再Spring中做缓存预热.md)            |
-|                                                              |                                                              |                                                              |
+| 如何在Spring中做缓存预热                                     | Spring启动时做缓存预热，可以选择监听 `ApplicationReadyEvent`、实现 `Runner` 接口、实现 `InitializingBean` 或使用 `@PostConstruct`。实际选型可根据业务需要和预热时机灵活选用。 | [Editorial](./Spring/如何再Spring中做缓存预热.md)            |
+| springboot自动装配机制原理（2.x版本）                        | 核心靠一个注解`@EnableAutoConfiguration`它其实就是导入了一个类`AutoConfigurationImportSelector`这个类会通过`SpringFactoriesLoader`去扫描我们项目下面所有依赖包下的`META-INF/spring.factories`文件，里面列了一大堆配置类，像`DataSourceAutoConfiguration`、`WebMvcAutoConfiguration`之类的，springboot启动的时候，会把这些类**按需**加载进来，为什么说是按需，因为这些类通常配了各种条件注解`@ConditionalOnClass`（我们依赖里面没有这个类才加载）、`@ConditionalOnMissingBean`（我们没有配置，才帮我们配置）、`@ConditionalOnProperty`（配置文件开了这个开关，才加载）。 |                                                              |
+| SpringBoot的启动流程是怎么样的？                             |                                                              | [Editorial](./Spring/SpringBoot的启动流程是怎么样的.md)      |
 
 ## 【Mybatis】
 
@@ -655,6 +665,7 @@
 
 | Problems                                                     | Hints                                                        | Solution                                                     |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 线上问题排查伪代码总览                                       | 包含Arthas排查和JVM工具排查                                  | [Editorial](./线上问题排查/线上问题排查伪代码总览.md)        |
 | JVM中有哪些常见的性能监控与排查工具？各自适用哪些场景？ 【重要】 | JDK自带工具：jps、jstack、jmap、jstat、jinfo、VisualVM、JConsole  生产/复杂场景：JMC、MAT、Arthas、YourKit/JProfiler  典型用途：查线程死锁（jstack）、查内存泄漏（jmap+MAT）、实时GC监控（jstat/VisualVM）、线上低开销采集（JMC）  复习提示：**“jps找进程、jstack查线程、jmap导内存、VisualVM/JMC图形化分析”** | [Editorial](./线上问题排查/JVM中有哪些常见的性能监控与排查工具？各自适用哪些场景？.md) |
 | 线程Dump（jstack）详解                                       | 线程Dump，又叫**线程快照**，是指将JVM进程中所有线程的当前运行状态、调用栈信息一次性导出。通过分析线程Dump，可以排查死锁、线程阻塞、线程数暴涨、CPU占用高等问题，是定位Java线上问题的利器。 | [Editorial](./线上问题排查/线程Dump（jstack）详解.md)        |
 | 什么是JVM内存溢出（OOM）和内存泄漏？如何定位和解决？         | OOM：JVM分配内存失败，常见于堆、元空间、栈  内存泄漏：无用对象仍被引用，无法回收  排查思路：分析日志、heap dump、监控曲线、代码审查  解决方法：优化代码、合理配置参数、用工具分析  复习提示：**“OOM看异常类型，heap dump查根因，注意静态变量和大对象引用”** | [Editorial](./线上问题排查/什么是JVM内存溢出（OOM）和内存泄漏？如何定位和解决？.md) |
@@ -678,7 +689,7 @@
 | Problems                                                     | Hints                                                        | Solution                                                     |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | 中间件基础知识总结                                           | - 中间件是“系统粘合剂”，帮助各模块解耦协作、提升扩展性和可维护性。 - 常见类型：Web服务器、消息队列、缓存、数据库中间件、服务注册与发现。 - 作用关键词：解耦、复用、扩展、高可用、分布式协作。 | [Editorial](./中间件/中间件基础知识总结.md)                  |
-| Kafka、RabbitMQ和RocketMQ都有哪些区别，应用场景列举？        |                                                              | [Editorial](./中间件/Kafka、RabbitMQ和RocketMQ都有哪些区别，应用场景列举.md) |
+| Kafka、RabbitMQ和RocketMQ都有哪些区别，应用场景列举？        | kafka是**异步刷盘**，极端情况数据会丢失；但是rocketmq是**同步刷盘**，更安全 | [Editorial](./中间件/Kafka、RabbitMQ和RocketMQ都有哪些区别，应用场景列举.md) |
 | 如何设计一个支持“限流（Rate Limiting）”功能的中间件？为什么在分布式系统中限流如此重要？ | - **限流的作用**：防止系统过载，保障服务可用性和公平性。 - **常见算法**：固定窗口、滑动窗口、令牌桶、漏桶。 - **分布式难点**：状态一致性、性能瓶颈、数据同步。 - **场景记忆法**：把限流理解为“超市排队+中央排号机”。 | [Editorial](./中间件/如何设计一个支持“限流（RateLimiting）”功能的中间件？为什么在分布式系统中限流如此重要？.md) |
 | 如何实现“服务的健康检查（Health Check）”中间件？它在微服务架构中有何意义？ | - **健康检查的作用**：提升系统稳定性、自动容错与流量管理。 - **常见类型**：Liveness、Readiness、自定义业务检查。 - **微服务意义**：防止流量打到异常实例，辅助自动恢复，提升可观测性。 - **记忆法**：“航班起飞前的安全检查”——活着≠准备好了。 | [Editorial](./中间件/如何实现“服务的健康检查（HealthCheck）”中间件？它在微服务架构中有何意义？.md) |
 | 在中间件中如何实现“请求追踪（Request Tracing）”？它为何是分布式系统开发的关键？ | **作用**：请求追踪帮助定位分布式系统中的性能瓶颈与故障。  **关键点**：生成唯一Trace ID，全链路传递，日志聚合。  **常见工具**：OpenTelemetry、Jaeger、Zipkin。  **场景记忆法**：快递单号追踪包裹轨迹。 | [Editorial](./中间件/在中间件中如何实现“请求追踪（RequestTracing）”？它为何是分布式系统开发的关键？.md) |
@@ -728,10 +739,12 @@
 
 ## 【设计模式】
 
-| Problems                         | Hints | Solution                                                    |
-| -------------------------------- | ----- | ----------------------------------------------------------- |
-| 设计模式总结                     |       | [Editorial](./设计模式/设计模式总结.md)                     |
-| 工厂方法模式与抽象工厂模式的区别 |       | [Editorial](./设计模式/工厂方法模式与抽象工厂模式的区别.md) |
+| Problems                         | Hints                                                        | Solution                                                    |
+| -------------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------- |
+| 设计模式总结                     |                                                              | [Editorial](./设计模式/设计模式总结.md)                     |
+| 设计模式七大原则                 | 单一职责、开闭、里氏替换、依赖倒置、接口隔离、迪米特、合成/聚合复用原则 | [Editorial](./设计模式/设计模式七大原则.md)                 |
+| 工厂方法模式与抽象工厂模式的区别 | **工厂方法模式**只负责生产一种产品，由具体子类决定产品的创建细节；而**抽象工厂模式**可以生产多个相关产品族，通过不同的实现类创建一组相互关联的产品。简单来说，工厂方法模式关注“单一产品的创建”，而抽象工厂模式关注“产品族的整体创建和约束”。  **单一产品的不同品牌，整套产品的不同风格** | [Editorial](./设计模式/工厂方法模式与抽象工厂模式的区别.md) |
+| 你在工作中是如何使用设计模式的   |                                                              | [Editorial](./设计模式/你在工作中是如何使用设计模式的.md)   |
 
 ## 【Netty】
 

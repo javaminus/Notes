@@ -350,7 +350,8 @@ ls -lt
 
 ---
 
-## 6. 如何递归查找并批量替换文本内容？  
+## 6. 如何递归查找并批量替换文本内容？
+
 **答：**  
 ```bash
 grep -rl 'foo' . | xargs sed -i 's/foo/bar/g'
@@ -437,6 +438,9 @@ ss -tnl | grep 80
 pkill nginx
 # pkill：按进程名杀进程
 # nginx：进程名
+
+kill pid
+需要知道具体的进程号，适合单个进程操作
 ```
 
 ---

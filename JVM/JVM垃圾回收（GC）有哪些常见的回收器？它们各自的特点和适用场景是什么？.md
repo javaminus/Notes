@@ -19,11 +19,38 @@ JVM 提供了多种垃圾回收器（GC），每种回收器针对不同应用�
 - **特点**：新生代和老年代都可并行回收（配合 Parallel Old），目标是高吞吐量，GC 可配置最大停顿时间和吞吐量。
 - **适用**：注重任务处理总量且停顿时间要求不高的后台批处理、数据分析等。
 
-#### 4. CMS（Concurrent Mark Sweep，并发标记清除）GC
+#### 4. CMS（Concurrent Mark Sweep，并发标记清除）GC  低延迟
 
 - **特点**：老年代并发回收，尽量减少停顿时间，GC 大部分阶段与用户线程并发执行。
+
 - **缺点**：会有“浮动垃圾”，需要“remark”阶段短暂停顿，内存碎片化严重。
+
 - **适用**：对响应时间敏感的Web服务、互联网业务等。
+
+- > 在JDK8中，如果你选择了CMS GC（即 `-XX:+UseConcMarkSweepGC`），那么**新生代默认会使用 ParNew GC**（并行新生代收集器）。
+  >
+  > ### 详细说明
+  >
+  > - **老年代**：CMS GC（Concurrent Mark Sweep）。
+  > - **新生代**：ParNew GC（Parallel New GC）。
+  >
+  > ParNew GC 是专为配合 CMS 使用的多线程新生代收集器。它在新生代垃圾回收时，能利用多核 CPU 提高回收效率。
+  >
+  > #### 常见配置示例
+  > ```shell
+  > -XX:+UseConcMarkSweepGC        # 启用 CMS GC
+  > -XX:ParallelGCThreads=4        # 设置 ParNew GC 的线程数（可根据CPU核数调整）
+  > -XX:CMSInitiatingOccupancyFraction=75  # CMS触发阈值
+  > ```
+  >
+  > #### 其他说明
+  > - 如果你单独加 `-XX:+UseConcMarkSweepGC`，新生代自动用 ParNew GC，无需再加 `-XX:+UseParNewGC`，不过加上也没问题。
+  > - 新生代**不能配合 CMS 使用 Parallel Scavenge GC**，CMS 只能与 ParNew 配合。
+  >
+  > ### 总结
+  > **CMS GC（老年代）+ ParNew GC（新生代）**是经典组合，适合对响应时间有要求的应用。
+  >
+  > 如需更细致的调优建议，可以补充你的应用场景和内存配置！
 
 #### 5. G1（Garbage First）GC
 
