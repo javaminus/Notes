@@ -124,6 +124,56 @@ MyBatis 通过 **JDK 动态代理**为 Mapper 接口生成代理对象：
    - 方法参数与 SQL 参数通过 ParameterHandler 映射
    - 结果集通过 ResultSetHandler 映射为返回值
 
+```java
+import java.lang.reflect.*;
+import java.util.HashMap;
+import java.util.Map;
+
+// 1. Mapper接口
+public interface UserMapper {
+    String selectById(int id);
+}
+
+// 2. MapperProxy实现（JDK动态代理的InvocationHandler实现）
+class MapperProxy implements InvocationHandler {
+    // 假设有个简单的SQL映射
+    private static final Map<String, String> sqlMap = new HashMap<>();
+    static {
+        sqlMap.put("selectById", "SELECT * FROM user WHERE id = ?");
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        // 根据方法名获取伪SQL
+        String methodName = method.getName();
+        String sql = sqlMap.get(methodName);
+        System.out.println("准备执行SQL: " + sql);
+        if (args != null && args.length > 0) {
+            System.out.println("参数: " + args[0]);
+        }
+        // 这里模拟返回结果
+        return "User#" + args[0];
+    }
+}
+
+// 3. 模拟SqlSession.getMapper过程
+class MyBatisJdkProxyDemo {
+    public static void main(String[] args) {
+        // 通过JDK动态代理为UserMapper生成代理对象
+        UserMapper userMapper = (UserMapper) Proxy.newProxyInstance(
+            UserMapper.class.getClassLoader(),
+            new Class[]{UserMapper.class},
+            new MapperProxy()
+        );
+        // 调用
+        String user = userMapper.selectById(101);
+        System.out.println("查询结果: " + user);
+    }
+}
+```
+
+
+
 ## 6. 缓存机制
 
 MyBatis 提供了两级缓存：

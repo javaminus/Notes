@@ -32,6 +32,20 @@
 
 - HTML 页面返回给用户，浏览器显示内容。
 
+
+
+> 不过现在前后端分离，渲染视图交给vue/react
+>
+> 前后端分离下的流程变化
+请求进入：流程一样，DispatcherServlet 拦截请求。
+寻找控制器：依然通过 HandlerMapping 找到 Controller。
+执行控制器：Controller 方法处理业务逻辑。
+返回数据：Controller 通常返回的是对象（如 List、Map），或者直接返回 JSON 字符串，而不是 ModelAndView。
+用 @RestController 或 @ResponseBody 注解，直接将对象序列化为 JSON。
+（不再解析视图）：不使用 ViewResolver，因为没有视图名和页面需要解析。
+（不再渲染视图）：后端不负责页面渲染，前端（如 React/Vue/Angular）负责将 JSON 数据渲染为页面。
+响应返回：Servlet 直接将 JSON 数据返回给前端，前端应用解析 JSON，生成 UI。
+
 # Spring MVC 工作流程 面试常见追问及参考答案
 
 ---

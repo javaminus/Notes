@@ -11,6 +11,7 @@
 ### 📦 常用方法：
 
 ```java
+ExecutorService executorService = Executors.newFixedThreadPool(10);
 Future<T> future = executorService.submit(callable);
 
 future.get();     // 阻塞等待结果

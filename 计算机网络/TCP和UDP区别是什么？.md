@@ -64,15 +64,15 @@ TCP（Transmission Control Protocol，传输控制协议）和 UDP（User Datagr
 
 **参考答案：**  
 三次握手用于建立 TCP 连接，保证双方收发能力正常。步骤如下：  
-1. 客户端发送 SYN（同步）包，进入 SYN_SEND 状态。  
-2. 服务器收到后回复 SYN+ACK，进入 SYN_RECV 状态。  
-3. 客户端收到后回复 ACK，进入 ESTABLISHED 状态，服务器收到 ACK 后也进入 ESTABLISHED，连接建立完成。
+1. 客户端发送 SYN（同步）包，进入 SYN_SEND 状态。  （seq = x）
+2. 服务器收到后回复 SYN+ACK，进入 SYN_RECV 状态。  (seq = y, ack = x+1)
+3. 客户端收到后回复 ACK，进入 ESTABLISHED 状态，服务器收到 ACK 后也进入 ESTABLISHED，连接建立完成。(ack = y+1)
 
-四次挥手用于断开连接，确保双方数据都已收发完毕。步骤如下：  
-1. 主动方发送 FIN，进入 FIN_WAIT_1。  
-2. 被动方收到后回复 ACK，进入 CLOSE_WAIT；主动方进入 FIN_WAIT_2。  
-3. 被动方数据发完后，发送 FIN，进入 LAST_ACK。  
-4. 主动方收到 FIN 后回复 ACK，进入 TIME_WAIT，等待一段时间后彻底断开。
+四次挥手用于断开连接，确保双方数据都已收发完毕。步骤如下：  (seq打头)
+1. 主动方发送 FIN，进入 FIN_WAIT_1。  (seq = u)
+2. 被动方收到后回复 ACK，进入 CLOSE_WAIT；主动方进入 FIN_WAIT_2。  (seq = v, ack = u+1)
+3. 被动方数据发完后，发送 FIN，进入 LAST_ACK。  (seq = w)
+4. 主动方收到 FIN 后回复 ACK，进入 TIME_WAIT，等待一段时间后彻底断开。(seq = u+1, ack = w+1)
 
 ---
 

@@ -6,6 +6,33 @@
 - `run()`：普通方法调用，代码在当前线程执行，不会启动新线程。  
 - `start()`：启动新线程，线程进入就绪状态，由 JVM 调度并在新线程中执行 `run()` 方法。
 
+```java
+// 这是实现Runnable接口，重写里面的run()方法创建线程；
+public class MyRunnable implements Runnable {
+    @Override
+    public void run() {
+        try {
+            // 睡眠3秒
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("实现Runnable接口的线程");
+    }
+}
+// 在使用thread.run()和thread.start()是不一样的
+public class MyRunnableTest {
+    public static void main(String[] args) throws InterruptedException {
+        System.out.println("--------开始调用线程--------");
+        Thread thread= new Thread(new MyRunnable());
+        thread.run();
+        System.out.println("--------调用线程结束--------");
+    }
+}
+```
+
+
+
 ---
 
 ### 2. `wait()` 与 `sleep()`  

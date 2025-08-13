@@ -93,6 +93,7 @@ grep -C 2 "ERROR" app.log
 sed 's/foo/bar/g' file.txt
 # sed：流编辑器
 # 's/foo/bar/g'：将foo替换为bar（g为全局替换）
+#  s：表示“替换”（substitute）。
 # file.txt：目标文件
 ```
 
@@ -120,6 +121,8 @@ wc -l file.txt
 # wc：统计行数/字数/字节数
 # -l：只统计行数
 # file.txt：目标文件
+wc -w file.txt
+# 统计字数
 ```
 
 ## 系统信息和监控
@@ -257,10 +260,8 @@ gunzip file.txt.gz
 ## 其他常用命令
 
 ```bash
-sudo apt-get update
+sudo
 # sudo：以管理员权限执行
-# apt-get：包管理工具
-# update：更新软件包索引
 ```
 
 ```bash

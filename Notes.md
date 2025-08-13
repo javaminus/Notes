@@ -5,10 +5,13 @@
 | Problems                                                     | Hints                                                        | Solution                                                     |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | SQL 学习指南：从入门到精通                                   | `group by`是分组，`having`是分组后过滤，` 窗口函数`用于对查询结果中的数据分组后进行排序、累计、排名等计算，而不影响原有数据的行数。 | [Editorial](./MySQL/SQL学习指南：从入门到精通.md)            |
-| EXPLAIN 分析SQL详解                                          | 核心就是`type`：`system、const、eq_ref、ref、range、index、all` | [Editorial](./MySQL/EXPLAIN分析SQL详解.md)                   |
+| EXPLAIN 分析SQL详解                                          | 核心就是`type`：`system、const、eq_ref、ref、range、index、all`**分析步骤**：1、看type是否为ALL 2、看key是否命中预期索引 3、分析rows是否过大 4、关注Extra字段是否出现临时表，用到外部排序 5、多表join，注意id和select_type，谁是驱动表 | [Editorial](./MySQL/EXPLAIN分析SQL详解.md)                   |
+| 数据库操作分类                                               | 数据定义操作（DDL，创建修改表结构）；数据操作（DML，数据crud）；数据控制操作（权限）；事务控制操作； |                                                              |
+| 范式                                                         | 设计关系型数据库**表结构**时需要遵循的一系列规范，目的是**减少数据冗余**、**消除数据异常**、**保证数据一致性**。常见的范式有第一范式（1NF，**字段不可再分**）、第二范式（2NF，**消除部分依赖**）、第三范式（3NF，**消除传递依赖**） | [Editorial](./MySQL/范式.md)                                 |
 | MySQL分层                                                    | MySQL 的查询处理大致分为两层：**Server 层**和**存储引擎层**。Server 层负责 SQL 的**解析**、**优化**和**执行**等逻辑处理，而存储引擎层（也叫存储层）负责数据的**实际存储**和**读取**。Server 层不关心数据如何落盘，存储引擎层则专注于数据的管理方式，比如 InnoDB、MyISAM 等不同引擎。这样分层设计让 MySQL 既灵活又高效。 | [Editorial](./MySQL/MySQL分层.md)                            |
-| 索引分类                                                     | 物理结构：聚簇索引（主键索引）、非聚簇索引；逻辑结构：单列索引、复合索引；功能：唯一索引、普通索引、主键索引；特殊：全文索引、空间索引；其他：哈希索引、位图索引； | [Editorial](./MySQL/索引分类.md)                             |
-| 介绍一下索引下推                                             | 索引下推**优化了联合索引**的过滤过程，让更多的条件能在**存储引擎层**被利用，从而减少回表，提高查询效率。 | [Editorial](./MySQL/介绍一下索引下推.md)                     |
+| 数据库建表要注意什么                                         | 表结构是否合理（每个表只负责一种业务实体），主键唯一（递增），字段数据选择能小不用大，能设置not null 就不要设置 null ，索引设计，选择合适的字符集与排序规则（utf8mb4, utf8mb4_general_ci）,表注释和字段注释，预留拓展字段，尽量满足第三范式。 | [Editorial](./MySQL/数据库建表要注意什么.md)                 |
+| 索引分类                                                     | 物理结构：聚簇索引（主键索引）、非聚簇索引；逻辑结构：单列索引、复合索引；功能：唯一索引、普通索引、主键索引； | [Editorial](./MySQL/索引分类.md)                             |
+| 介绍一下索引下推                                             | 索引下推**优化了联合索引**的**过滤**过程，它的主要作用是在使用索引进行数据检索时，将部分 WHERE 条件“下推”到存储引擎层，由存储引擎在扫描索引时提前过滤不符合条件的记录，从而减少回表次数，提高查询效率。 | [Editorial](./MySQL/介绍一下索引下推.md)                     |
 | 事务隔离级别有哪些？                                         | 四种隔离级别：读未提交、读已提交、可重复读、串行化           | [Editorial](./MySQL/事务隔离级别有哪些？.md)                 |
 | 脏读和幻读的区别？                                           | **脏读**：一个事务读到了「未提交事务修改过的数据」**幻读**：在一个事务内多次查询某个符合查询条件的「记录数量」，如果前后两次查询到的记录数量不一样。 |                                                              |
 | 如何防止幻读？                                               | **针对快照读**（普通 select 语句），是通过 MVCC 方式解决了幻读；  **针对当前读**（select ... for update等语句），是通过 `next-key lock`（记录锁+间隙锁）**这里的记录锁就是行锁！！！** | [Editorial](./MySQL/如何防止幻读.md)                         |
@@ -18,6 +21,7 @@
 | mysql的什么命令会加上间隙锁？                                | 在可重复读隔离级别下。 使用非唯一索引进行带`where`语句的查询、删除、更新 | [Editorial](./Mysql/mysql的什么命令会加上间隙锁.md)          |
 | MySQL 的存储引擎有哪些？为什么常用InnoDB？                   | InnoDB【支持事务、最小锁的粒度是行锁】、MyISAM、Memory       | [Editorial](./MySQL/MySQL的存储引擎有哪些？为什么常用InnoDB？.md) |
 | B+ 树和 B 树的比较                                           | 叶子节点存储数据不同、B+树支持范围查询（叶子节点通过双向链表连接）、B+树修改树的效率更高（矮胖） | [Editorial](./MySQL/B+树和B树的比较.md)                      |
+| 展示一下Mysql的B+树和Redis的跳表删除和插入一个节点的变化     |                                                              | [Editorial](./MySQL/展示一下Mysql的B+树和Redis的跳表删除和插入一个节点的变化.md) |
 | 索引失效的情况                                               | 使用左模糊或者左右模糊匹配 、 对索引列使用函数 、 对索引列进行表达式计算[`where a+1>50`] 、 联合索引没有正确使用需要遵循最左匹配原则 | [Editorial](./MySQL/索引失效的情况.md)                       |
 | **MySQL的联合索引为什么要遵循最左前缀原则？**                | 联合索引按最左字段排列，查询必须包含最左字段，才能用上索引（最左前缀原则）。 | [Editorial](./MySQL/MySQL的联合索引为什么要遵循最左前缀原则？.md ) |
 | 什么是覆盖索引？它的优点是什么？                             | 覆盖索引是指一个查询的**所有字段**都能从索引中获取到，而不需要回表到数据表中查找。优点包括：减少磁盘IO，提升查询性能，减少锁的范围。 |                                                              |
@@ -69,14 +73,15 @@
 
 | Problems                                                     | Hints                                                        | Solution                                                     |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Jedis学习笔记                                                |                                                              | [Editorial](./Redis/Jedis学习笔记.md)                        |
-| Redission学习笔记                                            |                                                              | [Editorial](./Redis/Redission学习笔记.md)                    |
+| Jedis学习笔记                                                | 不学这个                                                     | [Editorial](./Redis/Jedis学习笔记.md)                        |
+| Spring_Data_Redis 加Lettuce                                  | 记一下五大基础数据结构的读写以及设置过期键                   | [Editorial](./Redis/Spring_Data_Redis加Lettuce.md)           |
+| Redission学习笔记                                            | 分布式的场景用的最多                                         | [Editorial](./Redis/Redission学习笔记.md)                    |
 | Redis是AP还是CP？                                            | 单机的Redis连P（分区容错性）都没有，不讨论；分布式的Redis是AP，因为Redis通过异步的主从同步保证系统的高可用（A），那么这个时候的数据一致性得不到保证（C）; |                                                              |
 | Redis 使用什么协议进行通信?                                  | Redis 使用自己设计的一种文本协议进行客户端与服务端之间的通信——**RESP**（REdis Serialization Protocol），这种协议简单、高效，易于解析，被广泛使用。  RESP 协议基于 **TCP** 协议，采用请求/响应模式，每条请求由多个参数组成，以命令名称作为第一个参数。请求和响应都以行结束符（\r\n）作为分隔符. |                                                              |
 | Redis高级数据结构的使用场景                                  | 常见的有五种数据类型：String（字符串），Hash（哈希），List（列表），Set（集合）、Zset（有序集合）。 BitMap、HyperLogLog、GEO、Stream。 | [Editorial](./Redis/Redis高级数据结构的使用场景.md)          |
 | 什么是GEO，有什么用？                                        |                                                              | [Editorial](./Redis/什么是GEO有什么用.md)                    |
-| Redis BitMap 和 HyperLogLog 的原理是什么？分别适合哪些实际应用场景？ | **BitMap 适合大规模布尔统计（如签到、活跃统计），节省空间，支持位运算。**  **HyperLogLog 适合大规模去重计数（如UV统计），空间极小但有一定误差。**  **二者都是 Redis 的“以空间换效率”的典型高阶数据结构，适用于高并发大数据量的统计场景。** | [Editorial](./Redis/RedisBitMap和HyperLogLog的原理是什么？分别适合哪些实际应用场景？.md) |
-| 热 key 是什么？怎么解决？                                    | Redis热key是指被频繁访问的key 。开启内存淘汰机制， 设置key的过期时间，  对热点key进行分片 | [Editorial](./Redis/热key是什么？怎么解决？.md)              |
+| Redis BitMap 和 HyperLogLog 的原理是什么？分别适合哪些实际应用场景？ | **BitMap位图，本质是一个超长的数组 适合大规模布尔统计（如签到、活跃统计），节省空间，支持位运算。**  **HyperLogLog基于概率算法的数据结构 适合大规模去重计数（如UV统计），空间极小但有一定误差。**  **二者都是 Redis 的“以空间换效率”的典型高阶数据结构，适用于高并发大数据量的统计场景。** | [Editorial](./Redis/RedisBitMap和HyperLogLog的原理是什么？分别适合哪些实际应用场景？.md) |
+| 热 key 是什么？怎么解决？                                    | Redis热key是指被频繁访问的key 。业务层、缓存架构、服务层、降级和容错 | [Editorial](./Redis/热key是什么？怎么解决？.md)              |
 | String 是使用什么存储的?为什么不用 c 语言中的字符串?         | Redis 的 String 字符串是用 `SDS` 数据结构存储的。  **len，记录了字符串长度**。  **alloc，分配给字符数组的空间长度**。  **flags，用来表示不同类型的 SDS**。  **buf[]，字符数组，用来保存实际数据**。  增加了三个元数据：len、alloc、flags，用来解决 C 语言字符串的缺陷。  O（1）复杂度获取字符串长度 ； 二进制安全 ； 不会发生缓冲区溢出 。 | [Editorial](./Redis/String是使用什么存储的为什么不用c语言中的字符串.md) |
 | AOF和RDB哪个更占空间                                         | **AOF（Append Only File）比 RDB（Redis DataBase snapshot）更占空间**。 | [Editorial](./Redis/AOF和RDB哪个更占空间.md)                 |
 | Redis有什么持久化策略？                                      | Redis持久化有RDB（快照）、AOF（日志）、混合模式。RDB恢复快适合备份，AOF安全性高适合重要数据，混合兼顾性能和安全。   **我明白了RDB只保留一份，而不像undolog，保留了很多的历史版本！！！** | [Editorial](./Redis/Redis有什么持久化策略？.md)              |
@@ -127,11 +132,12 @@
 | 为什么Lua脚本可以保证原子性                                  | Lua脚本可以保证原子性，因为Redis会将Lua脚本封装成一个单独的事务，而这个单独的事务会在Redis客户端运行时，由Redis服务器自行处理并完成整个事务，如果在这个进程中有其他客户端请求的时候，Redis将会把它暂存起来，等到 Lua 脚本处理完毕后，才会再把被暂存的请求恢复。 |                                                              |
 | 为什么Redis不支持回滚                                        | 总结一下，因为Redis的**设计就是简单、高效**等，所以引入事务的回滚机制会让系统更加的复杂，并且影响性能。从使用场景上来说，Redis一般都是被用作缓存的，不太需要很复杂的事务支持，当人们需要复杂的事务时会考虑持久化的关系型数据库。相比于关系型数据库，Redis是通过单线程执行的，在执行过程中，出现错误的概率比较低，并且这些问题一般来编译阶段都应该被发现，所以就不太需要引入回滚机制。  不支持回滚，是因为它本质上是一个高性能的内存数据库，采用**单线程**模型，追求极致的速度和简单性，并未实现复杂的事务隔离和持久化机制。虽然Redis**支持简单的事务（MULTI/EXEC）**和部分原子操作，但没有像传统关系型数据库那样的回滚（ROLLBACK）功能，因此一旦数据写入就无法撤销或自动恢复，只能通过额外的补偿逻辑手动修正。这是Redis在架构设计上为保证高并发和高性能所作出的权衡。 |                                                              |
 | Redis的事务和Lua之间有哪些区别？                             | 事务和Lua都是可以保证原子性操作的，但是，这里说的原子性我们提过很多次，指的是不可拆分，不可中断的原子性操作。所以，需要注意的是，不管是Redis的事务还是Lua，都没办法回滚，一旦执行过程中有命令失败了，都是不支持回滚的。  **但是，Redis的事务在执行过程中，如果有某一个命令失败了，是不影响后续命令的执行的，而Lua脚本中，如果执行过程中某个命令执行失败了，是会影响后续命令执行的。** |                                                              |
+| redis做分布式锁与zookeeper做分布式锁的区别                   | Redis和ZooKeeper都可以实现分布式锁，但原理和适用场景不同。Redis分布式锁基于`setnx`和`过期时间`，性能高，适合高并发场景，但在主从切换时可能存在锁丢失的风险；ZooKeeper则通过`临时顺序节点`和`watch机制`实现分布式锁，强一致性更好，适合对一致性要求高的场景，比如分布式协调，但性能略低，实现稍复杂。简单来说，Redis锁快但一致性略弱，ZooKeeper锁慢但更稳健。 |                                                              |
 
 ## 【Java基础】
 
 | Problems                                                     | Hints                                                        | Solution                                                     |
-| :----------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | 现在JDK的最新版本是什么？                                    | 半年一个版本：每年3月和9月发行；最近是2025年3月JDK24发布，预计下一个2025年9月JDK25发布； 最近的LTS（ Long Term Support ）版本是JDK 21 |                                                              |
 | JDK新版本中都有哪些新特性？                                  | JDK 8中推出了Lambda表达式、Stream、Optional、新的日期API等； JDK 9中推出了模块化 ；JDK 10中推出了本地变量类型推断； JDK 12中增加了switch表达式； JDK 13中增加了text block； JDK 14中增加了Records JDK 14中增加了instance模式匹配； JDK 15中增加了封闭类 JDK； 17中扩展了switch模式匹配； JDK 21中增加了虚拟线程；【目前Java还没有引入协程】 | [Editorial](./Java基础/JDK新版本中都有哪些新特性？.md)       |
 | 虚拟线程与协程对比                                           | 协程是一种比线程更轻量的并发模型。它支持**挂起**和**恢复**，让程序可以在任意位置中断并恢复执行。 | [Editorial](./Java基础/虚拟线程与协程对比.md)                |
@@ -142,11 +148,13 @@
 | 介绍一下类加载器                                             | 加载、验证、准备、解析、初始化                               | [Editorial](./Java基础/类加载器.md)                          |
 | 编译型语言和解释型语言的区别？                               | **编译型语言**：在程序执行**之前**，整个源代码会被编译成机器码或者字节码，生成可执行文件。执行时直接运行编译后的代码，速度快，但跨平台性较差。  **解释型语言**：在程序执行时，逐行解释执行源代码，不生成独立的可执行文件。通常由解释器动态解释并执行代码，跨平台性好，但执行速度相对较慢。   典型的编译型语言如C、C++，典型的解释型语言如Python、JavaScript。 Java是编译型语言，但是具有解释型语言的特点。（ 字节码的实际执行是通过 JVM 的解释器完成的 ） |                                                              |
 | 抽象类与接口的区别                                           | 当存在“is-a”关系，有共性代码需要复用时用抽象类。  当只需定义能力或规范，或需要多继承时用接口。 | [Editorial](./Java基础/抽象类与接口的区别.md)                |
+| 字节流与字符流                                               |                                                              | [Editorial](./Java基础/字节流与字符流.md)                    |
+| 枚举类                                                       |                                                              | [Editorial](./Java基础/枚举类.md)                            |
 | Java面试基础知识笔记1                                        |                                                              | [Editorial](./Java基础/Java面试基础知识笔记1.md)             |
 | Object类有哪些方法                                           | `equals`默认是比地址，不重写就算两个内容一样的对象也不想等，重写了`equals`那么也要重写`hashcode`也要重写，不然放HashMap这种集合查不出来，`toString`默认是输出类名加哈希，调试没法看，项目里面都会重写，打印关键信息，日志一目了然。还有`notify`和`wait`之类是线程通信用的，但必须写在`synchronized`块里面，还有`clone()`是浅拷贝，`finalize`用于资源释放（不推荐使用，Java9已经抛弃），还有`getClass`用于获取对象类信息，反射的时候会用。 |                                                              |
 | 介绍一下`finalize`                                           |                                                              | [Editorial](./Java基础/介绍一下finalize.md)                  |
 | lambda表达式为什么只能使用final局部变量                      | Java 的 Lambda 表达式只能使用 **final 或实际上未被修改（effectively final）的局部变量**，这是因为 Lambda 捕获的是**变量的值快照而不是变量本身**，只有这样才能保证被捕获变量在 Lambda 执行期间**不会发生变化**，**避免并发和数据不一致问题**，也符合 Java 编译器对**变量作用域和生命周期的管理要求**。 | [Editorial](./Java基础/lambda表达式为什么只能使用final局部变量.md) |
-| 反射与封装是否矛盾？如何解决反射破坏封装不安全的问题？       | 反射与封装存在一定矛盾，因为反射可以在运行时突破访问限制，操作对象的私有成员，从而破坏封装性。为解决这一安全隐患，Java通过权限控制、SecurityManager和合理使用反射API等方式进行约束，实际开发中应规范反射用法，避免滥用，确保封装不被随意破坏。 |                                                              |
+| 反射与封装是否矛盾？如何解决反射破坏封装不安全的问题？       | 反射与封装存在一定矛盾，因为反射可以在运行时突破访问限制，操作对象的私有成员，从而破坏封装性。为解决这一安全隐患，Java通过权限控制、SecurityManager和合理使用反射API等方式进行约束，实际开发中应规范反射用法(代码省查着重查看反射的代码)，新版本 Java（JDK 9及以上）通过模块系统，可以明确限制哪些包可以被反射访问，提高安全性。避免滥用，确保封装不被随意破坏。 | [Editorial](./Java基础/反射与封装是否矛盾？如何解决反射破坏封装不安全的问题.md) |
 | 字符串常量是什么时候进入到字符串常量池的？                   | 字符串常量是在编译期间进入字符串常量池的。当Java源码中的字符串字面量（如 `"abc"`）被编译时，编译器会将其加入到class文件的常量池，运行时类加载器加载类时，这些字符串字面量就会被放入方法区的字符串常量池。此外，通过 `String.intern()` 方法，也可以在运行期间将字符串对象显式加入常量池。 |                                                              |
 | String中intern的原理是什么？                                 | intern的作用是这样的：  如果字符串池中已经存在一个等于该字符串的对象，`intern()`方法会返回这个已存在的对象的引用；  如果字符串池中没有等于该字符串的对象，`intern()`方法会将该字符串**添加**到字符串池中，并返回对新添加的字符串对象的引用。 |                                                              |
 | String是如何实现不可变的？                                   | 1、String类被声明为final，这意味着它不能被继承。那么他里面的方法就是没办法被覆盖的。 2、用final修饰字符串内容的char[]（从JDK 1.9开始，char[]变成了byte[]），由于该数组被声明为final，一旦数组被初始化，就不能再指向其他数组。 3、String类没有提供用于修改字符串内容的公共方法。例如，没有提供用于追加、删除或修改字符的方法。如果需要对字符串进行修改，会创建一个新的String对象。 |                                                              |
@@ -168,6 +176,7 @@
 | ArrayList 扩容机制                                           | 初始为10，每次扩容为原来的1.5倍，LinkedList不扩容            | [Editorial](./Java基础/ArrayList扩容机制.md)                 |
 | HashMap与ConcurrentHashMap扩容注意事项                       | 建议构造时自定义容量                                         | [Editorial](./Java基础/HashMap与ConcurrentHashMap扩容注意事项.md) |
 | OS线程是什么？                                               | **操作系统线程**； 操作系统线程（内核线程）是由操作系统直接管理的，能真正实现多核并发； 用户线程是在用户程序层面管理的，比如由JVM或协程库调度，操作系统只看到进程而不直接管理线程，切换开销更小，但不能真正利用多核并发。 简单说，**内核线程更强大，用户线程更轻量。** | [Editorial](./Java基础/OS线程是什么.md)                      |
+| 线程池的创建方式                                             | 1、使用Executors工具类，`Executors.newFixedThreadPool(5)`、`Executors.newSingleThreadExecutor();`、`Executors.newScheduledThreadPool(3);`2、使用 `ThreadPoolExecutor` 构造函数自定义；3、用 Spring，可以用 `ThreadPoolTaskExecutor` 做线程池管理： | [Editorial](./Java基础/线程池的创建方式.md)                  |
 | 谈谈你对线程池的理解                                         | **7个参数**：corePoolSize（核心线程数量）、 **maximumPoolSize** （ 线程池中最多可容纳的线程数量 ）、 **keepAliveTime** （ 当线程池中线程的数量大于corePoolSize，并且某个线程的空闲时间超过了keepAliveTime，那么这个线程就会被销毁。 ）、 **unit** （ 就是keepAliveTime时间的单位。 ） 、**workQueue** （工作队列）、 **threadFactory **（线程工厂，一般自定义） 、**handler**（拒绝策略） | [Editorial](./Java基础/谈谈你对线程池的理解.md)              |
 | 线程池为什么要构建空任务的**非核心线程**                     | **线程池会暂时保留空闲的非核心线程，是为了应对突发任务，减少线程频繁创建和销毁的开销，提高系统响应性能。** | [Editorial](./Java基础/线程池为什么要构建空任务的非核心线程.md) |
 | 线程池的参数如何设置                                         | 核心线程数、最大线程数、等待队列、拒绝策略                   | [Editorial](./Java基础/线程池的参数如何设置.md)              |
@@ -200,7 +209,7 @@
 | Java中有哪些常用的锁，在什么场景下使用？                     | ` synchronized 、 ReentrantLock 、 ReentrantReadWriteLock 、 StampedLock 、 Semaphore、CountDownLatch、CyclicBarrier `     **Semaphore（信号量）** 是一种计数信号量，用来控制同时访问某个资源的线程数量。它可以用来实现限流，比如只允许最多N个线程同时访问某个临界区。常用于连接池、限流等场景。 **CountDownLatch**  允许一个或多个线程等待，直到其他线程完成一组操作。它内部有一个计数器，调用 `countDown()` 会使计数减一，直到为0时，等待的线程才能继续执行。常用于主线程等待多个子任务完成再继续。 **CyclicBarrier** 用于让一组线程到达一个屏障点时被阻塞，直到所有线程都到达后一起继续执行。它可以循环使用，适合多线程分阶段协作，比如多线程分段计算，然后统一汇总结果。【分治】 | [Editorial](./Java基础/Java中有哪些常用的锁，在什么场景下使用？.md) |
 | 什么是反射？有哪些使用场景？                                 | Java 反射机制是在**运行状态中**，对于**任意一个类**，都能够知道这个类中的**所有属性和方法**，对于任意一个**对象**，都能够调用它的任意一个**方法和属性**；这种动态获取的信息以及动态调用对象的方法的功能称为 Java 语言的反射机制。 常用于框架、工具库、JDBC、插件机制等场景。 | [Editorial](./Java基础/什么是反射，有哪些使用场景.md)        |
 | ThreadLocal的作用和使用场景？                                | `ThreadLocal` 是Java提供的**线程本地变量**，每个线程都拥有独立的变量副本。它最常用于为每个线程提供独立的存储空间，避免多线程间的数据竞争，常见于用户会话、数据库连接、事务管理等场景。  自定义ThreadLocal初始化：重写 initialValue 或用 withInitial | [Editorial](./Java基础/ThreadLocal作用和使用场景.md)         |
-| ThreadLocal、Thread、ThreadLocalMap之间的联系                | ThreadLocal就是**保险柜的**钥匙，Thread就是房间，ThreadLocalMap就是保险柜（每个Thread里面都有一个ThreadLocalMap）；                                                             **get()操作：**首先我们会根据**当前的线程**走到对应的房间，然后用ThreadLocal这个钥匙打开ThreadLocalMap保险柜取出我们想要的。                                                              **set()操作：**首先我们会根据**当前的线程**走到对应的房间，然后用ThreadLocal这个钥匙打开ThreadLocalMap保险柜，将我们需要存放的数据放进去。                                              **每个房间（线程）都有自己的保险柜（ThreadLocalMap），保险柜里可以用不同钥匙（ThreadLocal对象）开不同的格子，每个格子存的是本线程的数据。                         **  **钥匙（ThreadLocal）在不同房间能开出不同的数据，互不干扰。**                                                **保险柜的设计让每个线程可以存很多种类型的数据（用不同的钥匙），而且可以自动管理和清理失效的数据（用弱引用防止内存泄漏）。** |                                                              |
+| ThreadLocal、Thread、ThreadLocalMap之间的联系                | ThreadLocal就是**保险柜的**钥匙，Thread就是房间，ThreadLocalMap就是保险柜（每个Thread里面都有一个ThreadLocalMap）；                                                             **get()操作：**首先我们会根据**当前的线程**走到对应的房间，然后用ThreadLocal这个钥匙打开ThreadLocalMap保险柜取出我们想要的。                                                              **set()操作：**首先我们会根据**当前的线程**走到对应的房间，然后用ThreadLocal这个钥匙打开ThreadLocalMap保险柜，将我们需要存放的数据放进去。  **每个房间（线程）都有自己的保险柜（ThreadLocalMap），保险柜里可以用不同钥匙（ThreadLocal对象）开不同的格子，每个格子存的是本线程的数据。 **  **钥匙（ThreadLocal）在不同房间能开出不同的数据，互不干扰。**                                                **保险柜的设计让每个线程可以存很多种类型的数据（用不同的钥匙），而且可以自动管理和清理失效的数据（用弱引用防止内存泄漏）。** |                                                              |
 | ThreadLocal会造成内存泄漏吗？为什么？                        | 是的，可能会。ThreadLocalMap中的key为ThreadLocal的弱引用，value为强引用。**如果ThreadLocal实例被回收但线程还在运行，value对象不会被及时回收**，造成内存泄漏（尤其在线程池环境下）。但是当线程结束，还是会被回收，这里的value会变成不可达对象。 |                                                              |
 | ThreadLocal 为什么把key设计成弱引用，value设计成强引用；为什么key设为弱引用就不怕提前回收？如果把threadLocal设为静态变量还会有这个问题吗？ |                                                              | [Editorial](./Java基础/ThreadLocal追问.md)                   |
 | 调用 interrupt 是如何让线程抛出异常的?                       | 每个线程都有一个初始值为 `false` 的中断状态，`interrupt()` 会更新该状态。  若线程在 `sleep()`、`join()`、`wait()` 等可中断方法中，会抛出 `InterruptedException` 并解除阻塞；否则，仅设置中断状态，线程可轮询决定是否停止。 |                                                              |
@@ -392,7 +401,6 @@
 | Spring 中的 @Component、@Service、@Repository、@Controller 注解有什么区别？ | @Component 通用组件，@Service 业务服务，@Repository DAO 持久层（异常转换），@Controller Web 控制器（Spring MVC）。本质一样，主要是语义和层次区分。 | [Editorial](./Spring/Spring中的@Component、@Service、@Repository、@Controller注解有什么区别？.md) |
 | Spring 中的 Bean 作用域（Scope）有哪些？它们的应用场景是什么？ | Spring Bean 作用域：singleton（单例，默认），prototype（多例），request/session/application/websocket（Web 环境）。常用 singleton，原型适合有状态对象，Web 场景用 request、session。 | [Editorial](./Spring/Spring中的Bean作用域（Scope）有哪些？它们的应用场景是什么？.md) |
 | Spring 的 AOP（面向切面编程）是什么？有哪些常用的应用场景？  | Spring AOP：面向切面编程，横切关注点（如日志、事务、安全）自动织入方法执行，提升复用和解耦。常见注解 @Aspect、@Before、@After、@Around。 | [Editorial](./Spring/Spring的AOP（面向切面编程）是什么？有哪些常用的应用场景？.md) |
-| Spring Boot 自动配置的原理是什么？如何自定义自动配置？       | Spring Boot 自动配置原理：@EnableAutoConfiguration + spring.factories + 条件注解。自定义自动配置需实现配置类并注册到 spring.factories。 | [Editorial](./Spring/SpringBoot自动配置的原理是什么？如何自定义自动配置？.md) |
 | Spring Boot 和 Spring Cloud 有什么区别？各自的主要功能是什么？ | Spring Boot：简化开发，自动配置、内嵌服务器、Starter。Spring Cloud：微服务基础设施，服务注册发现、配置中心、网关、熔断等。Cloud 基于 Boot，用于云原生/微服务架构。 | [Editorial](./Spring/SpringBoot和SpringCloud有什么区别？各自的主要功能是什么？.md) |
 | Spring 中的条件注解（@Conditional）有什么作用？常见的条件注解有哪些？ | 条件注解：控制 Bean 是否装配（如 @ConditionalOnClass、@ConditionalOnMissingBean、@ConditionalOnProperty），常用于自动配置和环境切换，可自定义条件。 | [Editorial](./Spring/Spring中的条件注解（@Conditional）有什么作用？常见的条件注解有哪些？.md) |
 | Spring 中的事件机制（ApplicationEvent）是什么？有哪些常见应用场景？ | Spring 事件机制（ApplicationEvent）：应用内异步/同步解耦通信，事件发布者 publish，监听器监听处理，常用于业务解耦、扩展、异步任务等场景。 | [Editorial](./Spring/Spring中的事件机制（ApplicationEvent）是什么？有哪些常见应用场景？.md) |
@@ -422,28 +430,32 @@
 | SpringBoot和传统的双亲委派有什么不一样吗？                   | 在 Spring Boot 中，使用 Maven 或 Gradle 构建项目时，lib/ 目录中的第三方依赖是**以 JAR 形式打包进主 JAR 内部，默认会生成一个包含所有依赖项的 fat jar**。 传统的 Application ClassLoader **只能从 外部 classpath 加载类**，**无法直接加载 JAR 包内嵌的其他 JAR（fat jar）**。 因此 Spring Boot 需要自定义类加载器。 为了支持 Fat JAR 运行模式，Spring Boot 使用 `LaunchedURLClassLoader` 替代 `AppClassLoader`，打破双亲委派机制，核心做法是： ● 先加载 **BOOT-INF/classes** 目录下的应用类（优先于 JDK 类）。 ● 再加载 **BOOT-INF/lib/** 目录下的依赖 JAR（传统 AppClassLoader 无法加载嵌套 JAR）。 ● 最后才交给父类加载器（即 JDK 提供的 AppClassLoader）。 |                                                              |
 | 什么是fat jar？                                              | 在 Spring Boot 中，使用 Maven 或 Gradle 构建项目时，默认会生成一个包含所有依赖项的 fat jar。这种做法简化了应用的部署和运行，但也会导致 jar 文件过大，不利于网络传输和存储。 |                                                              |
 | 如何在Spring中做缓存预热                                     | Spring启动时做缓存预热，可以选择监听 `ApplicationReadyEvent`、实现 `Runner` 接口、实现 `InitializingBean` 或使用 `@PostConstruct`。实际选型可根据业务需要和预热时机灵活选用。 | [Editorial](./Spring/如何再Spring中做缓存预热.md)            |
-| springboot自动装配机制原理（2.x版本）                        | 核心靠一个注解`@EnableAutoConfiguration`它其实就是导入了一个类`AutoConfigurationImportSelector`这个类会通过`SpringFactoriesLoader`去扫描我们项目下面所有依赖包下的`META-INF/spring.factories`文件，里面列了一大堆配置类，像`DataSourceAutoConfiguration`、`WebMvcAutoConfiguration`之类的，springboot启动的时候，会把这些类**按需**加载进来，为什么说是按需，因为这些类通常配了各种条件注解`@ConditionalOnClass`（我们依赖里面没有这个类才加载）、`@ConditionalOnMissingBean`（我们没有配置，才帮我们配置）、`@ConditionalOnProperty`（配置文件开了这个开关，才加载）。 |                                                              |
-| SpringBoot的启动流程是怎么样的？                             |                                                              | [Editorial](./Spring/SpringBoot的启动流程是怎么样的.md)      |
+| Springboot自动装配机制原理（2.x版本）                        | 核心靠一个注解`@EnableAutoConfiguration`它其实就是导入了一个类`AutoConfigurationImportSelector`这个类会通过`SpringFactoriesLoader`这个类去扫描我们项目下面所有依赖包下的`META-INF/spring.factories`文件，里面列了一大堆配置类，像`DataSourceAutoConfiguration`、`WebMvcAutoConfiguration`之类的，springboot启动的时候，会把这些类**按需**加载进来，为什么说是按需，因为这些类通常配了各种条件注解`@ConditionalOnClass`（我们依赖里面没有这个类才加载）、`@ConditionalOnMissingBean`（我们没有配置，才帮我们配置）、`@ConditionalOnProperty`（配置文件开了这个开关，才加载）。 |                                                              |
+| SpringBoot的启动流程是怎么样的？                             | 启动流程包含上下的**自动装配**与**配置加载优先级**           | [Editorial](./Spring/SpringBoot的启动流程是怎么样的.md)      |
+| Springboot配置加载的顺序                                     | **“命令行 > 系统变量 > 环境变量 > profile配置 > 主配置 > jar外 > jar内 > 默认”** | [Editorial](./Spring/Springboot配置加载的顺序.md)            |
 
 ## 【Mybatis】
 
 | Problems                                   | Hints                                                        | Solution                                                     |
 | ------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| MyBatisPlus操作数据库详细学习手册          |                                                              | [Editorial](./Mybatis/MyBatisPlus操作数据库详细学习手册.md)  |
+| LambdaQueryWrapper与QueryWrapper的区别     |                                                              | [Editorial](./Mybatis/LambdaQueryWrapper与QueryWrapper的区别.md) |
 | 什么是ORM，有哪些常用框架？                | **Object Relational Mapping** ，简称ORM，翻译过来是**对象关系映射**。一般用于实现面向对象编程语言里的对象和数据库中的之间的转换。 | [Editorial](./Mybatis/什么是ORM，有哪些常用框架.md)          |
 | MyBatis与Hibernate有何不同                 |                                                              | [Editorial](./Mybatis/MyBatis与Hibernate有何不同.md)         |
 | Mybatis的优点有哪些                        |                                                              | [Editorial](./Mybatis/Mybatis的优点有哪些.md)                |
-| Mybatis是如何实现字段映射的                |                                                              | [Editorial](./Mybatis/Mybatis是如何实现字段映射的.md)        |
+| Mybatis是如何实现字段映射的                | MyBatis 通过映射配置（如 XML 的 <resultMap> 或注解 @Results）实现字段映射，将数据库表的列名与 Java 对象的属性一一对应，可以自动处理列名与属性名不同的情况，从而实现数据库结果与 Java 实体的灵活转换。 | [Editorial](./Mybatis/Mybatis是如何实现字段映射的.md)        |
 | Mybatis插件的运行原理                      | Mybatis插件的运行原理主要涉及3个关键接口：Interceptor、Invocation和Plugin。 | [Editorial](./Mybatis/Mybatis插件的运行原理.md)              |
-| Mybatis的工作原理                          | MyBatis 的工作原理可以概括为：通过**配置文件**加载和初始化配置信息，使用**动态代理技术**实现接口方法与 SQL 映射，底层执行时仍然使用 **JDBC** 与数据库交互，但对外提供了更加面向对象和易于使用的 **API**。其核心优势在于**解耦**了 SQL 和代码，实现了参数和结果集的**自动映射**，并**提供了缓存**等高级特性。 | [Editorial](./Mybatis/Mybatis的工作原理.md)                  |
+| Mybatis的工作原理                          | MyBatis 的工作原理可以概括为：通过**配置文件**加载和初始化配置信息，使用**动态代理技术**实现接口方法与 SQL 映射，底层执行时仍然使用 **JDBC** 与数据库交互，但对外提供了更加面向对象和易于使用的 **API**。其核心优势在于**解耦**了 SQL 和代码，实现了参数和结果集的**自动映射**，并**提供了缓存**等高级特性。                                                                                                                 分为**两大步**，**七小步**：**初始化阶段**（配置文件解释，创建configuration，构建sqlSessionFactory），**执行阶段**（获取sqlSession，获取mapper代理，执行SQL代码，结果集映射）   获取Mapper代理使用的是JDK动态代理，所以我们需要创建Mapper接口 | [Editorial](./Mybatis/Mybatis的工作原理.md)                  |
 | Mybatis的缓存机制                          |                                                              | [Editorial](./Mybatis/Mybatis的缓存机制.md)                  |
-| Mybatis用的什么连接池                      |                                                              | [Editorial](./Mybatis/Mybatis用的什么连接池.md)              |
+| Mybatis用的什么连接池                      | Pooled、UnPooled，但是我们一般不使用mybatis的连接池，使用druid，更多的是使用springboot自带的HikariCP连接池 | [Editorial](./Mybatis/Mybatis用的什么连接池.md)              |
+| 为什么选择HikariCP连接池                   | 开箱即用，配置简单，与springboot项目完美契合                 | [Editorial](./Mybatis/为什么选择HikariCP连接池.md)           |
 | Mybatis 是否支持延迟加载？实现原理是什么？ | MyBaits支持延迟加载，延迟加载允许在需要时按需加载关联对象，而不是在查询主对象时立即加载所有关联对象。这样做可以提高查询性能和减少不必要的数据库访问。 | [Editorial](./Mybatis/Mybatis是否支持延迟加载？实现原理是什么？.md) |
 | Mybatis可以实现动态SQL么                   | 可以，动态SQL是指根据不同的条件生成不同的SQL语句，可以避免在编写SQL语句时出现重复的代码，提高代码的复用性和灵活性。 | [Editorial](./Mybatis/Mybatis可以实现动态SQL么.md)           |
 | 使用MyBatis如何实现分页                    |                                                              | [Editorial](./Mybatis/使用MyBatis如何实现分页.md)            |
-| RowBounds分页的原理是什么？                | RowBounds分页本质是在内存中对查询结果集进行截取分页，只有配合分页插件才可能生成物理分页SQL，否则数据量大时容易出现性能和内存问题。 | [Editorial](./Mybatis/RowBounds分页的原理是什么.md)          |
-| PageHelper分页的原理是什么                 |                                                              | [Editorial](./Mybatis/PageHelper分页的原理是什么.md)         |
-| MyBatis-Plus有什么用                       |                                                              | [Editorial](./Mybatis/MyBatis-Plus有什么用.md)               |
-| MyBatis-Plus的分页原理是什么               |                                                              | [Editorial](./Mybatis/MyBatis-Plus的分页原理是什么.md)       |
+| RowBounds分页的原理是什么？                | 物理分页：RowBounds分页本质是在**内存中对查询结果集进行截取分页**，只有配合分页插件才可能生成物理分页SQL，否则数据量大时容易出现性能和内存问题。 | [Editorial](./Mybatis/RowBounds分页的原理是什么.md)          |
+| PageHelper分页的原理是什么                 | 不常用，一般都是上mybatisplus                                | [Editorial](./Mybatis/PageHelper分页的原理是什么.md)         |
+| MyBatis-Plus有什么用                       | 解耦业务代码与数据库的连接操作代码，让开发者可以只关注业务代码的编写；提供大量的CRUD封装操作、代码生成、结果映射、分页、条件构造，帮助开发人员编写sql代码； | [Editorial](./Mybatis/MyBatis-Plus有什么用.md)               |
+| MyBatis-Plus的分页原理是什么               | MyBatis-Plus 的分页本质还是 offset/limit。还是有深分页的问题，可以使用游标分页来优化深分页。 | [Editorial](./Mybatis/MyBatis-Plus的分页原理是什么.md)       |
 
 
 
@@ -452,18 +464,20 @@
 | Problems                                                     | Hints                                                        | Solution                                                     |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | Linux系统                                                    |                                                              | [Editorial](./Linux.md)                                      |
-| 进程与线程的区别?                                            | 本质区别：进程是操作系统资源分配的基本单位，而线程是任务调度和执行的基本单位 。  定义、资源占用、通信方式、稳定性、应用场景 | [Editorial](./操作系统/进程与线程的区别.md)                  |
+| 什么是文件句柄FileHandle                                     | 文件句柄（File Handle）是操作系统中用于访问文件的一种数据结构，通常是一个整数或指针。包括文件描述符（fd），文件状态标志，文件位置指针 | [Editorial](./操作系统/什么是文件句柄FileHandle.md)          |
+| 进程与线程的区别?                                            | 本质区别：进程是操作系统资源分配的基本单位，而线程是任务调度和执行的基本单位 。  定义、资源占用、通信方式、稳定性、应用场景                                                                                                   进程通信IPC（Inter-Process Communication） | [Editorial](./操作系统/进程与线程的区别.md)                  |
 | 介绍一下Java里面的Future/Promise                             | CompletableFuture                                            | [Editorial](./操作系统/介绍一下Java里面的Future.md)          |
 | 补充 - 协程                                                  | 协程是一种`用户态`的`轻量级线程`，其调度`完全由用户程序控制`，而不需要`内核`的参与。协程拥有自己的`寄存器上下文和栈`，但与其他协程`共享堆内存`。协程的切换开销非常小，因为只需要保存和恢复协程的上下文，而无需进行内核级的上下文切换。这使得协程在处理大量并发任务时具有非常高的效率。然而，协程需要程序员显式地进行调度和管理，相对于线程和进程来说，`其编程模型更为复杂`。 |                                                              |
-| 为什么进程崩溃不会对其他进程产生很大影响?                    | 进程隔离性、进程独立性。                                     | [Editorial](./操作系统/为什么进程崩溃不会对其他进程产生很大影响.md) |
+| 虚拟线程与协程的联系                                         |                                                              | [Editorial](./操作系统/虚拟线程与协程的联系.md)              |
+| 为什么进程崩溃不会对其他进程产生很大影响?                    | **进程隔离**（每个进程都有自己独立的内存空间），**内存保护机制**（内存管理单元MMU和虚拟内存技术，防止进程访问不属于自己的内存区域），**用户态与内核态的隔离**，**进程通信需要操作系统的参与。** | [Editorial](./操作系统/为什么进程崩溃不会对其他进程产生很大影响.md) |
 | 有哪些进程调度算法 ?                                         | 先来先服务 、短作业优先、最短剩余时间优先、时间片轮转、优先级调度、多级反馈队列 | [Editorial](./操作系统/有哪些进程调度算法.md)                |
 | 死锁发生条件是什么？                                         | 互斥条件 、 持有并等待条件 、 不可剥夺条件 、 环路等待条件   |                                                              |
 | 如何避免死锁？                                               | 避免死锁问题就只需要破环其中一个条件就可以，最常见的并且可行的就是**使用资源有序分配法，来破环环路等待条件**。 | [Editorial](./操作系统/如何避免死锁.md)                      |
 | 介绍一下操作系统内存管理                                     | 操作系统设计了虚拟内存，每个进程都有自己的独立的虚拟内存，我们所写的程序不会直接与物理内打交道。**内存管理单元（MMU）** |                                                              |
-| 介绍copy on write                                            | 写时复制，当多个进程或线程共享同一块数据时，**只有在有写操作时才真正复制数据**，否则大家共享同一份数据副本。 | [Editorial](./操作系统/介绍copyonwrite.md)                 |
+| 介绍copy on write                                            | 写时复制，当多个进程或线程共享同一块数据时，**只有在有写操作时才真正复制数据**，否则大家共享同一份数据副本。 | [Editorial](./操作系统/介绍copyonwrite.md)                   |
 | Linux操作系统中哪个命令可以**查看端口**被哪个应用占用？      | 可以使用`lsof`命令或`netstat`命令查看端口被哪个应用占用。` lsof -i :端口号` 或则 `netstat -tulnp | grep 端口号` |                                                              |
-| 如果服务应用部署在 Linux 上，**CPU 打满后**，想查看哪个进程导致的，用什么命令？ | 方式1：$top$  然后可以按 `P` 键来按 CPU 使用率排序，查看哪些进程占用了最多的 CPU 资源。  方式2：$htop$。 方式3：$ps$。 | [Editorial](./操作系统/如果服务应用部署在Linux上，CPU打满后，想查看哪个进程导致的，用什么命令.md) |
-| 如果想查看是**进程的哪个线程**，用什么命令？                 | 1、`top -H -p <进程PID>`;  2、`ps -mp <进程PID> -o THREAD,tid,time`; 3、 `ps -L -p <进程PID>` | [Editorial](./操作系统/如果想查看是进程的哪个线程，用什么命令.md) |
+| 如果服务应用部署在 Linux 上，**CPU 打满后**，想查看哪个进程导致的，用什么命令？ | 1. 先用 top 或 htop 找到 CPU 占用高的进程对应的 PID。                                                                             2. 可以用 ps aux \| grep <PID> 再进一步查看进程详情。                                                                               3. 若需查看是哪个线程占用 CPU，可结合 top -H -p <PID> 查看该进程内各线程的 CPU 使用情况。 | [Editorial](./操作系统/如果服务应用部署在Linux上，CPU打满后，想查看哪个进程导致的，用什么命令.md) |
+| 如果想查看是**进程的哪个线程**，用什么命令？                 | `top -H -p <进程PID>`; [top：系统资源实时监控工具 -H：按线程显示 -p <PID>：只查看（指定PID）进程及其线程] | [Editorial](./操作系统/如果想查看是进程的哪个线程，用什么命令.md) |
 | **想查看代码中哪个位置导致的 CPU 高，该怎么做？Java 应用怎么排查 CPU 或内存占用率过高的问题？** | - Linux 层定位进程和线程，转换线程ID为16进制。 - 用 jstack、arthas 等工具定位具体代码位置。 - 内存问题用 jmap、MAT、VisualVM。 - 线上强烈推荐使用 Arthas，简单高效。 | [Editorial](./操作系统/想查看代码中哪个位置导致的CPU高，该怎么做？Java应用怎么排查CPU或内存占用率过高的问题.md) |
 | linux如何查看线程和进程状态                                  | Linux 查看进程和线程状态常用命令有：ps、top、pstree、以及通过 /proc 目录查看详细信息。 | [Editorial](./操作系统/linux如何查看线程和进程状态.md)       |
 | **讲一下银行家算法**                                         | 银行家算法通过安全性检查，动态决定资源分配，避免死锁，但实现较复杂，适合对资源需求可预知的系统。 | [Editorial](./操作系统/讲一下银行家算法.md)                  |
@@ -485,49 +499,55 @@
 
 ## 【计算机网络】
 
-| Problems                               | Hints                                                        | Solution                                                     |
-| -------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| OSI七层模型                            |                                                              | [Editorial](./计算机网络/OSI七层模型.md)                     |
-| 计算机网络的五层架构                   | 物理－数据链路－网络－传输－应用                             | [Editorial](./计算机网络/计算机网络的五层架构.md)            |
-| 报文和字节流分别是什么？               | 报文：短信这种，一条一条的，有边界。  字节流：打电话，不知道什么时候结束，没有边界，一直发送。 | [Editorial](./计算机网络/报文和字节流分别是什么.md)          |
-| HTTP 与 HTTPS 协议的区别？             | 安全、端口、加密方式、证书、完整性、身份认证、SEO、适用场景  | [Editorial](./计算机网络/http与https的区别.md)               |
-| HTTP原理是什么？                       | HTTP（超文本传输协议）是应用层协议 、 HTTP 是基于 TCP 协议来实现的 、 一个完整的 HTTP 请求从请求行开始 、 HTTP 是一种无状态协议，这意味着每个请求都是独立的 、 HTTP 可以传输多种类型的数据，包括文本、图像、音频、视频等 | [Editorial](./计算机网络/HTTP原理是什么.md)                  |
-| 为什么需要HTTP/2，他解决了什么问题？   | HTTP/2主要是解决HTTP中存在的效率问题。它主要引入了二进制分帧、多路复用、header压缩、以及服务端推送的新特性，大大的提升了效率。  而且，在HTTP/2中还解决了一个重要的问题，那就是HTTP的队头阻塞问题。 |                                                              |
-| HTTP/2存在什么问题，为什么需要HTTP/3？ |                                                              | [Editorial](./计算机网络/HTTP2存在什么问题，为什么需要HTTP3.md) |
-| 什么是HTTP/3的QUIC协议                 | 一种完全基于UDP的协议                                        | [Editorial](./计算机网络/什么是HTTP3的QUIC协议.md)           |
-| TCP和UDP区别是什么？                   | 连接、服务对象、可靠性、 拥塞控制、流量控制 、首部开销、传输方式 | [Editorial](./计算机网络/TCP和UDP区别是什么？.md)            |
-| TCP三次握手与四次挥手                  | 目的：建立可靠的连接，保证双方收发能力正常。                 | [Editorial](./计算机网络/TCP三次握手与四次挥手.md)           |
-| TCP协议里的TIME_WAIT状态是什么？       | TIME_WAIT 状态的存在是为了确保网络连接的可靠关闭。只有主动发起关闭连接的一方（即主动关闭方）才会有 TIME_WAIT 状态。 | [Editorial](./计算机网络/TCP协议里的TIME_WAIT状态是什么？.md) |
-| UDP怎么保证可靠性？                    | 连接迁移 、 重传机制 、 前向纠错 、 拥塞控制                 | [Editorial](./计算机网络/UDP怎么保证可靠性？.md)             |
-| 网络有什么常用的通信协议？             | **HTTP**：用于在**Web浏览器**和**Web服务器**之间传输超文本的协议，是目前最常见的**应用层**协议。  **HTTPS**：在HTTP的基础上添加了**SSL/TLS**加密层，用于在不安全的网络上安全地传输数据。  **TCP**：面向连接的**传输层**协议，提供可靠的数据传输服务，保证数据的顺序和完整性。  **UDP**：无连接的**传输层**协议，提供了数据包传输的简单服务，适用于实时性要求高的应用。  **IP**：**网络层**协议，用于在网络中传输数据包，定义了数据包的格式和传输规则。 |                                                              |
-| 前后端交互用的是什么协议？             | 用HTTP和HTTPS协议比较多。前端通过HTTP协议向服务器端发送请求，服务器端接收请求并返回相应的数据，实现了前后端的交互。HTTP协议简单、灵活，适用于各种类型的应用场景。 |                                                              |
-| HTTP 常见状态码有哪些？                | 1XX：提示信息；2XX：成功；3XX：重定向；4XX：报文有误；5XX：服务器内部错误 | [Editorial](./计算机网络/HTTP常见状态码有哪些？.md)          |
-| Dns基于什么协议实现？udp 还是 tcp？    | DNS(域名系统) 基于UDP协议实现，DNS使用UDP协议进行域名解析和数据传输。 |                                                              |
-| 为什么是udp？                          | **低延迟** 、**简单快速**、**轻量级**                        |                                                              |
-| http的特点是什么？                     | 基于文本、可扩展性、灵活性、无状态                           | [Editorial](./计算机网络/http的特点是什么.md)                |
-| http无状态体现在哪？                   | HTTP的无状态体现在每个请求之间**相互独立**，服务器不会保留之前请求的状态信息。每次客户端向服务器发送请求时，服务器都会独立处理该请求，不会记住之前的请求信息或状态。 | [Editorial](./计算机网络/http无状态体现在哪.md)              |
-| Cookie和session的区别是什么？          | 存储位置、安全性、存储容量                                   | [Editorial](./计算机网络/Cookie和session的区别是什么？.md)   |
-| 介绍一下JWT                            | JWT（Json Web Token）是一个字符串，由三部分组成：Header、Payload、Signature。 JWT的内容主要在**Payload**部分，可以直接被解析（**不需要密钥就能解析，但不能验证真实性**）。 | [Editorial](./计算机网络/介绍一下JWT.md)                     |
-| 服务器处理并发请求有哪几种方式？       | 单线程web服务器方式 、 多进程/多线程web服务器 、 I/O多路复用web服务器 、 多路复用多线程web服务器 | [Editorial](./计算机网络/服务器处理并发请求有哪几种方式？.md) |
-| 为什么要有I/O多路复用机制              | 在高并发服务器（如Web服务器）编程中，通常需要同时处理成百上千个网络连接。如果每个连接都用一个线程或进程，系统资源消耗很大，效率低下。因此，需要一种机制能在**单个线程**内，高效监控和管理多个网络连接（socket）的读写状态，这就是**I/O多路复用**。 | [Editorial](./计算机网络/为什么要有IO多路复用机制.md)        |
-| 说一下select，poll，epoll的区别？      | `select`、`poll` 和 `epoll` 都是 **I/O 多路复用** 机制，用于 **同时监听多个文件描述符（FD）**，当某个 FD **可读/可写** 时通知应用程序。   `select`、`poll` 适用于小规模连接，**O(N) 复杂度**，随 FD 数量增加性能下降。  **现代 Linux 服务器推荐 epoll**，性能最佳！🚀 | [Editorial](./计算机网络/说一下select_poll_epoll的区别.md)   |
-| https是如何防范中间人的攻击？          | 加密、身份校验机制                                           | [Editorial](./计算机网络/https是如何防范中间人的攻击.md)     |
-| 描述一下打开百度首页后发生的网络过程   | 解析`URL`、对域名进行`dns`解析、发起`NNS`查询、 本地`DNS`服务器查询 、 根DNS服务器查询 、 顶级域名服务器查询 、 权威域名服务器查询 、 返回结果 、 建立`TCP`连接 、 三次握手 、 发送`HTTP`请求 、 服务器处理请求 、 发送`HTTP`响应 、 接收响应和渲染页面 、 关闭`TCP`连接 | [Editorial](./计算机网络/描述一下打开百度首页后发生的网络过程.md) |
-| 什么是ddos攻击？怎么防范？             | 分布式拒绝服务（DDoS）攻击是通过大规模互联网流量淹没目标服务器或其周边基础设施，以破坏目标服务器、服务或网络正常流量的恶意行为。 | [Editorial](./计算机网络/什么是ddos攻击？怎么防范？.md)      |
-| 如何查看网络连接情况？                 | 常用 netstat、ss、lsof、ifconfig、ip、ping 等命令，可快速查看 Linux 网络连接和状态。 | [Editorial](./计算机网络/如何查看网络连接情况.md)            |
-| ARP 与 RARP 的区别是什么               | ARP（Address Resolution Protocol）和RARP（Reverse Address Resolution Protocol）都是网络通信协议，用于将IP地址和MAC地址进行转换。 |                                                              |
-| 路由器与交换机的区别是什么             | 交换机主要工作在数据链路层（第二层），路由器工作在网络层（第三层）  交换机转发所依据的对象是物理地址，也就是MAC地址，而路由器转发所依据的对象时网络地址，也就是IP地址。  交换机主要用于组建局域网，而路由主要功能是将由交换机组好的局域网相互连接起来，或者接入互联网。 【光猫见Editorial】 | [Editorial](./计算机网络/光猫.md)                            |
-| ping的原理是什么                       | ping 的原理是通过发送 ICMP（Internet Control Message Protocol）回显请求（Echo Request）报文到目标主机，并等待对方回复 ICMP 回显应答（Echo Reply）报文，从而测试网络连通性及响应时间。它可以简单有效地判断本机与目标主机之间的网络是否正常。 |                                                              |
-| ping为什么不需要端口                   | **ping是一个应用层直接使用网络层协议的例子，不涉及到传输层，所以不需要指定端口号。** | [Editorial](./计算机网络/ping为什么不需要端口号.md)          |
-| 什么是IPV6？和IPV4有什么区别？         | IPv6（Internet Protocol version 6） 是一种用于网络地址分配和数据包路由的新一代互联网协议，是 IPv4 的升级版。 它由 IETF（互联网工程任务组）设计，主要目的是解决 IPv4 地址枯竭问题，并提升网络性能和安全性。 【IPV4只支持约42亿个ip，也就是2^32】 |                                                              |
-| 什么是正向代理和反向代理？             | **正向代理**是客户端通过代理服务器访问目标服务器，代理服务器代表用户发起请求，主要用于突破访问限制或保护用户隐私；**反向代理**则是代理服务器位于目标服务器前端，用户的请求先到代理服务器，由其转发给后端服务器，主要用于负载均衡、安全防护和隐藏真实服务器信息。 |                                                              |
-| 什么是跨域访问问题，如何解决           | 跨域访问问题是指浏览器出于安全策略（**同源策略**），阻止网页向不同域名的服务器请求资源，导致前端无法直接访问其他域的接口。常见解决办法包括服务器端**设置 CORS（跨域资源共享）响应头**、使用 **JSONP**、**反向代理**等方式，从而允许合法的跨域数据交换。 | [Editorial](./计算机网络/跨域问题.md)                        |
-| 什么是CDN，为什么他可以做缓存？        | CDN（内容分发网络）是一种分布式服务器系统，通过将内容缓存到全球各地的节点，使用户可以从距离最近的服务器获取数据，从而加速访问速度并减轻源站压力。CDN 能做缓存，是因为它会将静态资源如图片、视频、网页等临时存储在边缘节点，用户请求时直接返回缓存内容，无需每次都访问源站，大幅提升性能和可用性。 |                                                              |
+| Problems                                                | Hints                                                        | Solution                                                     |
+| ------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| OSI七层模型                                             | 端口号是传输层的东西，如果一个请求只走到网络层，就不需要端口号 | [Editorial](./计算机网络/OSI七层模型.md)                     |
+| 计算机网络的五层架构                                    | 物理－数据链路－网络－传输－应用                             | [Editorial](./计算机网络/计算机网络的五层架构.md)            |
+| 报文和字节流分别是什么？                                | 报文：短信这种，一条一条的，有边界。  字节流：打电话，不知道什么时候结束，没有边界，一直发送。 | [Editorial](./计算机网络/报文和字节流分别是什么.md)          |
+| http、https、tcp、udp报文结构详讲                       | 像项目里面的自定义tcp协议，是不会走https的，直接通过tcp这种传输层传输，绕过了应用层。netty框架非常适合这样的传输（可以见项目文件的**自定义TCP**） | [Editorial](./计算机网络/http、https、tcp、udp报文结构详讲.md) |
+| HTTP 与 HTTPS 协议的区别？                              | 安全、端口、加密方式、证书、完整性、身份认证、SEO、适用场景  | [Editorial](./计算机网络/http与https的区别.md)               |
+| HTTP 协议版本比较：HTTP/1.0、HTTP/1.1、HTTP/2 和 HTTP/3 |                                                              | [Editorial](./计算机网络/HTTP协议版本比较.md)                |
+| FTP详讲                                                 | File Transfer Protocol，文件传输协议                         | [Editorial](./计算机网络/FTP详讲.md)                         |
+| 套接字就是socket吗？是干嘛的                            | 是的，"套接字"就是Socket，它是网络通信的基础组件。 Socket是计算机网络中实现通信的一种软件抽象，它提供了一个**标准接口**，使应用程序能够通过网络发送和接收数据。可以把Socket理解为网络通信的"插座"，它是应用程序与网络协议栈之间的接口。 | [Editorial](./计算机网络/套接字就是socket吗？是干嘛的.md)    |
+| HTTP原理是什么？                                        | HTTP（超文本传输协议）是应用层协议 、 HTTP 是基于 TCP 协议来实现的 、 一个完整的 HTTP 请求从请求行开始 、 HTTP 是一种无状态协议，这意味着每个请求都是独立的 、 HTTP 可以传输多种类型的数据，包括文本、图像、音频、视频等 | [Editorial](./计算机网络/HTTP原理是什么.md)                  |
+| 为什么需要HTTP/2，他解决了什么问题？                    | HTTP/2主要是解决HTTP中存在的效率问题。它主要引入了**二进制分帧、多路复用、header压缩、以及服务端推送的新特性**，大大的提升了效率。  而且，在HTTP/2中还解决了一个重要的问题，**那就是HTTP的队头阻塞问题。**（目前主要是https在使用） |                                                              |
+| HTTP/2存在什么问题，为什么需要HTTP/3？                  |                                                              | [Editorial](./计算机网络/HTTP2存在什么问题，为什么需要HTTP3.md) |
+| 什么是HTTP/3的QUIC协议                                  | 一种完全基于UDP的协议                                        | [Editorial](./计算机网络/什么是HTTP3的QUIC协议.md)           |
+| TCP和UDP区别是什么？                                    | 连接、服务对象、可靠性、 拥塞控制、流量控制 、首部开销、传输方式 | [Editorial](./计算机网络/TCP和UDP区别是什么？.md)            |
+| TCP三次握手与四次挥手                                   | 目的：建立可靠的连接，保证双方收发能力正常。                 | [Editorial](./计算机网络/TCP三次握手与四次挥手.md)           |
+| TCP协议里的TIME_WAIT状态是什么？                        | TIME_WAIT 状态的存在是为了确保网络连接的可靠关闭。只有主动发起关闭连接的一方（即主动关闭方）才会有 TIME_WAIT 状态。 | [Editorial](./计算机网络/TCP协议里的TIME_WAIT状态是什么？.md) |
+| UDP怎么保证可靠性？                                     | 连接迁移 、 重传机制 、 前向纠错 、 拥塞控制                 | [Editorial](./计算机网络/UDP怎么保证可靠性？.md)             |
+| 网络有什么常用的通信协议？                              | **HTTP**：用于在**Web浏览器**和**Web服务器**之间传输超文本的协议，是目前最常见的**应用层**协议。  **HTTPS**：在HTTP的基础上添加了**SSL/TLS**加密层，用于在不安全的网络上安全地传输数据。  **TCP**：面向连接的**传输层**协议，提供可靠的数据传输服务，保证数据的顺序和完整性。  **UDP**：无连接的**传输层**协议，提供了数据包传输的简单服务，适用于实时性要求高的应用。  **IP**：**网络层**协议，用于在网络中传输数据包，定义了数据包的格式和传输规则。 |                                                              |
+| 前后端交互用的是什么协议？                              | 用HTTP和HTTPS协议比较多。前端通过HTTP协议向服务器端发送请求，服务器端接收请求并返回相应的数据，实现了前后端的交互。HTTP协议简单、灵活，适用于各种类型的应用场景。 |                                                              |
+| HTTP 常见状态码有哪些？                                 | 1XX：提示信息；2XX：成功；3XX：重定向；4XX：报文有误；5XX：服务器内部错误 | [Editorial](./计算机网络/HTTP常见状态码有哪些？.md)          |
+| Dns基于什么协议实现？udp 还是 tcp？                     | DNS(域名系统) 基于UDP协议实现，DNS使用UDP协议进行域名解析和数据传输。 |                                                              |
+| 为什么是udp？                                           | **低延迟** 、**简单快速**、**轻量级**                        |                                                              |
+| http的特点是什么？                                      | 基于文本、可扩展性、灵活性、无状态                           | [Editorial](./计算机网络/http的特点是什么.md)                |
+| http无状态体现在哪？                                    | HTTP的无状态体现在每个请求之间**相互独立**，服务器不会保留之前请求的状态信息。每次客户端向服务器发送请求时，服务器都会独立处理该请求，不会记住之前的请求信息或状态。 | [Editorial](./计算机网络/http无状态体现在哪.md)              |
+| Cookie和session的区别是什么？                           | 存储位置、安全性、存储容量                                   | [Editorial](./计算机网络/Cookie和session的区别是什么？.md)   |
+| 介绍一下JWT                                             | JWT（Json Web Token）是一个字符串，由三部分组成：Header、Payload、Signature。 JWT的内容主要在**Payload**部分，可以直接被解析（**不需要密钥就能解析，但不能验证真实性**）。 | [Editorial](./计算机网络/介绍一下JWT.md)                     |
+| 服务器处理并发请求有哪几种方式？                        | 单线程web服务器方式 、 多进程/多线程web服务器 、 I/O多路复用web服务器 、 多路复用多线程web服务器 | [Editorial](./计算机网络/服务器处理并发请求有哪几种方式？.md) |
+| 为什么要有I/O多路复用机制                               | 在高并发服务器（如Web服务器）编程中，通常需要同时处理成百上千个网络连接。如果每个连接都用一个线程或进程，系统资源消耗很大，效率低下。因此，需要一种机制能在**单个线程**内，高效监控和管理多个网络连接（socket）的读写状态，这就是**I/O多路复用**。 | [Editorial](./计算机网络/为什么要有IO多路复用机制.md)        |
+| 说一下select，poll，epoll的区别？                       | `select`、`poll` 和 `epoll` 都是 **I/O 多路复用** 机制，用于 **同时监听多个文件描述符（FD）**，当某个 FD **可读/可写** 时通知应用程序。   `select`、`poll` 适用于小规模连接，**O(N) 复杂度**，随 FD 数量增加性能下降。  **现代 Linux 服务器推荐 epoll**，性能最佳！🚀 | [Editorial](./计算机网络/说一下select_poll_epoll的区别.md)   |
+| https是如何防范中间人的攻击？                           | 加密、身份校验机制                                           | [Editorial](./计算机网络/https是如何防范中间人的攻击.md)     |
+| 描述一下打开百度首页后发生的网络过程                    |                                                              | [Editorial](./计算机网络/描述一下打开百度首页后发生的网络过程.md) |
+| 什么是ddos攻击？怎么防范？                              | 分布式拒绝服务（DDoS）攻击是通过大规模互联网流量淹没目标服务器或其周边基础设施，以破坏目标服务器、服务或网络正常流量的恶意行为。 | [Editorial](./计算机网络/什么是ddos攻击？怎么防范？.md)      |
+| 如何查看网络连接情况？                                  | 常用 netstat、lsof、ifconfig、ip、ping 等命令，可快速查看 Linux 网络连接和状态。 | [Editorial](./计算机网络/如何查看网络连接情况.md)            |
+| ARP 与 RARP 的区别是什么                                | ARP（Address Resolution Protocol）和RARP（Reverse Address Resolution Protocol）都是网络通信协议，用于将IP地址和MAC地址进行转换。 |                                                              |
+| 路由器与交换机的区别是什么                              | 交换机主要工作在数据链路层（第二层），路由器工作在网络层（第三层）  交换机转发所依据的对象是物理地址，也就是MAC地址，而路由器转发所依据的对象时网络地址，也就是IP地址。  交换机主要用于组建局域网，而路由主要功能是将由交换机组好的局域网相互连接起来，或者接入互联网。 【光猫见Editorial】 | [Editorial](./计算机网络/光猫.md)                            |
+| ping的原理是什么                                        | ping 的原理是通过发送 ICMP（Internet Control Message Protocol）回显请求（Echo Request）报文到目标主机，并等待对方回复 ICMP 回显应答（Echo Reply）报文，从而测试网络连通性及响应时间。它可以简单有效地判断本机与目标主机之间的网络是否正常。 |                                                              |
+| ping为什么不需要端口                                    | **ping是一个应用层直接使用网络层协议的例子，不涉及到传输层，所以不需要指定端口号。** | [Editorial](./计算机网络/ping为什么不需要端口号.md)          |
+| 什么是IPV6？和IPV4有什么区别？                          | IPv6（Internet Protocol version 6） 是一种用于网络地址分配和数据包路由的新一代互联网协议，是 IPv4 的升级版。 它由 IETF（互联网工程任务组）设计，主要目的是解决 IPv4 地址枯竭问题，并提升网络性能和安全性。 【IPV4只支持约42亿个ip，也就是2^32】 |                                                              |
+| 什么是正向代理和反向代理？                              | **正向代理**是客户端通过代理服务器访问目标服务器，代理服务器代表用户发起请求，主要用于突破访问限制或保护用户隐私；**反向代理**则是代理服务器位于目标服务器前端，用户的请求先到代理服务器，由其转发给后端服务器，主要用于负载均衡、安全防护和隐藏真实服务器信息。 |                                                              |
+| 什么是跨域访问问题，如何解决                            | 跨域访问问题是指浏览器出于安全策略（**同源策略**），阻止网页向不同域名的服务器请求资源，导致前端无法直接访问其他域的接口。常见解决办法包括服务器端**设置 CORS（跨域资源共享）响应头**、使用 **JSONP**、**反向代理**等方式，从而允许合法的跨域数据交换。 | [Editorial](./计算机网络/跨域问题.md)                        |
+| 什么是CDN，为什么他可以做缓存？                         | CDN（内容分发网络）是一种分布式服务器系统，通过将内容缓存到全球各地的节点，使用户可以从距离最近的服务器获取数据，从而加速访问速度并减轻源站压力。CDN 能做缓存，是因为它会将静态资源如图片、视频、网页等临时存储在边缘节点，用户请求时直接返回缓存内容，无需每次都访问源站，大幅提升性能和可用性。 |                                                              |
 
 ## 【场景题】
 
 | Problems                                                     | Hints                                                        | Solution                                                     |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 针对 MySQL的千万级订单表（大表）新增字段                     | 分两个版本进行讨论，首先是5.6：由于mysql5.6的在线DDL能力较弱，很多场景会触发锁表甚至重建全表，需要谨慎处理；1、mysql5.6的`alert table`会锁表，选择业务顶峰期进行操作；2、减少锁表的时间：新增字段尽量允许为空，且默认值为空，并且不要用`after 某字段`（不要指定字段插入到具体某个位置，默认插入末尾）；3、备份和预演；4、分区表优化；5、可以考虑使用在线工具辅助，实现"无锁"在线变更字段；6、做好监控与回滚。                                                                                                                                  然后是8.x的版本，所有的注意事项与上面的一样，只是8.x的版本支持`algorithm = inplace`或`algorithm = instant`在线变更（秒级完成变更） |                                                              |
+| 每天凌晨2点同步1000多个商家数据，单个任务5-10秒，失败重试3次，线程池如何设计？ |                                                              | [Editorial](./场景题/每天凌晨2点同步1000多个商家数据，单个任务5-10秒，失败重试3次，线程池如何设计？.md) |
 | 限流算法有哪些？                                             | 计数器、滑动窗口、令牌桶、漏桶、滑动窗口日志                 | [Editorial](./场景题/限流算法有哪些.md)                      |
 | redis，nginx，netty 是依赖什么做的这么高性能？               | ✅**Redis**：单线程但**超快**，因 `epoll + 高效数据结构`。  ✅ **Nginx**：`epoll + sendfile` 提供**超高吞吐量**，适合 Web 服务器。  ✅ **Netty**：`epoll + ByteBuf` 提供**高并发网络通信**，用于 RPC、微服务。 | [Editorial](./场景题/redis_nginx_netty是依赖什么做的这么高性能.md) |
 | 如何实现高并发下的唯一订单号生成？                           | **分布式唯一ID生成方案**：数据库自增（易冲突）、UUID（不可读）、Redis自增（高并发）、雪花算法（趋势递增/高性能）  **高并发推荐**：Redis自增或雪花算法，注意时钟回拨和高可用  **记忆口诀**：自增易阻塞，UUID难查找，Redis快雪花妙，唯一有序最重要 | [Editorial](./场景题/如何实现高并发下的唯一订单号生成？.md)  |
@@ -668,6 +688,7 @@
 | 线上问题排查伪代码总览                                       | 包含Arthas排查和JVM工具排查                                  | [Editorial](./线上问题排查/线上问题排查伪代码总览.md)        |
 | JVM中有哪些常见的性能监控与排查工具？各自适用哪些场景？ 【重要】 | JDK自带工具：jps、jstack、jmap、jstat、jinfo、VisualVM、JConsole  生产/复杂场景：JMC、MAT、Arthas、YourKit/JProfiler  典型用途：查线程死锁（jstack）、查内存泄漏（jmap+MAT）、实时GC监控（jstat/VisualVM）、线上低开销采集（JMC）  复习提示：**“jps找进程、jstack查线程、jmap导内存、VisualVM/JMC图形化分析”** | [Editorial](./线上问题排查/JVM中有哪些常见的性能监控与排查工具？各自适用哪些场景？.md) |
 | 线程Dump（jstack）详解                                       | 线程Dump，又叫**线程快照**，是指将JVM进程中所有线程的当前运行状态、调用栈信息一次性导出。通过分析线程Dump，可以排查死锁、线程阻塞、线程数暴涨、CPU占用高等问题，是定位Java线上问题的利器。 | [Editorial](./线上问题排查/线程Dump（jstack）详解.md)        |
+| jmap导出线程dump与jstack导出线程dump一样吗                   | 不完全一样                                                   | [Editorial](./线上问题排查/jmap导出线程dump与jstack导出线程dump一样吗.md) |
 | 什么是JVM内存溢出（OOM）和内存泄漏？如何定位和解决？         | OOM：JVM分配内存失败，常见于堆、元空间、栈  内存泄漏：无用对象仍被引用，无法回收  排查思路：分析日志、heap dump、监控曲线、代码审查  解决方法：优化代码、合理配置参数、用工具分析  复习提示：**“OOM看异常类型，heap dump查根因，注意静态变量和大对象引用”** | [Editorial](./线上问题排查/什么是JVM内存溢出（OOM）和内存泄漏？如何定位和解决？.md) |
 | 生产环境下如何监控JVM健康状态？常见监控指标有哪些？          | 关键监控：堆内存、GC（次数/耗时/停顿）、线程、类加载、Metaspace、CPU   - 工具链：JMX（JConsole/JMC）、Prometheus+Grafana、APM、ELK   - 告警：堆使用率＞80%、GC 停顿过长、线程饱和、业务指标异常   - 复习口诀：**“堆／GC／线程／Metaspace／CPU＋业务埋点，视图+告警+演练”** | [Editorial](./线上问题排查/生产环境下如何监控JVM健康状态？常见监控指标有哪些？.md) |
 | JVM 中线程栈（Stack）溢出（StackOverflowError、OutOfMemoryError: unable to create new native thread）是怎么发生的？如何排查与优化？ | **线程栈溢出**：单线程栈满 = StackOverflowError；系统线程数满 = unable to create new native thread  **排查方法**：递归/线程池/线程数量  **优化手段**：递归转迭代、合理分配线程池、控制线程数  **口诀**：`“单栈爆栈是递归，线程数爆是池管，jstack定位，参数调优”` | [Editorial](./线上问题排查/JVM中线程栈（Stack）溢出（StackOverflowError、OutOfMemoryErrorunabletocreatenewnativethread）是怎么发生的？如何排查与优化？.md) |
@@ -688,7 +709,7 @@
 
 | Problems                                                     | Hints                                                        | Solution                                                     |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 中间件基础知识总结                                           | - 中间件是“系统粘合剂”，帮助各模块解耦协作、提升扩展性和可维护性。 - 常见类型：Web服务器、消息队列、缓存、数据库中间件、服务注册与发现。 - 作用关键词：解耦、复用、扩展、高可用、分布式协作。 | [Editorial](./中间件/中间件基础知识总结.md)                  |
+| 中间件基础知识总结                                           | - 中间件是“系统粘合剂”，帮助各模块解耦协作、提升扩展性和可维护性。 - 常见类型：Web服务器、消息队列、缓存、数据库中间件、服务注册与发现。 - 作用关键词：解耦、复用、扩展、高可用、分布式协作。  解耦、异步、削峰 | [Editorial](./中间件/中间件基础知识总结.md)                  |
 | Kafka、RabbitMQ和RocketMQ都有哪些区别，应用场景列举？        | kafka是**异步刷盘**，极端情况数据会丢失；但是rocketmq是**同步刷盘**，更安全 | [Editorial](./中间件/Kafka、RabbitMQ和RocketMQ都有哪些区别，应用场景列举.md) |
 | 如何设计一个支持“限流（Rate Limiting）”功能的中间件？为什么在分布式系统中限流如此重要？ | - **限流的作用**：防止系统过载，保障服务可用性和公平性。 - **常见算法**：固定窗口、滑动窗口、令牌桶、漏桶。 - **分布式难点**：状态一致性、性能瓶颈、数据同步。 - **场景记忆法**：把限流理解为“超市排队+中央排号机”。 | [Editorial](./中间件/如何设计一个支持“限流（RateLimiting）”功能的中间件？为什么在分布式系统中限流如此重要？.md) |
 | 如何实现“服务的健康检查（Health Check）”中间件？它在微服务架构中有何意义？ | - **健康检查的作用**：提升系统稳定性、自动容错与流量管理。 - **常见类型**：Liveness、Readiness、自定义业务检查。 - **微服务意义**：防止流量打到异常实例，辅助自动恢复，提升可观测性。 - **记忆法**：“航班起飞前的安全检查”——活着≠准备好了。 | [Editorial](./中间件/如何实现“服务的健康检查（HealthCheck）”中间件？它在微服务架构中有何意义？.md) |
@@ -698,6 +719,7 @@
 
 | Problems                                                 | Hints                                                        | Solution                                                     |
 | -------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Kafka实现demo                                            | 一个主题下面有一个或多个分区                                 | [Editorial](./Kafka/Kafka实现demo.md)                        |
 | 为什么要使用消息队列？                                   | 目的：解耦、异步、削峰填谷 ；优点：可靠性好、扩展性好、灵活性高 |                                                              |
 | Kafka 为什么这么快？                                     | Kafka 的高性能来源于顺序写磁盘、零拷贝、分区并行、批处理、简单的 Broker 设计和高效的索引结构。这些设计使 Kafka 能够支撑超高吞吐量和低延迟的消息传递，非常适合大数据和流式处理场景。 | [Editorial](./Kafka/Kafka为什么这么快.md)                    |
 | Kafka的架构是怎么样的？                                  | Producer（生产者）、broker（Kafka集群）和 consumer（消费者） 组成。 | [Editorial](./Kafka/Kafka的架构是怎么样的.md)                |
@@ -712,25 +734,28 @@
 | Kafka 消息的发送过程简单介绍一下？                       | Kafka 消息发送过程是：生产者将消息按照主题和分区选择策略，序列化后发送到目标分区的 Leader 副本，Leader接收并顺序写入本地日志，随后根据副本同步策略将消息同步到其他副本，待达到应答条件后返回发送结果给生产者，从而完成一次消息发送。 **ISR（In-Sync Replicas，同步副本）** | [Editorial](./Kafka/Kafka消息的发送过程简单介绍一下.md)      |
 | Kafka 高水位了解过吗？为什么 Kafka 需要 Leader Epoch？   | Kafka 的高水位（High Watermark）用于标记分区中**所有副本都已同步的最新消息位置**，保障消息**不丢失**和**数据一致性**；而 Leader Epoch 是用来**区分不同 Leader 任期**，**防止分区 Leader 切换时因旧 Leader 产生的数据写入丢失或混乱，从而确保数据可靠性和正确的消息顺序**。 | [Editorial](./Kafka/Kafka高水位了解过吗？为什么Kafka需要LeaderEpoch.md) |
 | Kafka 为什么有 Topic 还要用 Partition?                   | Topic是逻辑上的消息分类，而Partition是物理上的消息分区。通过将Topic分成多个Partition，可以实现**提升吞吐量、负载均衡、以及增加可扩展性。** | [Editorial](./Kafka/Kafka为什么有Topic还要用Partition.md)    |
-| 介绍一下Kafka的ISR机制？                                 | ISR，是`In-Sync Replicas`，**同步副本**的意思。  在Kafka中，每个主题分区可以有多个副本(replica)。。ISR是与主副本（Leader Replica）保持同步的副本集合。ISR机制就是用于**确保数据的可靠性和一致性的**。  当消息被写入Kafka的分区时，它首先会被写入Leader，然后Leader将消息复制给ISR中的所有副本。只有当ISR中的所有副本都成功地接收到并确认了消息后，主副本才会认为消息已成功提交。这种机制确保了数据的可靠性和一致性。 |                                                              |
+| 介绍一下Kafka的ISR机制？                                 | ISR，是`In-Sync Replicas`，**同步副本**的意思。  在Kafka中，每个主题分区可以有多个副本(replica)。ISR是与主副本（Leader Replica）保持同步的副本集合。ISR机制就是用于**确保数据的可靠性和一致性的**。  当消息被写入Kafka的分区时，它首先会被写入Leader，然后Leader将消息复制给ISR中的所有副本。只有当ISR中的所有副本都成功地接收到并确认了消息后，主副本才会认为消息已成功提交。这种机制确保了数据的可靠性和一致性。 |                                                              |
 | Kafka支持事务消息吗？如何实现的？                        |                                                              | [Editorial](./Kafka/Kafka支持事务消息吗？如何实现的.md)      |
 | Kafka为什么依赖Zookeeper，有什么用？为什么后面又不用了？ | Kafka最初依赖Zookeeper，是因为需要分布式协调、元数据管理和容错能力，Zookeeper能很好地满足这些需求。随着技术发展，Kafka通过KRaft模式自研了分布式协调和元数据管理能力，所以后续版本可以不再依赖Zookeeper。 | [Editorial](./Kafka/Kafka为什么依赖Zookeeper，有什么用？为什么后面又不用了？.md) |
 | Kafka的消费者数量和分区数量可以不同吗？会发生什么？      | Kafka中消费者数与分区数可以不一样。**通常推荐消费者数不超过分区数**，这样每个消费者都会有分区可消费，否则多余的消费者会闲置无法分配分区。而从Kafka 4.0开始引入了共享组机制，允许多个消费者并行消费同一个分区并逐条确认消息，从而显著提升吞吐和消费灵活性，解决了消费者大于分区数时的闲置问题。 | [Editorial](./Kafka/Kafka的消费者数量和分区数量可以不同吗？会发生什么.md) |
 | Kafka如何实现批量消费                                    | Kafka批量消费常通过`@KafkaListener`结合自定义的`ConcurrentKafkaListenerContainerFactory`实现，关键是设置`factory.setBatchListener(true)`**开启批量监听**，**并将ack模式配置为手动提交（MANUAL_IMMEDIATE）**，避免自动提交带来的消息丢失风险。监听方法中应在确保所有消息都处理成功后再手动提交offset，切忌在finally或未全部处理成功时提交，以保证消息可靠性和不丢失。 | [Editorial](./Kafka/Kafka如何实现批量消费.md)                |
-| Kafka的批量消费如何确保消息不丢？                        | 在Kafka批量消费场景下，最容易丢消息的原因是**自动提交offset**或**在finally中手动提交offset**导致未成功处理的消息被标记为已消费。为避免丢消息，应使用手动提交，并确保所有消息处理成功后再提交offset。如果有失败则不提交offset，让消息重投，通过消费端的幂等性设计保证消息重复处理不会造成问题。这样可以有效防止消息丢失，即使带来消息重复，也比丢消息更安全可靠。 | [Editorial](./Kafka/Kafka的批量消费如何确保消息不丢？.md)    |
+| Kafka的批量消费如何确保消息不丢？                        | 在Kafka批量消费场景下，最容易丢消息的原因是**自动提交offset**和**在finally中手动提交offset**导致未成功处理的消息被标记为已消费。为避免丢消息，应使用手动提交，并确保所有消息处理成功后再提交offset。如果有失败则不提交offset，让消息重投，通过消费端的幂等性设计保证消息重复处理不会造成问题。这样可以有效防止消息丢失，即使带来消息重复，也比丢消息更安全可靠。 | [Editorial](./Kafka/Kafka的批量消费如何确保消息不丢？.md)    |
 | Kafka如果丢消息了，可能的原因是什么？                    | Kafka消息丢失主要有三类场景：一是**生产者端**未开启消息确认或未处理发送失败，导致消息在网络或Broker故障时丢失；二是**Broker端**由于未持久化或主从同步不及时，或仅有单节点部署，Broker宕机时消息会丢失；三是**消费者端**如果在消息未成功处理就自动提交offset，也会导致消息丢失。此外，如果消息长时间未被消费，超过保存时间也会被删除。实际生产环境中，建议通过合理配置acks、主从同步、异常回调及offset手动提交等方式，最大限度降低消息丢失风险。 | [Editorial](./Kafka/Kafka如果丢消息了，可能的原因是什么.md)  |
 | 介绍一下Kafka的死信队列                                  | 死信队列（Dead Letter Queue，DLQ）是消息中间件中的一种**错误处理机制**，用于处理无法被正常消费的消息。当消息因为各种原因（如**反序列化失败**、**业务处理异常**、**超过重试次数**等）无法被正常处理时，这些消息会被转发到死信队列，以便后续分析和处理。 【Kafka没有内置的死信队列】 | [Editorial](./Kafka/介绍一下Kafka的死信队列.md)              |
+| kafka集群                                                | 业务代码和单机的业务代码一模一样，但是配置文件要修改         | [Editorial](./Kafka/kafka集群.md)                            |
 
 ## 【定时任务】
 
 | Problems                                              | Hints                                                        | Solution                                                     |
 | ----------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | xxl-job入门案例                                       |                                                              | [Editorial](./定时任务/xxljob入门案例.md)                    |
+| cron表达式详解                                        |                                                              | [Editorial](./定时任务/cron表达式详解.md)                    |
 | xxl-job如何保证一任务只会触发一次？                   | xxl-job通过**分布式调度**和**任务锁机制**来保证任务只会触发一次。调度中心会为每个任务分配唯一的执行器，并采用数据库或分布式锁进行任务状态管理，确保同一时间只有一个执行器能够获取到执行权，避免任务重复触发。同时，任务触发和回调都有幂等设计，进一步保证任务只会被执行一次。 | [Editorial](./定时任务/xxl-job如何保证一任务只会触发一次.md) |
 | xxl-job 支持分片任务吗？实现原理是什么？              | xxl-job支持分片任务，通过**“分片广播”**调度策略实现。调度中心在触发任务时会将任务拆分为多个分片并分配到不同的执行器，每个分片携带分片参数，执行器根据分片参数只处理自己负责的数据部分，这样可以实现任务的并行处理和负载均衡，提高执行效率。 | [Editoiral](./定时任务/xxl-job支持分片任务的原理.md)         |
 | 为什么定时任务可以定时执行？                          | 操作系统提供的定时器                                         | [Editorial](./定时任务/为什么定时任务可以定时执行.md)        |
 | Java中实现定时任务的几种方式                          | Timer类和TimerTask类、 ScheduledExecutorService类、 DelayQueue | [Editorial](./定时任务/Java中实现定时任务的几种方式.md)      |
 | Java中Timer实现定时调度的原理是什么                   | `TaskQueue` 、`TimerThread`                                  | [Editorial](./定时任务/Java中Timer实现定时调度的原理是什么.md) |
+| 介绍一下ScheduledExecutorService                      |                                                              | [Editorial](./定时任务/介绍一下ScheduledExecutorService.md)  |
 | 什么是时间轮？                                        | 时间轮算法是一种高效的定时任务调度机制，通过将时间划分为固定槽位并以轮盘方式轮询，实现任务的延迟执行和周期触发。通过引入**round标识**和**分层时间轮**，可以灵活支持更长时间的延迟任务并提升调度效率。分层时间轮将任务分级管理，细粒度时间轮负责精确触发，粗粒度时间轮负责长周期管理，广泛应用于高性能框架如Netty、Kafka等，用于超时检测、消息过期清理等场景。 | [Ediotiral](./定时任务/什么是时间轮.md)                      |
 | 实现一个定时任务，可以用什么数据结构及算法？          | 小顶堆、时间轮算法、链表（使用较少）                         | [Editorail](./定时任务/实现一个定时任务可以用什么数据结构及算法.md) |
 | 知道MapReduce动态分片任务吗？好处是什么？原理是什么？ |                                                              | [Editorial](./定时任务/MapReduce动态分片任务.md)             |
@@ -743,8 +768,23 @@
 | -------------------------------- | ------------------------------------------------------------ | ----------------------------------------------------------- |
 | 设计模式总结                     |                                                              | [Editorial](./设计模式/设计模式总结.md)                     |
 | 设计模式七大原则                 | 单一职责、开闭、里氏替换、依赖倒置、接口隔离、迪米特、合成/聚合复用原则 | [Editorial](./设计模式/设计模式七大原则.md)                 |
+| 讲一下工厂模式                   | **简单工厂**是由一个工厂类根据参数决定实例化哪种产品，适合产品种类少、变化不大的场景；                                         **工厂方法**是将创建产品的职责交给子类，每个具体工厂生产一种具体产品，利于扩展；（一个产品）                                   **抽象工厂**则能创建一族相关产品，保证产品之间的一致性，适用于产品族多且需要统一风格的场合。 （多个产品） |                                                             |
 | 工厂方法模式与抽象工厂模式的区别 | **工厂方法模式**只负责生产一种产品，由具体子类决定产品的创建细节；而**抽象工厂模式**可以生产多个相关产品族，通过不同的实现类创建一组相互关联的产品。简单来说，工厂方法模式关注“单一产品的创建”，而抽象工厂模式关注“产品族的整体创建和约束”。  **单一产品的不同品牌，整套产品的不同风格** | [Editorial](./设计模式/工厂方法模式与抽象工厂模式的区别.md) |
 | 你在工作中是如何使用设计模式的   |                                                              | [Editorial](./设计模式/你在工作中是如何使用设计模式的.md)   |
+| 单例模式的创建                   |                                                              | [Editorial](./设计模式/单例模式的创建.md)                   |
+
+## 【EasyExcel】
+
+| Problems                                   | Hints | Solution                                                     |
+| ------------------------------------------ | ----- | ------------------------------------------------------------ |
+| EasyExcel的基础使用                        |       | [Editorial](./EasyExcel/EasyExcel的基础使用.md)              |
+| 针对EasyExcel表的导入，如何对数据进行校验? |       | [Editorial](./EasyExcel/针对EasyExcel表的导入，如何对数据进行校验.md) |
+| 讲一讲EasyExcel的源码                      |       | [Editorial](./EasyExcel/讲一讲EasyExcel的源码.md)            |
+| 如何使用EasyExcel实现动态表头和合并单元格  |       | [Editorial](./EasyExcel/如何使用EasyExcel实现动态表头和合并单元格.md) |
+| EasyExcel实现百万级数据从Excel导入到数据库 |       | [Editorial](./EasyExcel/EasyExcel实现百万级数据从Excel导入到数据库？.md) |
+| EasyExcel实现百万级数据导出                |       | [Editorial](./EasyExcel/EasyExcel实现百万级数据导出.md)      |
+
+
 
 ## 【Netty】
 
@@ -764,11 +804,11 @@
 
 ## 【Mqtt】
 
-| Problems       | Hints | Solution                              |
-| -------------- | ----- | ------------------------------------- |
-| Mqtt面试题总览 |       | [Editorial](./Mqtt/Mqtt面试题总览.md) |
-|                |       |                                       |
-|                |       |                                       |
+| Problems       | Hints                                  | Solution                              |
+| -------------- | -------------------------------------- | ------------------------------------- |
+| Mqtt面试题总览 | MQTT 默认的 QoS 等级是 0（最多一次）。 | [Editorial](./Mqtt/Mqtt面试题总览.md) |
+| Mqtt入门案例   |                                        | [Editorial](./Mqtt/Mqtt入门案例.md)   |
+| Mqtt报文结构   |                                        | [Editorial](./Mqtt/Mqtt报文结构.md)   |
 
 ## 【分布式】
 
@@ -806,8 +846,53 @@
 
 ## 【其他】
 
-| Problems                                                     | Hints                                                        | Solution                               |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | -------------------------------------- |
-| 给定a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url | `分治 + hashmap `                                            | [Editorial](./其他/查找相同url.md)     |
-| 介绍一下cap理论                                              | CAP 原则又称 CAP 定理, 指的是在一个分布式系统中, Consistency（一致性）、 Availability（可用性）、Partition tolerance（分区容错性）, **三者不可得兼** | [Editorial](./其他/介绍一下cap理论.md) |
-|                                                              |                                                              |                                        |
+| Problems                                                     | Hints                                                        | Solution                                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 给定a、b两个文件，各存放50亿个url，每个url各占64字节，内存限制是4G，让你找出a、b文件共同的url | `分治 + hashmap `                                            | [Editorial](./其他/查找相同url.md)                           |
+| 介绍一下cap理论                                              | CAP 原则又称 CAP 定理, 指的是在一个分布式系统中, Consistency（一致性）、 Availability（可用性）、Partition tolerance（分区容错性）, **三者不可得兼** | [Editorial](./其他/介绍一下cap理论.md)                       |
+| 怎么才能在一个Java项目里面实现引入，怎么实现配置，引入的依赖为什么会生效 | 通过maven引入，在pom.xml这个配置文件里面添加需要的依赖，<dependencies>这个标签下面添加，默认使用中央仓库下载依赖，如果需要使用私有厂库，可以修改<repositories>下面的仓库url。当我们构建项目时，如`mvn compile`或`mvn package`的时候，会自动从厂库里面下载依赖到本地。 | [Editorial](./其他/怎么才能在一个Java项目里面实现引入，怎么实现配置，引入的依赖为什么会生效.md) |
+
+## 【SQL题目】
+
+| Problems                                                     | Hints                                                        | Repeat |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------ |
+| [175. 组合两个表](https://leetcode.cn/problems/combine-two-tables/) | 使用`left join`连接两个表，但是后面的条件查询不能用`where`，必须用`on` |        |
+| [181. 超过经理收入的员工](https://leetcode.cn/problems/employees-earning-more-than-their-managers/) | 一张表可以拆分成两张表使用                                   |        |
+| [182. 查找重复的电子邮箱](https://leetcode.cn/problems/duplicate-emails/) | 学习`group by`与`having`组合                                 |        |
+| [183. 从不订购的客户](https://leetcode.cn/problems/customers-who-never-order/) | 三种写法，`not exists` 、`not in` 、`left join`              | Yes    |
+| [196. 删除重复的电子邮箱](https://leetcode.cn/problems/delete-duplicate-emails/) |                                                              | Yes    |
+| [197. 上升的温度](https://leetcode.cn/problems/rising-temperature/) | 日期类，前面日期 - 后面日期的天数 `datediff(w1.recordDate, w2.recordDate) = 1` | Yes    |
+| [511. 游戏玩法分析 I](https://leetcode.cn/problems/game-play-analysis-i/) | `group by`按照一个标准聚合，然后在select的后面可以使用`min(), ave(), max(), sum()` |        |
+| [577. 员工奖金](https://leetcode.cn/problems/employee-bonus/) | sql语句的判空为`is null`                                     |        |
+| [584. 寻找用户推荐人](https://leetcode.cn/problems/find-customer-referee/) |                                                              |        |
+| [607. 销售员](https://leetcode.cn/problems/sales-person/)    |                                                              |        |
+| [610. 判断三角形](https://leetcode.cn/problems/triangle-judgement/) | `select x, y, z ,  case when x+y>z and x+z>y and y+z>x then 'Yes' else 'No' end as 'triangle'  from triangle` 新增一个字段的语法 | Yes    |
+| [619. 只出现一次的最大数字](https://leetcode.cn/problems/biggest-single-number/) |                                                              | Yes    |
+| [626. 换座位](https://leetcode.cn/problems/exchange-seats/)  |                                                              | Yes    |
+| [627. 变更性别](https://leetcode.cn/problems/swap-salary/)   |                                                              | Yes    |
+| [1045. 买下所有产品的客户](https://leetcode.cn/problems/customers-who-bought-all-products/) |                                                              | Yes    |
+| [1050. 合作过至少三次的演员和导演](https://leetcode.cn/problems/actors-and-directors-who-cooperated-at-least-three-times/) |                                                              | Yes    |
+| [1070. 产品销售分析 III](https://leetcode.cn/problems/product-sales-analysis-iii/) |                                                              | Yes    |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+|                                                              |                                                              |        |
+

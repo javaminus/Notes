@@ -105,34 +105,34 @@ public class ScheduledTaskExample {
 
 ## 1. Timer/TimerTask 实现
 
+> - 每个`Timer`实例内部会初始化一个`TimerThread`线程（继承自`Thread`类）
+> - 构造方法调用时会自动启动该线程（通过`thread.start()`）
+> - 线程名称可通过参数指定（如示例中的"20MinTimer"）
+
 ```java
+
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Date;
 
-public class TimerCheckDemo {
-    private static volatile int value = 0;
-    private static volatile long lastUpdateTime = System.currentTimeMillis();
-
-    public static void updateValue(int newValue) {
-        value = newValue;
-        lastUpdateTime = System.currentTimeMillis();
-    }
-
+public class TwentyMinuteTimer {
     public static void main(String[] args) {
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        Timer timer = new Timer("20MinTimer"); 
+        TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                long now = System.currentTimeMillis();
-                // 20分钟 = 20 * 60 * 1000 毫秒
-                if (now - lastUpdateTime > 20 * 60 * 1000) {
-                    System.out.println("Value unchanged for 20 minutes, executing task!");
-                    // 执行你的定时任务
-                }
+                System.out.println("定时任务触发时间: " + new Date());
+                // 这里添加你的业务逻辑
             }
-        }, 0, 60 * 1000); // 每隔1分钟检查一次
+        };
+        
+        // 立即执行第一次，之后每20分钟(1200000毫秒)执行一次
+        timer.scheduleAtFixedRate(task, 0, 20 * 60 * 1000);
+        
+        System.out.println("定时器已启动，首次执行立即开始...");
     }
 }
+
 ```
 
 ---
@@ -140,30 +140,22 @@ public class TimerCheckDemo {
 ## 2. ScheduledExecutorService 实现
 
 ```java
-import java.util.concurrent.Executors;
+import java.util.concurrent.Executors; // 注意这里是JUC的包
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class ScheduledExecutorServiceCheckDemo {
-    private static volatile int value = 0;
-    private static volatile long lastUpdateTime = System.currentTimeMillis();
+public class ScheduledTaskExample {
+	public static void main(String[] args) {
+		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-    public static void updateValue(int newValue) {
-        value = newValue;
-        lastUpdateTime = System.currentTimeMillis();
-    }
+		Runnable task = () -> {
+			// 你的任务逻辑
+			System.out.println("任务执行：" + System.currentTimeMillis());
+		};
 
-    public static void main(String[] args) {
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        Runnable checker = () -> {
-            long now = System.currentTimeMillis();
-            if (now - lastUpdateTime > 20 * 60 * 1000) {
-                System.out.println("Value unchanged for 20 minutes, executing task!");
-                // 执行你的定时任务
-            }
-        };
-        scheduler.scheduleAtFixedRate(checker, 0, 1, TimeUnit.MINUTES);
-    }
+		// 延迟0秒开始，每隔20分钟执行一次，核心方法scheduleAtFixedRate(task, 0, 20, TimeUnit.MINUTES)
+		scheduler.scheduleAtFixedRate(task, 0, 20, TimeUnit.MINUTES);
+	}
 }
 ```
 

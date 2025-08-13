@@ -1,10 +1,12 @@
 # Netty 常用 API、核心类与方法总结
 
-![img](assets/df29f83b5dbbfb8581f0dca1bcf1f0de.png) 
+![img](assets/df29f83b5dbbfb8581f0dca1bcf1f0de.png)
+
+![img](assets/1708060-20211110224700852-1182764791.png)
 
 ---
 
-## 1. 常用 API 总览
+##  1. 常用 API 总览
 
 | API/类名                    | 说明                                |
 | --------------------------- | ----------------------------------- |
@@ -177,6 +179,7 @@
 - `connect()`：连接服务器（客户端）
 
 ### ChannelPipeline
+
 - `addLast(ChannelHandler...)`：添加Handler到管道末尾
 - `remove(ChannelHandler)`：移除Handler
 

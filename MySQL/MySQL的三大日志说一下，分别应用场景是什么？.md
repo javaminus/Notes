@@ -124,7 +124,7 @@ MySQL 的三大日志分别为 **redo log（重做日志）**、**binlog（二�
 
 ### 3. Binlog有哪几种格式？各有什么优缺点？
 **答：**
-- statement（语句）、row（行）、mixed（三者混合）。
+- statement（语句）、row（行）、mixed（二者混合）。
   - statement：体积小，但某些语句无法精确重放，可能导致主从不一致。
   - row：记录每行变更，体积大，但可精确重放，强一致性。
   - mixed：两者兼顾，自动选择。

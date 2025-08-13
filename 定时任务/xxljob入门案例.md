@@ -1,71 +1,30 @@
-# XXL-JOB + Spring Boot 3 完整使用教程
+XXL-JOB是一个开源的分布式任务调度平台，其核心设计理念是"调度与执行解耦"。下面从几个关键方面说明其工作原理和特点：
 
-本文档面向初学者，详细介绍如何在 Spring Boot 3 项目中集成、配置并使用分布式任务调度框架 XXL-JOB。
+1. **核心组件**
+- 调度中心：独立部署的服务，负责触发任务和管理执行器注册信息
+- 执行器：嵌入业务系统的组件，通过注解方式定义具体任务逻辑
 
----
 
-## 目录
+2. **工作流程**
+- 执行器启动时自动向调度中心注册地址和端口信息
+- 调度中心通过CRON表达式配置触发时间，通过HTTP请求调用执行器
+- 执行器根据路由策略分配任务节点，执行后返回结果和日志
 
-1. [环境准备与原理介绍](#环境准备与原理介绍)
-2. [搭建 XXL-JOB 管理后台](#搭建-xxl-job-管理后台)
-3. [Spring Boot 3 项目集成 XXL-JOB 执行器](#spring-boot-3-项目集成-xxl-job-执行器)
-4. [JobHandler 编写与注册](#jobhandler-编写与注册)
-5. [任务调度与管理](#任务调度与管理)
-6. [常见问题与解决方案](#常见问题与解决方案)
-7. [参考资料](#参考资料)
+3. **分布式特性**
+- 采用注册机制动态感知可用执行器，支持集群部署和弹性扩缩容
+- 提供多种路由策略（轮询/随机/故障转移/分片广播）避免任务重复执行
 
----
 
-## 环境准备与原理介绍
+4. **任务配置**
+- 通过@XxlJob注解定义任务方法，需在调度中心配置对应任务信息
+- 支持动态调整参数和路由策略，无需重启服务
+- 配置文件需指定调度中心地址实现通信
 
-- JDK 17+
-- Spring Boot 3.x
-- Maven/Gradle 构建工具
-- MySQL 用于 XXL-JOB 管理后台数据存储
-
-### XXL-JOB 架构简介
-
-- **管理后台**：任务配置、调度、监控中心
-- **执行器**：任务实际执行节点
-- **JobHandler**：实际业务任务实现
-- **通信协议**：HTTP/RPC（管理员推送任务到执行器）
+下面是一个**Spring Boot 集成 XXL-Job**，并实现**每30分钟执行一次任务**的完整案例，包括关键代码和后台配置说明。
 
 ---
 
-## 搭建 XXL-JOB 管理后台
-
-1. **下载管理后台源码**  
-   官方地址：[https://github.com/xuxueli/xxl-job](https://github.com/xuxueli/xxl-job)
-
-2. **准备数据库**  
-   使用 MySQL，新建数据库 `xxl-job`，导入 `xxl-job-admin/src/main/resources/db/tables_xxl_job.sql`。
-
-3. **启动 XXL-JOB Admin**  
-   可用 IDEA/Eclipse 运行 `xxl-job-admin` 模块，或打包后运行：
-
-   ```sh
-   cd xxl-job-admin/target
-   java -jar xxl-job-admin-*.jar
-   ```
-
-   配置文件（`application.properties`）主要参数：
-
-   ```
-   server.port=8080
-   spring.datasource.url=jdbc:mysql://127.0.0.1:3306/xxl-job?Unicode=true&characterEncoding=UTF-8
-   spring.datasource.username=root
-   spring.datasource.password=123456
-   ```
-
-4. **访问管理后台**  
-   默认地址：[http://localhost:8080/xxl-job-admin](http://localhost:8080/xxl-job-admin)  
-   默认账号密码：admin/123456
-
----
-
-## Spring Boot 3 项目集成 XXL-JOB 执行器
-
-### 1. 添加 Maven 依赖
+## 1. 添加 Maven 依赖
 
 ```xml
 <dependency>
@@ -75,59 +34,41 @@
 </dependency>
 ```
 
-### 2. 配置参数 `application.yml`
+---
 
-```yaml
-xxl:
-  job:
-    admin:
-      addresses: http://localhost:8080/xxl-job-admin
-    executor:
-      appname: demo-executor
-      ip:
-      port: 9999
-      logpath: /data/applogs/xxl-job/jobhandler
-      logretentiondays: 30
+## 2. 配置 application.properties
+
+```properties
+xxl.job.executor.appname=springboot-xxljob-demo
+xxl.job.admin.addresses=http://localhost:8080/xxl-job-admin
+xxl.job.executor.ip=
+xxl.job.executor.port=9999
+xxl.job.accessToken=
+xxl.job.executor.logpath=/data/applogs/xxl-job/jobhandler
+xxl.job.executor.logretentiondays=30
 ```
 
-### 3. 编写配置类，注册执行器 Bean
+---
 
-```java
+## 3. 编写 XXL-Job 配置类
+
+```java name=XxlJobConfig.java
+package com.example.demo.config;
+
 import com.xxl.job.core.executor.impl.XxlJobSpringExecutor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class XxlJobConfig {
-
-    @Value("${xxl.job.admin.addresses}")
-    private String adminAddresses;
-
-    @Value("${xxl.job.executor.appname}")
-    private String appName;
-
-    @Value("${xxl.job.executor.ip:}")
-    private String ip;
-
-    @Value("${xxl.job.executor.port}")
-    private int port;
-
-    @Value("${xxl.job.executor.logpath}")
-    private String logPath;
-
-    @Value("${xxl.job.executor.logretentiondays}")
-    private int logRetentionDays;
-
     @Bean
     public XxlJobSpringExecutor xxlJobExecutor() {
         XxlJobSpringExecutor executor = new XxlJobSpringExecutor();
-        executor.setAdminAddresses(adminAddresses);
-        executor.setAppname(appName);
-        executor.setIp(ip);
-        executor.setPort(port);
-        executor.setLogPath(logPath);
-        executor.setLogRetentionDays(logRetentionDays);
+        executor.setAppname("springboot-xxljob-demo");
+        executor.setAdminAddresses("http://localhost:8080/xxl-job-admin");
+        executor.setPort(9999);
+        executor.setLogPath("/data/applogs/xxl-job/jobhandler");
+        executor.setLogRetentionDays(30);
         return executor;
     }
 }
@@ -135,82 +76,63 @@ public class XxlJobConfig {
 
 ---
 
-## JobHandler 编写与注册
+## 4. 编写定时任务 Job Handler
 
-### 1. 编写任务代码
+```java name=ThirtyMinuteJob.java
+package com.example.demo.job;
 
-```java
 import com.xxl.job.core.handler.annotation.XxlJob;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DemoJobHandler {
+public class ThirtyMinuteJob {
 
-    @XxlJob("demoJobHandler")
-    public void demoJobHandler() throws Exception {
-        System.out.println("Hello XXL-JOB, Spring Boot 3!");
-        // 具体任务逻辑
+    @XxlJob("thirtyMinuteJobHandler")
+    public void execute() {
+        System.out.println("每30分钟执行一次的定时任务，当前时间：" + System.currentTimeMillis());
+        // 这里写你的业务代码
     }
 }
 ```
 
-### 2. 在管理后台注册任务
+---
 
-1. 执行器管理 → 新建执行器（如 demo-executor，需与项目配置一致）
-2. 任务管理 → 新建任务  
-   - **JobHandler** 填写为 `demoJobHandler`
-   - 配置调度方式、Cron 表达式等
-   - 支持参数传递、路由策略、失败重试等
+## 5. 在 XXL-Job 管理后台配置定时任务
+
+1. 登录 xxl-job-admin 后台（如：http://localhost:8080/xxl-job-admin）
+2. 任务管理 → 新增任务
+   - **JobHandler** 填写 `thirtyMinuteJobHandler`
+   - **调度类型** 选择 CRON
+   - **CRON 表达式** 填写 `0 0/30 * * * ?`
+     - 含义：每小时的第0分和第30分执行，即每30分钟执行一次
+   - 选择你的执行器（appname 和端口要与代码一致）
+   - 其他参数可按需填写
+3. 保存并启动任务
 
 ---
 
-## 任务调度与管理
+## 6. 项目结构参考
 
-- **调度方式**  
-  支持 Cron、固定频率、手动触发等
-- **路由策略**  
-  支持随机、轮询、分片等
-- **任务分片**  
-  多执行器节点下分片执行
-- **任务日志**  
-  后台可实时查看任务执行日志
-
----
-
-## 常见问题与解决方案
-
-### 1. 执行器注册失败
-
-- 检查 `admin.addresses` 配置，确保能访问管理后台
-- 检查执行器端口是否被占用
-- 管理后台与执行器时间同步
-
-### 2. JobHandler 未被发现
-
-- Handler 名字要与后台配置一致
-- 确认 Bean 被 Spring 扫描
-- 查看日志排查异常
-
-### 3. 日志未生成
-
-- 检查日志目录权限与路径
-- 日志保留天数可配置
-
-### 4. 任务执行异常
-
-- 查看后台任务日志
-- 检查参数与环境配置
-- 优化任务代码，避免阻塞与死循环
+```
+src/
+ └─ main/
+      ├─ java/
+      │    └─ com.example.demo/
+      │         ├─ config/
+      │         │    └─ XxlJobConfig.java
+      │         └─ job/
+      │              └─ ThirtyMinuteJob.java
+      └─ resources/
+            └─ application.properties
+```
 
 ---
 
-## 参考资料
+## 7. CRON表达式说明
 
-- [XXL-JOB 官方文档](https://www.xuxueli.com/xxl-job/)
-- [Spring Boot 官方文档](https://spring.io/projects/spring-boot)
-- [开源项目地址](https://github.com/xuxueli/xxl-job)
-- [JobHandler 注解源码](https://github.com/xuxueli/xxl-job/blob/master/xxl-job-core/src/main/java/com/xxl/job/core/handler/annotation/XxlJob.java)
+- `0 0/30 * * * ?`：每小时的第0分和第30分执行一次
+- 你也可以在管理后台直接测试、执行一次，或者调整表达式实现更多复杂定时策略
 
 ---
 
-如需进一步交流，建议加入 XXL-JOB 社区或关注官方 Issues。
+如需更多功能（如传递参数、分片广播等），欢迎继续提问！
