@@ -2,10 +2,10 @@
 
 * 链接到我  
 
-  - [关于本人]() 
+  - [关于本人](https://github.com/javaminus) 
 
-  * [博客园地址]()
   * [Github地址](https://github.com/javaminus)
-  * [知乎地址]()
-  * [掘金地址]()
   * [LeetCode](https://leetcode.cn/u/create-heart/)
+  * [掘金地址]()
+  * [博客园地址]()
+  * [知乎地址]()
