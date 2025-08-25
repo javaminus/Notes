@@ -79,6 +79,7 @@
 | Redis是AP还是CP？                                            | 单机的Redis连P（分区容错性）都没有，不讨论；分布式的Redis是AP，因为Redis通过异步的主从同步保证系统的高可用（A），那么这个时候的数据一致性得不到保证（C）; |                                                              |
 | Redis 使用什么协议进行通信?                                  | Redis 使用自己设计的一种文本协议进行客户端与服务端之间的通信——**RESP**（REdis Serialization Protocol），这种协议简单、高效，易于解析，被广泛使用。  RESP 协议基于 **TCP** 协议，采用请求/响应模式，每条请求由多个参数组成，以命令名称作为第一个参数。请求和响应都以行结束符（\r\n）作为分隔符. |                                                              |
 | Redis高级数据结构的使用场景                                  | 常见的有五种数据类型：String（字符串），Hash（哈希），List（列表），Set（集合）、Zset（有序集合）。 BitMap、HyperLogLog、GEO、Stream。 | [Editorial](./Redis/Redis高级数据结构的使用场景.md)          |
+| redis五种数据结构的底层                                      | hash结构的切换是（512，64字节），zset的切换是（256，64字节） | [Editorial](./Redis/redis五种数据结构的底层.md)              |
 | 什么是GEO，有什么用？                                        |                                                              | [Editorial](./Redis/什么是GEO有什么用.md)                    |
 | Redis BitMap 和 HyperLogLog 的原理是什么？分别适合哪些实际应用场景？ | **BitMap位图，本质是一个超长的数组 适合大规模布尔统计（如签到、活跃统计），节省空间，支持位运算。**  **HyperLogLog基于概率算法的数据结构 适合大规模去重计数（如UV统计），空间极小但有一定误差。**  **二者都是 Redis 的“以空间换效率”的典型高阶数据结构，适用于高并发大数据量的统计场景。** | [Editorial](./Redis/RedisBitMap和HyperLogLog的原理是什么？分别适合哪些实际应用场景？.md) |
 | 热 key 是什么？怎么解决？                                    | Redis热key是指被频繁访问的key 。业务层、缓存架构、服务层、降级和容错 | [Editorial](./Redis/热key是什么？怎么解决？.md)              |
@@ -195,7 +196,7 @@
 | Java创建线程有几种方式                                       | 继承Thread类，重写`run()`方法； 实现Runnable接口并实现`run()`方法，然后将实现了Runnable接口的类传递给Thread类； 使用Callable和Future接口通过Executor框架创建线程；通过线程池方式创建。 | [Editorial](./Java基础/Java创建线程有几种方式.md)            |
 | 线程池有哪些优势？                                           | **减少线程创建和销毁的开销**：频繁地创建和销毁线程会消耗大量系统资源，线程池通过重用已存在的线程来减少这种开销。  **提高响应速度**：当任务到达时，无需等待线程的创建即可立即执行，因为线程池中已经有等待的线程。 |                                                              |
 | 说一下面向对象3大特性理解？                                  | 封装、继承、多态                                             | [Editorial](./Java基础/说一下面向对象3大特性理解.md)         |
-| Java有什么常用的集合类？                                     | List、Set、Map、Queue、Stack。                               | [Editorial](./Java基础/Java有什么常用的集合类.md)            |
+| Java有什么常用的集合类？                                     | Collection：List、Set、Queue；Map                            | [Editorial](./Java基础/Java有什么常用的集合类.md)            |
 | 你能说出几种集合的排序方式？                                 | 实现Comparable（类里面重写`compareTo`）、 借助Comparator （比较器）、 通过Stream | [Editorial](./Java基础/你能说出几种集合的排序方式.md)        |
 | 遍历的同时修改一个List有几种方式？                           | 迭代器、copy一份副本、使用并发安全的集合类、Stream的过滤方法【 因为Stream每次处理后都会生成一个新的Stream，不存在并发问题，所以Stream的filter也可以修改list集合。（建议，简单高效） 】 |                                                              |
 | 有哪些集合类是线程安全的，哪些是不安全的？                   | **Vector、HashTable、Properties是线程安全的；**  **ArrayList、LinkedList、HashSet、TreeSet、HashMap、TreeMap等都是线程不安全的。** |                                                              |
