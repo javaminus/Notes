@@ -191,6 +191,48 @@
   - **StampedLock 适合哪些高性能场景？**  
     读多写少、对数据一致性要求不极高、数据结构复杂、写操作相对分散的场景。
 
+  > `StampedLock` 是 Java 8 引入的一种高级锁实现，属于 `java.util.concurrent.locks` 包。它结合了**乐观锁**和**悲观锁**的特性，既支持传统的读写锁机制（悲观锁），又支持乐观读（乐观锁）。
+  >
+  > ### 具体特性
+  >
+  > - **悲观读锁**：类似于 `ReadWriteLock` 的读锁。获取后，其他写操作会被阻塞。
+  > - **写锁**：独占锁，获取后其他所有读写操作都会被阻塞。
+  > - **乐观读锁**（Optimistic Read）：获取时不会真正加锁，而是通过一个"戳"（stamp/version）机制来检测数据是否被写线程修改过。适合读多写少的场景，可以极大提高性能。
+  >
+  > ### 使用示例
+  >
+  > Java
+  >
+  > ```
+  > StampedLock lock = new StampedLock();
+  > long stamp = lock.tryOptimisticRead();
+  > try {
+  >     // 读取数据
+  >     if (!lock.validate(stamp)) {
+  >         // 有写操作发生，升级为悲观读锁
+  >         stamp = lock.readLock();
+  >         try {
+  >             // 再次读取数据
+  >         } finally {
+  >             lock.unlockRead(stamp);
+  >         }
+  >     }
+  >     // 否则读取成功
+  > } finally {
+  >     // 乐观读无需unlock
+  > }
+  > ```
+  >
+  > ### 总结
+  >
+  > - `StampedLock` 既可作为悲观锁用（传统读写锁），也能作为乐观锁用（乐观读）。
+  > - 乐观锁通过`tryOptimisticRead`和`validate`实现，适合读多写少。
+  > - 悲观锁通过`readLock`和`writeLock`实现，适用于写多场景。
+  >
+  > **所以，StampedLock 既是内置的乐观锁，也是悲观锁的结合体。**
+  >
+  > 如果你有具体的使用场景或者代码问题，可以进一步提问！
+
 ---
 
 ## 5. Semaphore（信号量）
