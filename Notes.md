@@ -194,6 +194,7 @@
 | volatile 保证原子性吗？                                      | volatile关键字并没有保证我们的变量的原子性，volatile是Java虚拟机提供的一种轻量级的同步机制，主要有这三个特性：**保证可见性** 、**不保证原子性**、**禁止指令重排** 使用 `synchronized`来保证原子性 |                                                              |
 | synchronized 支持重入吗？如何实现的?                         | ✔ **synchronized 支持重入**，同一线程可多次获取同一把锁。  ✔ **通过对象头的“锁计数器”实现**，锁被同一线程持有时计数递增，释放时递减。  ✔ **避免死锁**，允许父子类方法或递归调用顺利执行。 🚀 | [Editorial](./Java基础/synchronized支持重入吗.md)            |
 | Java创建线程有几种方式                                       | 继承Thread类，重写`run()`方法； 实现Runnable接口并实现`run()`方法，然后将实现了Runnable接口的类传递给Thread类； 使用Callable和Future接口通过Executor框架创建线程；通过线程池方式创建。 | [Editorial](./Java基础/Java创建线程有几种方式.md)            |
+| 多线程交替打印"ABABAB"                                       |                                                              | [Editorial](./Java基础/多线程交替打印ABAB.md)                |
 | 线程池有哪些优势？                                           | **减少线程创建和销毁的开销**：频繁地创建和销毁线程会消耗大量系统资源，线程池通过重用已存在的线程来减少这种开销。  **提高响应速度**：当任务到达时，无需等待线程的创建即可立即执行，因为线程池中已经有等待的线程。 |                                                              |
 | 说一下面向对象3大特性理解？                                  | 封装、继承、多态                                             | [Editorial](./Java基础/说一下面向对象3大特性理解.md)         |
 | Java有什么常用的集合类？                                     | Collection：List、Set、Queue；Map                            | [Editorial](./Java基础/Java有什么常用的集合类.md)            |
@@ -289,6 +290,7 @@
 | 介绍一下动态线程池                                           |                                                              | [Editorial](./Java基础/动态线程池.md)                        |
 | 如何使用springtask做异步处理                                 | 线程池配置类开启异步`@EnableAsync`，`@Async("taskExecutor")` **taskExecutor**是线程池的名称 | [Editorial](./Java基础/如何使用springtask做异步处理.md)      |
 | 日志重点打印的位置                                           | 我使用的是springboot自带的logpack                            | [Editorial](./Java基础/日志重点打印的位置.md)                |
+| 你不知道的Synchronized                                       |                                                              | [Editorial](./Java基础/你不知道的Synchronized.md)            |
 | 多线程深度面试200连环深挖题                                  |                                                              | [Editorial](./Java基础/多线程进阶200题.md)                   |
 
 ## 【JVM】
