@@ -190,6 +190,7 @@
 | Java 中 Condition 的理解                                     | **Condition** 是 `java.util.concurrent.locks` 包中的一个接口，配合 `Lock`（比如 `ReentrantLock`）使用，用于实现比 `Object.wait()`/`notify()` 更加灵活的线程协作机制。 | [Editorial](./Java基础/Java中Condition的理解.md)             |
 | 如何停止一个线程的运行?                                      | 1、使用标志位；2、使用`interrupt()`；3、结合`interrupt()`和标志位；4、使用 `FutureTask.cancel(true)`    因为**线程在调用 sleep()、wait()、join() 等方法时会进入阻塞（等待）状态**，而这些方法都声明了会抛出 `InterruptedException`。这样设计有以下原因： **强制开发者关注中断处理**、**中断是线程之间协作的一种机制**、**清理资源，安全退出** | [Editorial](./Java基础/如何停止一个线程的运行.md)            |
 | 介绍NIO BIO AIO？                                            | BIO（同步阻塞）：传统 I/O 模式，适用于 小规模连接。 NIO（同步非阻塞）：通过 Selector 实现 多路复用，适用于 高并发。 AIO（异步非阻塞）：基于 回调机制，适用于 超高并发、长连接。 | [Editorial](./Java基础/介绍NIOBIOAIO.md)                     |
+| 文件传输                                                     | 在Java中进行文件传输时，通常选择基于TCP Socket的字节流（如InputStream/OutputStream）方式，因为它能原样处理所有类型的文件（包括二进制和文本文件），不会出现编码转换导致的数据损坏，且底层通过Socket API与操作系统网络协议栈交互，实现高效可靠的数据传输；而字符流（如Reader/Writer）仅适用于纯文本文件，处理二进制数据会出错，因此在文件传输场景下优先选择字节流。 | [Editorial](./Java基础/文件传输.md)                          |
 | volatile可见性例子                                           | volatile用于保证内存的可见性，可以将其看做是轻量级的锁，它具有如下的内存语义：<br>写内存语义：当写一个volatile变量时，JMM会把该线程本地内存中的共享变量的值刷新到主内存中。<br>读内存语义：当读一个volatile变量时，JMM会把该线程本地内存置为无效，使其从主内存中读取共享变量。<br>volatile只能保证单个变量读写的原子性，而锁则可以保证对整个临界区的代码执行具有原子性。所以，在功能上锁比volatile更强大，在可伸缩性和性能上volatile更优优势。<br><br>加分回答<br>volatile的底层是采用内存屏障来实现的，就是在编译器生成字节码时，会在指令序列中插入内存屏障来禁止特定类型的处理器重排序。内存屏障就是一段与平台相关的代码，Java中的内存屏障代码都在Unsafe类中定义，共包含三个方法：LoadFence()、storeFence()、fullFence()。 | [Editorial](./Java基础/volatile可见性例子.md)                |
 | volatile 保证原子性吗？                                      | volatile关键字并没有保证我们的变量的原子性，volatile是Java虚拟机提供的一种轻量级的同步机制，主要有这三个特性：**保证可见性** 、**不保证原子性**、**禁止指令重排** 使用 `synchronized`来保证原子性 |                                                              |
 | synchronized 支持重入吗？如何实现的?                         | ✔ **synchronized 支持重入**，同一线程可多次获取同一把锁。  ✔ **通过对象头的“锁计数器”实现**，锁被同一线程持有时计数递增，释放时递减。  ✔ **避免死锁**，允许父子类方法或递归调用顺利执行。 🚀 | [Editorial](./Java基础/synchronized支持重入吗.md)            |
@@ -861,45 +862,46 @@
 
 ## 【SQL题目】
 
-| Problems                                                     | Hints                                                        | Repeat |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------ |
-| [175. 组合两个表](https://leetcode.cn/problems/combine-two-tables/) | 使用`left join`连接两个表，但是后面的条件查询不能用`where`，必须用`on` |        |
-| [181. 超过经理收入的员工](https://leetcode.cn/problems/employees-earning-more-than-their-managers/) | 一张表可以拆分成两张表使用                                   |        |
-| [182. 查找重复的电子邮箱](https://leetcode.cn/problems/duplicate-emails/) | 学习`group by`与`having`组合                                 |        |
-| [183. 从不订购的客户](https://leetcode.cn/problems/customers-who-never-order/) | 三种写法，`not exists` 、`not in` 、`left join`              | Yes    |
-| [196. 删除重复的电子邮箱](https://leetcode.cn/problems/delete-duplicate-emails/) |                                                              | Yes    |
-| [197. 上升的温度](https://leetcode.cn/problems/rising-temperature/) | 日期类，前面日期 - 后面日期的天数 `datediff(w1.recordDate, w2.recordDate) = 1` | Yes    |
-| [511. 游戏玩法分析 I](https://leetcode.cn/problems/game-play-analysis-i/) | `group by`按照一个标准聚合，然后在select的后面可以使用`min(), ave(), max(), sum()` |        |
-| [577. 员工奖金](https://leetcode.cn/problems/employee-bonus/) | sql语句的判空为`is null`                                     |        |
-| [584. 寻找用户推荐人](https://leetcode.cn/problems/find-customer-referee/) |                                                              |        |
-| [607. 销售员](https://leetcode.cn/problems/sales-person/)    |                                                              |        |
-| [610. 判断三角形](https://leetcode.cn/problems/triangle-judgement/) | `select x, y, z ,  case when x+y>z and x+z>y and y+z>x then 'Yes' else 'No' end as 'triangle'  from triangle` 新增一个字段的语法 | Yes    |
-| [619. 只出现一次的最大数字](https://leetcode.cn/problems/biggest-single-number/) |                                                              | Yes    |
-| [626. 换座位](https://leetcode.cn/problems/exchange-seats/)  |                                                              | Yes    |
-| [627. 变更性别](https://leetcode.cn/problems/swap-salary/)   |                                                              | Yes    |
-| [1045. 买下所有产品的客户](https://leetcode.cn/problems/customers-who-bought-all-products/) |                                                              | Yes    |
-| [1050. 合作过至少三次的演员和导演](https://leetcode.cn/problems/actors-and-directors-who-cooperated-at-least-three-times/) |                                                              | Yes    |
-| [1070. 产品销售分析 III](https://leetcode.cn/problems/product-sales-analysis-iii/) |                                                              | Yes    |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
-|                                                              |                                                              |        |
+| Problems                                                     | Hints                                                        | Repeat                    |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------- |
+| SQL总结                                                      |                                                              | [Editorial](./SQL/SQL.md) |
+| [175. 组合两个表](https://leetcode.cn/problems/combine-two-tables/) | 使用`left join`连接两个表，但是后面的条件查询不能用`where`，必须用`on` |                           |
+| [181. 超过经理收入的员工](https://leetcode.cn/problems/employees-earning-more-than-their-managers/) | 一张表可以拆分成两张表使用                                   |                           |
+| [182. 查找重复的电子邮箱](https://leetcode.cn/problems/duplicate-emails/) | 学习`group by`与`having`组合                                 |                           |
+| [183. 从不订购的客户](https://leetcode.cn/problems/customers-who-never-order/) | 三种写法，`not exists` 、`not in` 、`left join`              | Yes                       |
+| [196. 删除重复的电子邮箱](https://leetcode.cn/problems/delete-duplicate-emails/) |                                                              | Yes                       |
+| [197. 上升的温度](https://leetcode.cn/problems/rising-temperature/) | 日期类，前面日期 - 后面日期的天数 `datediff(w1.recordDate, w2.recordDate) = 1` | Yes                       |
+| [511. 游戏玩法分析 I](https://leetcode.cn/problems/game-play-analysis-i/) | `group by`按照一个标准聚合，然后在select的后面可以使用`min(), ave(), max(), sum()` |                           |
+| [577. 员工奖金](https://leetcode.cn/problems/employee-bonus/) | sql语句的判空为`is null`                                     |                           |
+| [584. 寻找用户推荐人](https://leetcode.cn/problems/find-customer-referee/) |                                                              |                           |
+| [607. 销售员](https://leetcode.cn/problems/sales-person/)    |                                                              |                           |
+| [610. 判断三角形](https://leetcode.cn/problems/triangle-judgement/) | `select x, y, z ,  case when x+y>z and x+z>y and y+z>x then 'Yes' else 'No' end as 'triangle'  from triangle` 新增一个字段的语法 | Yes                       |
+| [619. 只出现一次的最大数字](https://leetcode.cn/problems/biggest-single-number/) |                                                              | Yes                       |
+| [626. 换座位](https://leetcode.cn/problems/exchange-seats/)  |                                                              | Yes                       |
+| [627. 变更性别](https://leetcode.cn/problems/swap-salary/)   |                                                              | Yes                       |
+| [1045. 买下所有产品的客户](https://leetcode.cn/problems/customers-who-bought-all-products/) |                                                              | Yes                       |
+| [1050. 合作过至少三次的演员和导演](https://leetcode.cn/problems/actors-and-directors-who-cooperated-at-least-three-times/) |                                                              | Yes                       |
+| [1070. 产品销售分析 III](https://leetcode.cn/problems/product-sales-analysis-iii/) |                                                              | Yes                       |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
+|                                                              |                                                              |                           |
 
