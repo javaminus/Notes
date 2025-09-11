@@ -18,6 +18,7 @@
 | 间隙锁和记录锁既然都是锁一个范围，那么有什么区别，为什么防止幻读不能只选一个 | **记录锁**：锁定的是已有的数据行（记录），只保护已存在的行不被其他事务修改或删除。  **间隙锁**：锁定的是数据之间的“间隙”，即某个区间内没有实际数据的部分。它防止其他事务在这个区间插入新行。 | [Editorial](./MySQL/间隙锁和记录锁既然都是锁一个范围，那么有什么区别，为什么防止幻读不能只选一个.md) |
 | 可重复读有没有幻读的问题？（举了例子）                       | **可能存在幻读**问题，但不会有脏读和不可重复读               | [Editorial](./MySQL/可重复读有没有幻读的问题？（举了例子）.md) |
 | **MySQL的MVCC是什么？它是如何实现高并发读写的？**            | MVCC（Multi-Version Concurrency Control，多版本并发控制）是一种**无锁并发控制机制**，用于解决数据库事务的**可见性**问题，避免 **脏读、不可重复读、幻读**，同时提高数据库的**并发性能**。 主要依赖机制： （1）隐藏列（事务 ID & 回滚指针） 、 （2）Undo Log（回滚日志） | [Editorial](./MySQL/MySQL的MVCC是什么？它是如何实现高并发读写的？.md) |
+| RR和RC的MVCC有什么区别                                       | RR就是每次执行事务创建read view，而RC是每次执行select语句创建read view，这样导致RR需要维护更久的read view，更占内存。 | [Editorial](./MySQL/RR和RC的MVCC有什么区别.md)               |
 | mysql的什么命令会加上间隙锁？                                | 在可重复读隔离级别下。 使用非唯一索引进行带`where`语句的查询、删除、更新 | [Editorial](./Mysql/mysql的什么命令会加上间隙锁.md)          |
 | MySQL 的存储引擎有哪些？为什么常用InnoDB？                   | InnoDB【支持事务、最小锁的粒度是行锁】、MyISAM、Memory       | [Editorial](./MySQL/MySQL的存储引擎有哪些？为什么常用InnoDB？.md) |
 | B+ 树和 B 树的比较                                           | 叶子节点存储数据不同、B+树支持范围查询（叶子节点通过双向链表连接）、B+树修改树的效率更高（矮胖） | [Editorial](./MySQL/B+树和B树的比较.md)                      |
@@ -463,6 +464,7 @@
 | PageHelper分页的原理是什么                 | 不常用，一般都是上mybatisplus                                | [Editorial](./Mybatis/PageHelper分页的原理是什么.md)         |
 | MyBatis-Plus有什么用                       | 解耦业务代码与数据库的连接操作代码，让开发者可以只关注业务代码的编写；提供大量的CRUD封装操作、代码生成、结果映射、分页、条件构造，帮助开发人员编写sql代码； | [Editorial](./Mybatis/MyBatis-Plus有什么用.md)               |
 | MyBatis-Plus的分页原理是什么               | MyBatis-Plus 的分页本质还是 offset/limit。还是有深分页的问题，可以使用游标分页来优化深分页。 | [Editorial](./Mybatis/MyBatis-Plus的分页原理是什么.md)       |
+| 数据库连接池                               |                                                              | [Editorial](./Mybatis/数据库连接池.md)                       |
 
 
 
