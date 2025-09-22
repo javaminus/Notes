@@ -153,6 +153,7 @@
 | 抽象类与接口的区别                                           | 当存在“is-a”关系，有共性代码需要复用时用抽象类。  当只需定义能力或规范，或需要多继承时用接口。 | [Editorial](./Java基础/抽象类与接口的区别.md)                |
 | 字节流与字符流                                               |                                                              | [Editorial](./Java基础/字节流与字符流.md)                    |
 | 枚举类                                                       |                                                              | [Editorial](./Java基础/枚举类.md)                            |
+| 内部类的剖析                                                 |                                                              | [Editorial](./Java基础/内部类剖析.md)                        |
 | Java面试基础知识笔记1                                        |                                                              | [Editorial](./Java基础/Java面试基础知识笔记1.md)             |
 | Object类有哪些方法                                           | `equals`默认是比地址，不重写就算两个内容一样的对象也不想等，重写了`equals`那么也要重写`hashcode`也要重写，不然放HashMap这种集合查不出来，`toString`默认是输出类名加哈希，调试没法看，项目里面都会重写，打印关键信息，日志一目了然。还有`notify`和`wait`之类是线程通信用的，但必须写在`synchronized`块里面，还有`clone()`是浅拷贝，`finalize`用于资源释放（不推荐使用，Java9已经抛弃），还有`getClass`用于获取对象类信息，反射的时候会用。 |                                                              |
 | Java异常                                                     |                                                              | [Editorial](./Java基础/异常.md)                              |
@@ -444,6 +445,7 @@
 | Springboot自动装配机制原理（2.x版本）                        | 核心靠一个注解`@EnableAutoConfiguration`它其实就是导入了一个类`AutoConfigurationImportSelector`这个类会通过`SpringFactoriesLoader`这个类去扫描我们项目下面所有依赖包下的`META-INF/spring.factories`文件，里面列了一大堆配置类，像`DataSourceAutoConfiguration`、`WebMvcAutoConfiguration`之类的，springboot启动的时候，会把这些类**按需**加载进来，为什么说是按需，因为这些类通常配了各种条件注解`@ConditionalOnClass`（我们依赖里面没有这个类才加载）、`@ConditionalOnMissingBean`（我们没有配置，才帮我们配置）、`@ConditionalOnProperty`（配置文件开了这个开关，才加载）。 |                                                              |
 | SpringBoot的启动流程是怎么样的？                             | 启动流程包含上下的**自动装配**与**配置加载优先级**           | [Editorial](./Spring/SpringBoot的启动流程是怎么样的.md)      |
 | Springboot配置加载的顺序                                     | **“命令行 > 系统变量 > 环境变量 > profile配置 > 主配置 > jar外 > jar内 > 默认”** | [Editorial](./Spring/Springboot配置加载的顺序.md)            |
+| 过滤器与拦截器                                               |                                                              | [Editorial](./Spring/过滤器与拦截器.md)                      |
 
 ## 【Mybatis】
 
@@ -555,6 +557,8 @@
 | 什么是正向代理和反向代理？                              | **正向代理**是客户端通过代理服务器访问目标服务器，代理服务器代表用户发起请求，主要用于突破访问限制或保护用户隐私；**反向代理**则是代理服务器位于目标服务器前端，用户的请求先到代理服务器，由其转发给后端服务器，主要用于负载均衡、安全防护和隐藏真实服务器信息。 |                                                              |
 | 什么是跨域访问问题，如何解决                            | 跨域访问问题是指浏览器出于安全策略（**同源策略**），阻止网页向不同域名的服务器请求资源，导致前端无法直接访问其他域的接口。常见解决办法包括服务器端**设置 CORS（跨域资源共享）响应头**、使用 **JSONP**、**反向代理**等方式，从而允许合法的跨域数据交换。 | [Editorial](./计算机网络/跨域问题.md)                        |
 | 什么是CDN，为什么他可以做缓存？                         | CDN（内容分发网络）是一种分布式服务器系统，通过将内容缓存到全球各地的节点，使用户可以从距离最近的服务器获取数据，从而加速访问速度并减轻源站压力。CDN 能做缓存，是因为它会将静态资源如图片、视频、网页等临时存储在边缘节点，用户请求时直接返回缓存内容，无需每次都访问源站，大幅提升性能和可用性。 |                                                              |
+| 介绍一下options                                         |                                                              | [Editorial](./计算机网络/介绍一下options.md)                 |
+| 子网掩码                                                | 子网掩码（Subnet Mask）是用来将IP地址划分为网络部分和主机部分的一种方式。它的主要作用是帮助网络设备判断两个IP地址是否属于同一个子网，从而决定数据包是否可以直接通信，还是需要通过路由器转发。 | [Editorial](./计算机网络/子网掩码.md)                        |
 
 ## 【场景题】
 
